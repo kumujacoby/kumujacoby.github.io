@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="HandheldFriendly" content="true">
+    <title>Ka Hakalama</title>
+    <style>
+        /* Base Variables - Using Kamehameha Colors */
+        :root {
+            --navy: #1E3057;
+            --royal-blue: #5480E8;
+            --white: #FFFFFF;
+            --light-gray: #F0F0F0;
+            --dark-teal: #3A5350;
+            --teal: #40816E;
+            --brown: #906841;
+            --gold: #C79756;
+            --rust: #A64331;
+            --terra-cotta: #C64F3A;
+            --burgundy: #5C1A2D;
+            --rose: #833043;
+            
+            /* Swiss Design Grid Units */
+            --grid-base: 8px;
+            --grid-2x: 16px;
+            --grid-3x: 24px;
+            --grid-4x: 32px;
+            --grid-5x: 40px;
+            --grid-6x: 48px;
+            --grid-8x: 64px;
+            --grid-10x: 80px;
+            --grid-12x: 96px;
+            
+            /* Typography Scale */
+            --text-xs: 14px;
+            --text-sm: 16px;
+            --text-md: 20px;
+            --text-lg: 24px;
+            --text-xl: 32px;
+            --text-2xl: 42px;
+            --text-3xl: 56px;
+            --text-4xl: 72px;
+            
+            /* Line Heights */
+            --leading-tight: 1.1;
+            --leading-normal: 1.3;
+            --leading-relaxed: 1.5;
+        }
+        
+        /* Reset & Base Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            touch-action: manipulation;
+        }
+        
+        html, body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            font-size: var(--text-sm);
+            line-height: var(--leading-normal);
+            color: var(--navy);
+            background-color: var(--navy);
+            overflow-x: hidden;
+            height: 100%;
+            width: 100%;
+        }
+        
+        /* Layout Container with 8px Grid */
+        .container {
+            max-width: 1024px;
+            margin: var(--grid-3x) auto;
+            padding: 0 var(--grid-2x);
+            display: flex;
+            flex-direction: column;
+            min-height: calc(100vh - var(--grid-6x));
+        }
+        
+        .main-container {
+            width: 100%;
+            background-color: var(--white);
+            border-radius: var(--grid-3x);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4); /* Keep shadow for depth */
+        }
+        
+        /* CSS Styles */
+        .header {
+            background-color: #5480E8; /* Royal blue */
+            color: #FFFFFF;
+            padding: 0;
+            text-align: center;
+            font-weight: bold;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            height: 54px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .header h1 {
+            font-family: 'Helvetica Neue', sans-serif;
+            font-size: 36px;
+            letter-spacing: -0.02em;
+            margin: 0;
+            line-height: 1.1;
+        }
+        
+        .nav-arrow {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            color: #FFFFFF;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            transition: background-color 0.2s;
+            border-right: 1px solid white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .nav-arrow:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 20px;
+            }
+            
+            .nav-arrow {
+                padding: 0 16px;
+            }
+        }
+        
+        .content {
+            padding: var(--grid-4x);
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Output Display - Keeping the animation */
+        .output-section {
+            margin-bottom: var(--grid-4x);
+        }
+        
+        #output-display {
+            font-family: 'Futura', sans-serif;
+            font-size: var(--text-4xl);
+            background-color: var(--light-gray);
+            border: 2px solid #ddd;
+            border-radius: var(--grid-base);
+            padding: var(--grid-4x) var(--grid-2x);
+            min-height: 160px;
+            margin-bottom: var(--grid-3x);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            text-align: center;
+            max-width: 100%;
+            -webkit-user-select: text;
+            -khtml-user-select: text;
+            -moz-user-select: text;
+            -ms-user-select: text;
+            user-select: text;
+            outline: none; /* Removes the default focus outline */
+            
+            /* Remove nowrap and modify overflow handling */
+            white-space: normal;
+            overflow-y: auto;
+            min-width: 100%;
+            
+            /* Keep the animation */
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s;
+            position: relative;
+        }
+        
+        #output-display:hover {
+            transform: scale(1.03);
+            box-shadow: 0 4px 15px rgba(84, 128, 232, 0.5);
+            background-color: #f0f0f0;
+            border-color: var(--royal-blue);
+        }
+        
+        .fullscreen-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--navy);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    cursor: pointer;
+    padding: 20px;
+    overflow: hidden;
+}
+
+.fullscreen-text {
+    text-align: center;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 90%;
+    font-family: 'Futura', sans-serif;
+    
+    /* Dynamic font sizing */
+    font-size: min(20vw, 15vh, 140px);
+    line-height: 1.2;
+}
+
+.instruction-text {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    text-align: center;
+    font-size: 16px;
+    opacity: 0.7;
+}
+
+        /* Control Buttons - Systematic Color Use */
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--grid-2x);
+            margin-bottom: var(--grid-3x);
+        }
+        
+        .control-btn {
+            padding: var(--grid-2x);
+            border: none;
+            border-radius: var(--grid-base);
+            cursor: pointer;
+            font-size: var(--text-sm);
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s ease, transform 0.2s; /* Keep transform */
+        }
+        
+        /* Keep button press animation */
+        .control-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .control-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .control-btn:active {
+            transform: scale(0.95);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Systematic color application */
+        #clear-btn { background-color: var(--rose); color: var(--white); }
+        #clear-btn:hover { background-color: var(--burgundy); }
+        
+        #backspace-btn { background-color: var(--terra-cotta); color: var(--white); }
+        #backspace-btn:hover { background-color: var(--rust); }
+        
+        #space-btn { background-color: var(--gold); color: var(--white); }
+        #space-btn:hover { background-color: var(--brown); }
+        
+        #search-btn { background-color: var(--teal); color: var(--white); }
+        #search-btn:hover { background-color: var(--dark-teal); }
+        
+        .button-emoji {
+            font-size: var(--text-md);
+            margin-right: var(--grid-base);
+        }
+        
+        /* Syllable Table - Grid-aligned with slick hover effects */
+        .syllabary-container {
+            overflow-x: auto;
+            margin-top: 0;
+            /* Clean table container with subtle border */
+            border: 1px solid var(--light-gray);
+            border-radius: var(--grid-base);
+        }
+        
+        .syllabary-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: var(--grid-base);
+            table-layout: fixed;
+        }
+        
+        .syllable-cell {
+            padding: 0;
+            position: relative;
+        }
+        
+        .syllable-btn {
+            width: 100%;
+            height: 100%;
+            padding: var(--grid-base) 0;
+            background-color: var(--royal-blue);
+            color: var(--white);
+            border: none;
+            cursor: pointer;
+            font-family: 'Futura', sans-serif;
+            font-size: var(--text-xl);
+            
+            /* Enhanced transition for slick scale effect */
+            transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        /* Add slick scale effect on hover with navy background instead of yellow */
+        .syllable-btn:hover {
+            transform: scale(1.05);
+            background-color: var(--navy);
+            color: var(--white);
+            z-index: 2; /* Ensure scaled button appears above others */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* Active state for feedback */
+        .syllable-btn:active {
+            transform: scale(0.95);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            transition: all 0.1s;
+        }
+        
+        .a-element {
+             border-top-left-radius: var(--grid-base);
+        }
+        
+        .ʻa-element {
+             border-top-right-radius: var(--grid-base);
+        }  
+        
+        .ū-element {
+             border-bottom-left-radius: var(--grid-base);
+        }     
+        
+        .ʻū-element {
+             border-bottom-right-radius: var(--grid-base);
+        }     
+        
+        /* Responsive adaptations with grid precision */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 var(--grid-base);
+                margin: var(--grid-base) auto;
+            }
+            
+            .content {
+                padding: var(--grid-2x);
+            }
+            
+            .header h1 {
+                font-size: var(--text-xl);
+            }
+            
+            #output-display {
+                font-size: var(--text-3xl);
+                min-height: 120px;
+                padding: var(--grid-3x) var(--grid-base);
+            }
+            
+            .controls {
+                gap: var(--grid-base);
+            }
+            
+            .control-btn {
+                padding: var(--grid-base);
+            }
+            
+            .syllable-btn {
+                font-size: var(--text-lg);
+                padding: var(--grid-base) 0;
+            }
+            
+            .button-text {
+                display: none; /* Hide text on mobile */
+            }
+            
+            .button-emoji {
+                margin-right: 0; /* Adjust when text is hidden */
+                font-size: var(--text-lg);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                margin: var(--grid-base) var(--grid-base);
+            }
+            
+            .main-container {
+                border-radius: var(--grid-2x);
+            }
+            
+            .syllable-btn {
+                font-size: var(--text-md);
+                padding: var(--grid-base) 0;
+            }
+            
+            /* Adjust hover scale for smaller screens */
+            .syllable-btn:hover {
+                transform: scale(1.05);
+            }
+        }
+
+        /* iOS-specific optimizations */
+
+/* Enhanced mobile media queries - integrate with existing mobile styles */
+@media (max-width: 768px) {
+    /* Improve button sizing for better touch targets */
+    .syllable-btn {
+        font-size: 18px;
+        padding: 12px 0;
+        min-height: 44px; /* Apple's recommended minimum touch target size */
+    }
+    
+    /* Adjust syllabary table for better mobile display */
+    .syllabary-table {
+        border-spacing: 4px;
+    }
+    
+    /* Better iOS-style controls layout */
+    .controls {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 8px;
+        margin-bottom: 16px;
+    }
+    
+    .control-btn {
+        flex: 1;
+        min-width: 44px;
+        height: 44px;
+        padding: 0;
+        border-radius: 8px;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    /* Enhanced button styling */
+    .control-btn, .syllable-btn {
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        touch-action: manipulation;
+    }
+    
+    /* Improved touch feedback */
+    .control-btn:active, .syllable-btn:active {
+        opacity: 0.7;
+        transform: scale(0.97);
+        transition: all 0.1s;
+    }
+    
+    /* Content padding for iOS safe areas */
+    .content {
+        padding-left: max(16px, env(safe-area-inset-left));
+        padding-right: max(16px, env(safe-area-inset-right));
+        padding-bottom: max(16px, env(safe-area-inset-bottom));
+    }
+    
+    /* Smooth scrolling for syllabary table */
+    .syllabary-table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin: 0 -16px;
+        padding: 0 16px;
+        scroll-padding: 0 16px;
+    }
+    
+    /* Adjust emoji display on control buttons */
+    .button-emoji {
+        margin-right: 0;
+        font-size: 20px;
+    }
+}
+
+/* Add iOS-style tab bar */
+.ios-tab-bar {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .ios-tab-bar {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(248, 248, 248, 0.92);
+        backdrop-filter: blur(10px);
+        border-top: 1px solid #d4d4d4;
+        height: 49px;
+        padding-bottom: env(safe-area-inset-bottom);
+        z-index: 1000;
+    }
+    
+    .tab-item {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: #8e8e93;
+        text-decoration: none;
+        font-size: 10px;
+        padding-top: 4px;
+    }
+    
+    .tab-item.active {
+        color: var(--royal-blue);
+    }
+    
+    .tab-icon {
+        font-size: 22px;
+        margin-bottom: 2px;
+    }
+    
+    /* Add padding to main container to account for tab bar */
+    .container {
+        padding-bottom: calc(49px + env(safe-area-inset-bottom));
+        margin-bottom: calc(49px + env(safe-area-inset-bottom));
+    }
+}
+    </style>
+    
+    <!-- Additional style to prevent touch callouts and zoom -->
+    <style>
+        /* Prevent touch callouts */
+        * {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        
+        /* Additional CSS to prevent zoom on input focus and other touch events */
+        html, body {
+            touch-action: manipulation;
+            overflow-x: hidden;
+            max-width: 100%;
+        }
+        
+        /* Adjust font size to prevent iOS from zooming on input */
+        input, textarea, select, button {
+            font-size: 16px; /* Minimum font size to prevent zoom on iOS */
+        }
+    </style>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+</head>
+<body>
+    <div class="container">
+        <div class="main-container">
+<div class="header">
+    <a href="index.html" class="nav-arrow" aria-label="Return to main menu">
+        ←
+    </a>
+    <h1>Ka Hakalama</h1>
+</div>
+            
+            <div class="content">
+                <!-- Output Display - Minimal & Focused -->
+                <div class="output-section">
+                    <div id="output-display"></div>
+                    <div class="controls">
+                        <button id="clear-btn" class="control-btn">
+                            <span class="button-emoji">🗑️</span>
+                            <span class="button-text">KĪLOI</span>
+                        </button>
+                        <button id="backspace-btn" class="control-btn">
+                            <span class="button-emoji">⬅️</span>
+                            <span class="button-text">HOLOI I HOPE</span>
+                        </button>
+                        <button id="space-btn" class="control-btn">
+                            <span class="button-emoji">⬜</span>
+                            <span class="button-text">KAʻAHUA</span>
+                        </button>
+                        <button id="search-btn" class="control-btn">
+                            <span class="button-emoji">🔍</span>
+                            <span class="button-text">HULI</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Syllabary Table - Grid-aligned with Consistent Spacing -->
+                <div class="syllabary-container">
+                    <table class="syllabary-table">
+                        <tbody>
+                            <!-- a row -->
+                            <tr>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn a-element" data-syllable="a">a</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="ha">ha</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="ka">ka</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="la">la</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="ma">ma</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="na">na</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="pa">pa</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="wa">wa</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn ʻa-element" data-syllable="ʻa">ʻa</button>
+                                </td>
+                            </tr>
+                            
+                            <!-- ā row -->
+                            <tr class="kahako-row">
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="ā">ā</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="hā">hā</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="kā">kā</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="lā">lā</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="mā">mā</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="nā">nā</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="pā">pā</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="wā">wā</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="ʻā">ʻā</button>
+                                </td>
+                            </tr>
+                            
+                            <!-- e row -->
+                            <tr>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="e">e</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="he">he</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="ke">ke</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="le">le</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="me">me</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="ne">ne</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="pe">pe</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="we">we</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="ʻe">ʻe</button>
+                                </td>
+                            </tr>
+                            
+                            <!-- ē row -->
+                            <tr class="kahako-row">
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="ē">ē</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="hē">hē</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="kē">kē</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="lē">lē</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="mē">mē</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="nē">nē</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="pē">pē</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="wē">wē</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="ʻē">ʻē</button>
+                                </td>
+                            </tr>
+                            
+                            <!-- i row -->
+                            <tr>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="i">i</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="hi">hi</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="ki">ki</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="li">li</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="mi">mi</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="ni">ni</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="pi">pi</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="wi">wi</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="ʻi">ʻi</button>
+                                </td>
+                            </tr>
+                            
+                            <!-- ī row -->
+                            <tr class="kahako-row">
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="ī">ī</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="hī">hī</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="kī">kī</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="lī">lī</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="mī">mī</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="nī">nī</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="pī">pī</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="wī">wī</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="ʻī">ʻī</button>
+                                </td>
+                            </tr>
+                            
+                            <!-- o row -->
+                            <tr>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="o">o</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="ho">ho</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="ko">ko</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="lo">lo</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="mo">mo</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="no">no</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="po">po</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="wo">wo</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="ʻo">ʻo</button>
+                                </td>
+                            </tr>
+                            
+                            <!-- ō row -->
+                            <tr class="kahako-row">
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="ō">ō</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="hō">hō</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="kō">kō</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="lō">lō</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="mō">mō</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="nō">nō</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="pō">pō</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="wō">wō</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="ʻō">ʻō</button>
+                                </td>
+                            </tr>
+                            
+                            <!-- u row -->
+                            <tr>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="u">u</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="hu">hu</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="ku">ku</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="lu">lu</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="mu">mu</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="nu">nu</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="pu">pu</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="wu">wu</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="ʻu">ʻu</button>
+                                </td>
+                            </tr>
+                            
+                            <!-- ū row -->
+                            <tr class="kahako-row">
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn ū-element" data-syllable="ū">ū</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="hū">hū</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="kū">kū</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="lū">lū</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="mū">mū</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="nū">nū</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="pū">pū</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="wū">wū</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn ʻū-element" data-syllable="ʻū">ʻū</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <script>
+    
+document.addEventListener('DOMContentLoaded', function() {
+    // Update existing buttons
+    updateButtonStructure('clear-btn', '🗑️', 'KĪLOI');
+    updateButtonStructure('backspace-btn', '⬅️', 'HOLOI I HOPE');
+    updateButtonStructure('space-btn', '␣', 'KAʻAHUA');
+    updateButtonStructure('search-btn', '🔍', 'HULI');
+    
+    // Function to update button structure with emoji and text spans
+    function updateButtonStructure(buttonId, emoji, text) {
+        const button = document.getElementById(buttonId);
+        if (button) {
+            button.innerHTML = `<span class="button-emoji">${emoji}</span> <span class="button-text">${text}</span>`;
+        }
+    }
+    
+    // Force horizontal layout on mobile
+    function ensureHorizontalLayout() {
+        const controlsDiv = document.querySelector('.controls');
+        
+        if (controlsDiv && window.innerWidth <= 600) {
+            // Override any inline styles
+            controlsDiv.style.display = 'flex';
+            controlsDiv.style.flexDirection = 'row';
+            controlsDiv.style.flexWrap = 'nowrap';
+            
+            // Force horizontal layout on each button
+            const buttons = controlsDiv.querySelectorAll('.control-btn');
+            buttons.forEach(btn => {
+                btn.style.flex = '1 1 25%';
+                btn.style.width = '25%';
+            });
+        }
+    }
+    
+    // Run initially and on resize
+    ensureHorizontalLayout();
+    window.addEventListener('resize', ensureHorizontalLayout);
+});
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const outputDisplay = document.getElementById('output-display');
+            const clearBtn = document.getElementById('clear-btn');
+            const backspaceBtn = document.getElementById('backspace-btn');
+            const spaceBtn = document.getElementById('space-btn');
+            const searchBtn = document.getElementById('search-btn');
+            const syllableButtons = document.querySelectorAll('.syllable-btn');
+            
+            // Function to add a syllable to the output display
+            function addSyllable(syllable) {
+                outputDisplay.textContent += syllable;
+            }
+            
+            // Function to search the word in the Hawaiian Dictionary
+            function searchWord() {
+                const word = outputDisplay.textContent.trim();
+                if (word) {
+                    const searchUrl = `https://hilo.hawaii.edu/wehe/?q=${encodeURIComponent(word)}`;
+                    window.open(searchUrl, '_blank');
+                }
+            }
+            
+            // Event listeners for the syllable buttons
+            syllableButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const syllable = this.getAttribute('data-syllable');
+                    addSyllable(syllable);
+                });
+            });
+            
+            // Event listener for the clear button
+            clearBtn.addEventListener('click', function() {
+                outputDisplay.textContent = '';
+            });
+            
+            // Event listener for the backspace button
+            backspaceBtn.addEventListener('click', function() {
+                outputDisplay.textContent = outputDisplay.textContent.slice(0, -1);
+            });
+            
+            // Event listener for the space button
+            spaceBtn.addEventListener('click', function() {
+                addSyllable(' ');
+            });
+            
+            // Add event listeners to example word buttons
+            const exampleButtons = document.querySelectorAll('.example-word');
+            exampleButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    outputDisplay.textContent = this.textContent;
+                });
+            });
+            
+            // Event listener for the search button
+            searchBtn.addEventListener('click', searchWord);
+            
+            // Event listener for keyboard shortcuts
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Backspace') {
+                    event.preventDefault();
+                    backspaceBtn.click();
+                } else if (event.key === ' ' || event.key === 'Spacebar') {
+                    event.preventDefault();
+                    spaceBtn.click();
+                } else if (event.key === 'Delete' || event.key === 'Clear') {
+                    event.preventDefault();
+                    clearBtn.click();
+                } else if (event.key === 'Enter') {
+                    event.preventDefault();
+                    searchBtn.click();
+                }
+            });
+        });
+    </script>
+    <script>
+// Updated function to create a fullscreen text display
+function createFullscreenDisplay(text) {
+    // Create overlay element
+    const overlay = document.createElement('div');
+    overlay.className = 'fullscreen-overlay';
+    
+    // Create text container
+    const textElement = document.createElement('div');
+    textElement.className = 'fullscreen-text';
+    textElement.textContent = text;
+    
+    // Create instruction text
+    const instruction = document.createElement('div');
+    instruction.className = 'instruction-text';
+    instruction.textContent = '';
+    
+    // Add elements to overlay
+    overlay.appendChild(textElement);
+    overlay.appendChild(instruction);
+    
+    // Add click event to close
+    overlay.addEventListener('click', () => {
+        document.body.removeChild(overlay);
+    });
+    
+    // Add escape key to close
+    const escHandler = function(e) {
+        if (e.key === 'Escape') {
+            if (document.body.contains(overlay)) {
+                document.body.removeChild(overlay);
+            }
+            document.removeEventListener('keydown', escHandler);
+        }
+    };
+    document.addEventListener('keydown', escHandler);
+    
+    // Add to body
+    document.body.appendChild(overlay);
+}
+
+// Modify the output display click behavior
+document.addEventListener('DOMContentLoaded', function() {
+    const outputDisplay = document.getElementById('output-display');
+    
+    // Add event listener for the output display
+    outputDisplay.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        const word = this.textContent.trim();
+        if (word) {
+            // Correct function name to show fullscreen text
+            createFullscreenDisplay(word);
+        }
+    });
+});
+
+// In the JavaScript section, update the output display initialization
+document.addEventListener('DOMContentLoaded', function() {
+    const outputDisplay = document.getElementById('output-display');
+    
+
+    // Prevent Enter key from creating new lines
+    outputDisplay.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            searchBtn.click();
+        }
+    });
+
+    // Update existing keyboard shortcuts to work with contentEditable
+    document.addEventListener('keydown', function(event) {
+        // Only handle shortcuts if output display is not focused
+        if (document.activeElement !== outputDisplay) {
+            if (event.key === 'Backspace') {
+                event.preventDefault();
+                backspaceBtn.click();
+            } else if (event.key === ' ' || event.key === 'Spacebar') {
+                event.preventDefault();
+                spaceBtn.click();
+            } else if (event.key === 'Delete' || event.key === 'Clear') {
+                event.preventDefault();
+                clearBtn.click();
+            } else if (event.key === 'Enter') {
+                event.preventDefault();
+                searchBtn.click();
+            }
+        }
+    });
+});
+// Add this function to your existing JavaScript file
+function enhanceMobileExperience() {
+    // Check if we're on a mobile device
+    const isMobile = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    
+    if (isMobile) {
+        // iOS-style momentum scrolling
+        document.querySelectorAll('.syllabary-table-container').forEach(container => {
+            container.style.webkitOverflowScrolling = 'touch';
+        });
+        
+        // Better touch response for buttons
+        document.querySelectorAll('.syllable-btn, .control-btn').forEach(btn => {
+            btn.addEventListener('touchstart', function() {
+                this.style.transform = 'scale(0.97)';
+                this.style.opacity = '0.9';
+            }, { passive: true });
+            
+            btn.addEventListener('touchend', function() {
+                this.style.transform = '';
+                this.style.opacity = '';
+                
+                // Add slight delay to reset for better visual feedback
+                setTimeout(() => {
+                    this.style.transform = '';
+                    this.style.opacity = '';
+                }, 100);
+            }, { passive: true });
+        });
+        
+        // Adjust card container height for smaller screens
+        const adjustCardContainerHeight = () => {
+            const cardContainer = document.getElementById('card-area');
+            if (cardContainer) {
+                // Set a more appropriate height for mobile
+                if (window.innerWidth <= 480) {
+                    cardContainer.style.minHeight = '200px';
+                } else if (window.innerWidth <= 768) {
+                    cardContainer.style.minHeight = '240px';
+                }
+            }
+        };
+        
+        // Make control buttons more responsive on mobile
+        const enhanceControlButtons = () => {
+            document.querySelectorAll('.control-btn').forEach(btn => {
+                // Remove any inline styling that might interfere
+                btn.style.display = 'flex';
+                btn.style.alignItems = 'center';
+                btn.style.justifyContent = 'center';
+                
+                // Hide text on very small screens
+                if (window.innerWidth < 360) {
+                    const textSpan = btn.querySelector('.button-text');
+                    if (textSpan) textSpan.style.display = 'none';
+                }
+            });
+        };
+        
+        // Adjust font size for syllable buttons based on available space
+        const adjustSyllableButtonSize = () => {
+            const tableContainer = document.querySelector('.syllabary-table-container');
+            if (tableContainer) {
+                const availableWidth = tableContainer.offsetWidth;
+                const buttonCount = 9; // Number of buttons per row
+                const buttonSize = Math.floor((availableWidth - 20) / buttonCount);
+                
+                if (buttonSize < 30) {
+                    document.querySelectorAll('.syllable-btn').forEach(btn => {
+                        btn.style.fontSize = '14px';
+                    });
+                } else if (buttonSize < 40) {
+                    document.querySelectorAll('.syllable-btn').forEach(btn => {
+                        btn.style.fontSize = '16px';
+                    });
+                }
+            }
+        };
+        
+        // Execute all enhancements
+        adjustCardContainerHeight();
+        enhanceControlButtons();
+        adjustSyllableButtonSize();
+        
+        // Also handle window resize events
+        window.addEventListener('resize', () => {
+            adjustCardContainerHeight();
+            enhanceControlButtons();
+            adjustSyllableButtonSize();
+        });
+        
+        // Ensure correct layout after orientation changes
+        window.addEventListener('orientationchange', () => {
+            setTimeout(() => {
+                adjustCardContainerHeight();
+                enhanceControlButtons();
+                adjustSyllableButtonSize();
+            }, 300);
+        });
+    }
+}
+
+// Call this function after your document is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    // Your existing initialization code
+    
+    // Add mobile enhancements
+    enhanceMobileExperience();
+});
+</script>
+</body>
+</html>

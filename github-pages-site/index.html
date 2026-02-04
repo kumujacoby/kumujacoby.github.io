@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kumu Jacoby - Projects</title>
+    <style>
+        :root {
+            --navy: #1E3057;
+            --royal-blue: #5480E8;
+            --white: #FFFFFF;
+            --light-gray: #F0F0F0;
+            --gold: #C79756;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            color: var(--navy);
+            background-color: var(--white);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        header {
+            background-color: var(--navy);
+            color: var(--white);
+            padding: 48px 24px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 48px;
+            font-weight: 900;
+            margin-bottom: 12px;
+        }
+        
+        .subtitle {
+            font-size: 20px;
+            opacity: 0.9;
+        }
+        
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 64px 24px;
+            flex: 1;
+            width: 100%;
+        }
+        
+        .intro {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 64px;
+            font-size: 18px;
+            line-height: 1.6;
+            color: var(--navy);
+        }
+        
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+            margin-top: 48px;
+        }
+        
+        .project-card {
+            background: var(--white);
+            border: 2px solid var(--navy);
+            border-radius: 12px;
+            padding: 32px;
+            text-decoration: none;
+            color: var(--navy);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(30, 48, 87, 0.15);
+            border-color: var(--royal-blue);
+        }
+        
+        .project-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--royal-blue);
+        }
+        
+        .project-description {
+            font-size: 16px;
+            line-height: 1.5;
+            flex: 1;
+        }
+        
+        .project-meta {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--light-gray);
+            font-size: 14px;
+            color: var(--gold);
+            font-weight: 500;
+        }
+        
+        .coming-soon {
+            opacity: 0.5;
+            cursor: default;
+        }
+        
+        .coming-soon:hover {
+            transform: none;
+            box-shadow: none;
+        }
+        
+        footer {
+            background-color: var(--navy);
+            color: var(--white);
+            text-align: center;
+            padding: 24px;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 36px;
+            }
+            
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Kumu Jacoby</h1>
+        <p class="subtitle">Engineering & Design · Kamehameha Schools</p>
+    </header>
+    
+    <main>
+        <div class="intro">
+            <p>Aloha! I'm Jacoby Young, an Engineering and Design Kumu at Kamehameha Schools. Here you'll find projects that blend Hawaiian culture, technology, and education.</p>
+        </div>
+        
+        <div class="projects-grid">
+            <!-- ʻApomanaʻo Project -->
+            <a href="apomanao/" class="project-card">
+                <h2 class="project-title">ʻApomanaʻo</h2>
+                <p class="project-description">
+                    A suite of digital tools designed to support Hawaiian language learning through culturally-grounded approaches. Features Ka Hakalama syllabary, Nā Helu Hawaiʻi numbers, and more.
+                </p>
+                <div class="project-meta">Hawaiian Language Learning Tools</div>
+            </a>
+            
+            <!-- Future Projects Placeholder -->
+            <div class="project-card coming-soon">
+                <h2 class="project-title">More Projects Coming Soon</h2>
+                <p class="project-description">
+                    Stay tuned for additional educational technology projects integrating Hawaiian cultural values with modern learning approaches.
+                </p>
+                <div class="project-meta">In Development</div>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <p>© 2025 Jacoby Young | <em>E ola mau ka ʻŌlelo Hawaiʻi</em></p>
+    </footer>
+</body>
+</html>

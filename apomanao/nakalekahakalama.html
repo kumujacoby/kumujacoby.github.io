@@ -1,0 +1,1971 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="HandheldFriendly" content="true">
+    <title>Nā Kāleka Hakalama</title>
+    <style>
+/* Base Variables - Using Kamehameha Colors */
+:root {
+    --navy: #1E3057;
+    --royal-blue: #5480E8;
+    --white: #FFFFFF;
+    --light-gray: #F0F0F0;
+    --dark-teal: #3A5350;
+    --teal: #40816E;
+    --brown: #906841;
+    --gold: #C79756;
+    --rust: #A64331;
+    --terra-cotta: #C64F3A;
+    --burgundy: #5C1A2D;
+    --rose: #833043;
+    
+    /* Swiss Design Grid Units */
+    --grid-base: 8px;
+    --grid-2x: 16px;
+    --grid-3x: 24px;
+    --grid-4x: 32px;
+    --grid-5x: 40px;
+    --grid-6x: 48px;
+    --grid-8x: 64px;
+    --grid-10x: 80px;
+    --grid-12x: 96px;
+    
+    /* Typography Scale */
+    --text-xs: 14px;
+    --text-sm: 16px;
+    --text-md: 20px;
+    --text-lg: 24px;
+    --text-xl: 32px;
+    --text-2xl: 42px;
+    --text-3xl: 56px;
+    --text-4xl: 72px;
+    
+    /* Line Heights */
+    --leading-tight: 1.1;
+    --leading-normal: 1.3;
+    --leading-relaxed: 1.5;
+}
+
+/* Reset & Base Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    touch-action: manipulation;
+}
+
+html, body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--navy);
+    background-color: var(--navy);
+    overflow-x: hidden;
+    height: 100%;
+    width: 100%;
+}
+
+/* Layout Container with 8px Grid */
+.container {
+    max-width: 1024px;
+    margin: var(--grid-3x) auto;
+    padding: 0 var(--grid-2x);
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - var(--grid-6x));
+}
+
+.main-container {
+    width: 100%;
+    background-color: var(--white);
+    border-radius: var(--grid-3x);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* Header */
+.header {
+    background-color: var(--royal-blue);
+    color: var(--white);
+    padding: 0;
+    text-align: center;
+    font-weight: bold;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    height: 54px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.header h1 {
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 36px;
+    letter-spacing: -0.02em;
+    margin: 0;
+    line-height: 1.1;
+}
+
+.nav-arrow {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    color: var(--white);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    transition: background-color 0.2s;
+    border-right: 1px solid white;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.nav-arrow:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Content area */
+.content {
+    padding: var(--grid-4x);
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Card Container */
+.card-container {
+    width: 100%;
+    min-height: 270px; 
+    padding-bottom: var(--grid-2x);
+    background-color: var(--light-gray);
+    border: 2px solid #ddd;
+    border-radius: var(--grid-base);
+    position: relative;
+    overflow: hidden;
+    margin-bottom: var(--grid-3x);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s;
+}
+
+/* Grid cells for visual reference */
+.grid-cell {
+    position: absolute;
+    border: 1px dashed rgba(30, 48, 87, 0.25);
+    width: 90px;
+    height: 110px;
+    border-radius: 6px;
+    pointer-events: none;
+}
+
+/* Cards */
+.card {
+    position: absolute;
+    width: 90px;
+    height: 110px;
+    cursor: move;
+    transform-style: preserve-3d;
+    transition: transform 0.5s;
+    z-index: 1;
+}
+
+.card.dragging {
+    box-shadow: 0 12px 20px rgba(0,0,0,0.2);
+    cursor: grabbing;
+    transition: none !important;
+    will-change: left, top;
+    z-index: 10;
+}
+
+.card.appearing {
+    animation: cardAppear 0.3s forwards;
+}
+
+@keyframes cardAppear {
+    from { transform: scale(0.5); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.card-front, .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    border: 2px solid black;
+    pointer-events: none;
+}
+
+.card-front {
+    background: white;
+    transform: rotateY(180deg);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.card-back {
+    background: var(--navy);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.card.flipped {
+    transform: rotateY(180deg);
+}
+
+/* Control Buttons */
+.controls {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--grid-2x);
+    margin-bottom: var(--grid-3x);
+}
+
+.control-btn {
+    padding: var(--grid-2x);
+    border: none;
+    border-radius: var(--grid-base);
+    cursor: pointer;
+    font-size: var(--text-sm);
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease, transform 0.2s;
+}
+
+.control-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.control-btn:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Systematic color application */
+#reset-btn { background-color: var(--rose); color: var(--white); }
+#reset-btn:hover { background-color: var(--burgundy); }
+
+#flip-btn { background-color: var(--terra-cotta); color: var(--white); }
+#flip-btn:hover { background-color: var(--rust); }
+
+#shuffle-btn { background-color: var(--gold); color: var(--white); }
+#shuffle-btn:hover { background-color: var(--brown); }
+
+#add-btn { background-color: var(--teal); color: var(--white); }
+#add-btn:hover { background-color: var(--dark-teal); }
+
+.button-emoji {
+    font-size: var(--text-md);
+    margin-right: var(--grid-base);
+}
+
+/* Syllabary Table */
+.syllabary-table-container {
+    overflow-x: auto;
+    margin-top: var(--grid-2x);
+    border: 1px solid var(--light-gray);
+    border-radius: var(--grid-base);
+}
+
+.syllabary-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: var(--grid-base);
+    table-layout: fixed;
+}
+
+.syllable-cell {
+    padding: 0;
+    position: relative;
+}
+
+/* Updated syllable button styling to match Ka Hakalama */
+.syllable-btn {
+    width: 100%;
+    height: 100%;
+    padding: var(--grid-base) 0;
+    background-color: var(--royal-blue);
+    color: var(--white);
+    border: none;
+    cursor: pointer;
+    font-family: 'Futura', sans-serif;
+    font-size: var(--text-xl);
+    transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.syllable-btn:hover {
+    transform: scale(1.05);
+    background-color: var(--navy);
+    color: var(--white);
+    z-index: 2;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.syllable-btn:active {
+    transform: scale(0.95);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    transition: all 0.1s;
+}
+
+.syllable-cell.disabled .syllable-btn {
+    cursor: not-allowed;
+    color: #aaaaaa;
+    opacity: 0.7;
+    background-color: #dddddd !important;
+}
+
+.a-element {
+     border-top-left-radius: var(--grid-base);
+}
+
+.ʻa-element {
+     border-top-right-radius: var(--grid-base);
+}  
+
+.ū-element {
+     border-bottom-left-radius: var(--grid-base);
+}     
+
+.ʻū-element {
+     border-bottom-right-radius: var(--grid-base);
+}
+
+/* Responsive adaptations */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 var(--grid-base);
+        margin: var(--grid-base) auto;
+    }
+    
+    .content {
+        padding: var(--grid-2x);
+    }
+    
+    .header h1 {
+        font-size: var(--text-xl);
+    }
+    
+    .card {
+        width: 80px;
+        height: 90px;
+        font-size: var(--text-lg);
+    }
+    
+    .grid-cell {
+        width: 80px;
+        height: 90px;
+    }
+    
+    .controls {
+        gap: var(--grid-base);
+    }
+    
+    .control-btn {
+        padding: var(--grid-base);
+    }
+    
+    .button-text {
+        display: none; /* Hide text on mobile */
+    }
+    
+    .button-emoji {
+        margin-right: 0; /* Adjust when text is hidden */
+        font-size: var(--text-lg);
+    }
+    
+    .syllable-btn {
+        font-size: var(--text-lg);
+        padding: var(--grid-base) 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        margin: var(--grid-base) var(--grid-base);
+    }
+    
+    .main-container {
+        border-radius: var(--grid-2x);
+    }
+    
+    .syllable-btn {
+        font-size: var(--text-md);
+        padding: var(--grid-base) 0;
+    }
+    
+    .card-container {
+        height: 200px;
+    }
+}
+
+/* iOS-specific optimizations */
+
+/* Enhanced mobile media queries - integrate with existing mobile styles */
+@media (max-width: 768px) {
+    /* Improve button sizing for better touch targets */
+    .syllable-btn {
+        font-size: 18px;
+        padding: 12px 0;
+        min-height: 44px; /* Apple's recommended minimum touch target size */
+    }
+    
+    /* Adjust syllabary table for better mobile display */
+    .syllabary-table {
+        border-spacing: 4px;
+    }
+    
+    /* Better iOS-style controls layout */
+    .controls {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 8px;
+        margin-bottom: 16px;
+    }
+    
+    .control-btn {
+        flex: 1;
+        min-width: 44px;
+        height: 44px;
+        padding: 0;
+        border-radius: 8px;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    /* Enhanced button styling */
+    .control-btn, .syllable-btn {
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        touch-action: manipulation;
+    }
+    
+    /* Improved touch feedback */
+    .control-btn:active, .syllable-btn:active {
+        opacity: 0.7;
+        transform: scale(0.97);
+        transition: all 0.1s;
+    }
+    
+    /* Content padding for iOS safe areas */
+    .content {
+        padding-left: max(16px, env(safe-area-inset-left));
+        padding-right: max(16px, env(safe-area-inset-right));
+        padding-bottom: max(16px, env(safe-area-inset-bottom));
+    }
+    
+    /* Smooth scrolling for syllabary table */
+    .syllabary-table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin: 0 -16px;
+        padding: 0 16px;
+        scroll-padding: 0 16px;
+    }
+    
+    /* Adjust emoji display on control buttons */
+    .button-emoji {
+        margin-right: 0;
+        font-size: 20px;
+    }
+}
+
+/* Add iOS-style tab bar */
+.ios-tab-bar {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .ios-tab-bar {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(248, 248, 248, 0.92);
+        backdrop-filter: blur(10px);
+        border-top: 1px solid #d4d4d4;
+        height: 49px;
+        padding-bottom: env(safe-area-inset-bottom);
+        z-index: 1000;
+    }
+    
+    .tab-item {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: #8e8e93;
+        text-decoration: none;
+        font-size: 10px;
+        padding-top: 4px;
+    }
+    
+    .tab-item.active {
+        color: var(--royal-blue);
+    }
+    
+    .tab-icon {
+        font-size: 22px;
+        margin-bottom: 2px;
+    }
+    
+    /* Add padding to main container to account for tab bar */
+    .container {
+        padding-bottom: calc(49px + env(safe-area-inset-bottom));
+        margin-bottom: calc(49px + env(safe-area-inset-bottom));
+    }
+
+    @media (max-width: 768px) {
+    /* Fix oversized header */
+    .header {
+        height: 44px; /* Standard iOS header height */
+        padding: 0;
+    }
+    
+    .header h1 {
+        font-size: 18px; /* Smaller font size for header */
+        letter-spacing: 0;
+    }
+    
+    /* Adjust back button to match iOS style */
+    .nav-arrow {
+        padding: 0 15px;
+        font-size: 20px;
+    }
+    
+    /* Ensure proper content positioning */
+    .content {
+        padding-top: 16px; /* Reduce top padding */
+    }
+    
+    /* Make card area more compact */
+    .card-container {
+        min-height: 220px; /* Slightly reduced height */
+        margin-bottom: 16px; /* Smaller margin */
+    }
+    
+    /* Adjust control buttons to be more compact */
+    .controls {
+        margin-bottom: 16px;
+    }
+}
+
+/* Extra adjustments for very small screens */
+@media (max-width: 375px) {
+    .header h1 {
+        font-size: 16px; /* Even smaller for iPhone mini sizes */
+    }
+    
+    .nav-arrow {
+        padding: 0 12px;
+    }
+}
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="main-container">
+            <div class="header">
+                <a href="index.html" class="nav-arrow" aria-label="Return to main menu">
+                    ←
+                </a>
+                <h1>Nā Kāleka Hakalama</h1>
+            </div>
+            
+            <div class="content">
+                <!-- Card container for draggable cards -->
+                <div class="card-container" id="card-area">
+                    <!-- Grid cells and cards will be added here dynamically -->
+                </div>
+                
+                <!-- Controls -->
+                <div class="controls">
+                    <button id="reset-btn" class="control-btn">
+                        <span class="button-emoji">🗑️</span>
+                        <span class="button-text">KĪLOI</span>
+                    </button>
+                    <button id="flip-btn" class="control-btn">
+                        <span class="button-emoji">↩️</span>
+                        <span class="button-text">HULI</span>
+                    </button>
+                    <button id="shuffle-btn" class="control-btn">
+                        <span class="button-emoji">🔄</span>
+                        <span class="button-text">HUI PĀHŪHŪ</span>
+                    </button>
+                    <button id="add-btn" class="control-btn">
+                        <span class="button-emoji">➕</span>
+                        <span class="button-text">HOʻOHUI</span>
+                    </button>
+                </div>
+                
+                <!-- Syllabary table -->
+                <div class="syllabary-table-container">
+                    <table class="syllabary-table">
+                        <tbody>
+                            <!-- a row -->
+                            <tr>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn a-element" data-syllable="a">a</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="ha">ha</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="ka">ka</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="la">la</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="ma">ma</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="na">na</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="pa">pa</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="wa">wa</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn ʻa-element" data-syllable="ʻa">ʻa</button>
+                                </td>
+                            </tr>
+                            
+                            <!-- ā row -->
+                            <tr class="kahako-row">
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="ā">ā</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="hā">hā</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="kā">kā</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="lā">lā</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="mā">mā</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="nā">nā</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="pā">pā</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="wā">wā</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="ʻā">ʻā</button>
+                                </td>
+                            </tr>
+                            
+                            <!-- e row -->
+                            <tr>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="e">e</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="he">he</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="ke">ke</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="le">le</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="me">me</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="ne">ne</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="pe">pe</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="we">we</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="ʻe">ʻe</button>
+                                </td>
+                            </tr>
+                            
+                            <!-- ē row -->
+                            <tr class="kahako-row">
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="ē">ē</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="hē">hē</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="kē">kē</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="lē">lē</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="mē">mē</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="nē">nē</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="pē">pē</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="wē">wē</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="ʻē">ʻē</button>
+                                </td>
+                            </tr>
+                            
+                            <!-- i row -->
+                            <tr>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="i">i</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="hi">hi</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="ki">ki</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="li">li</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="mi">mi</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="ni">ni</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="pi">pi</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="wi">wi</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="ʻi">ʻi</button>
+                                </td>
+                            </tr>
+                            
+                            <!-- ī row -->
+                            <tr class="kahako-row">
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="ī">ī</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="hī">hī</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="kī">kī</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="lī">lī</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="mī">mī</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="nī">nī</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="pī">pī</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="wī">wī</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="ʻī">ʻī</button>
+                                </td>
+                            </tr>
+                            
+                            <!-- o row -->
+                            <tr>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="o">o</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="ho">ho</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="ko">ko</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="lo">lo</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="mo">mo</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="no">no</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="po">po</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="wo">wo</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="ʻo">ʻo</button>
+                                </td>
+                            </tr>
+                            
+                            <!-- ō row -->
+                            <tr class="kahako-row">
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="ō">ō</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="hō">hō</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="kō">kō</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="lō">lō</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="mō">mō</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="nō">nō</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="pō">pō</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="wō">wō</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="ʻō">ʻō</button>
+                                </td>
+                            </tr>
+                            
+                            <!-- u row -->
+                            <tr>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="u">u</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="hu">hu</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="ku">ku</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="lu">lu</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="mu">mu</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="nu">nu</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="pu">pu</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="wu">wu</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="ʻu">ʻu</button>
+                                </td>
+                            </tr>
+                            
+                            <!-- ū row -->
+                            <tr class="kahako-row">
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn ū-element" data-syllable="ū">ū</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="hū">hū</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="kū">kū</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="lū">lū</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="mū">mū</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="nū">nū</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="pū">pū</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn" data-syllable="wū">wū</button>
+                                </td>
+                                <td class="syllable-cell">
+                                    <button class="syllable-btn ʻū-element" data-syllable="ʻū">ʻū</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+ document.addEventListener('DOMContentLoaded', function() {
+    // Cache DOM elements
+    const cardArea = document.getElementById('card-area');
+    const resetBtn = document.getElementById('reset-btn');
+    const flipBtn = document.getElementById('flip-btn');
+    const shuffleBtn = document.getElementById('shuffle-btn');
+    const addBtn = document.getElementById('add-btn');
+    const syllableButtons = document.querySelectorAll('.syllable-btn');
+    
+    // Configuration
+    const cardWidth = window.innerWidth <= 768 ? 80 : 90;
+    const cardHeight = window.innerWidth <= 768 ? 90 : 110;
+    const cardMargin = 10;
+    
+    // State
+    let cards = [];
+    let selectedCard = null;
+    let offsetX = 0, offsetY = 0;
+    let isDragging = false;
+    let dragThreshold = 5; // Pixels to move before considering it a drag
+    let startX = 0, startY = 0;
+    let gridCells = []; // Array to store grid cell positions
+    
+    // Create a structured grid with proper spacing
+    function createGrid() {
+        // Safety check
+        if (!cardArea) return;
+        
+        // Clear any existing grid cells
+        const existingCells = cardArea.querySelectorAll('.grid-cell');
+        existingCells.forEach(cell => cell.remove());
+        
+        // Get container dimensions
+        const areaWidth = cardArea.clientWidth;
+        const areaHeight = cardArea.clientHeight;
+        
+        // Calculate optimized spacing for symmetry
+        const horizontalSpacing = 15;
+        const verticalSpacing = 15;
+        
+        // Calculate number of columns and rows with even spacing
+        const cols = Math.floor((areaWidth - horizontalSpacing) / (cardWidth + horizontalSpacing));
+        const rows = Math.floor((areaHeight - verticalSpacing) / (cardHeight + verticalSpacing));
+        
+        // Calculate leftover space to center the grid
+        const totalGridWidth = cols * (cardWidth + horizontalSpacing) - horizontalSpacing;
+        const leftMargin = Math.max(horizontalSpacing, (areaWidth - totalGridWidth) / 2);
+        
+        gridCells = []; // Reset grid cells array
+        
+        // Create grid cells
+        for (let row = 0; row < rows; row++) {
+            for (let col = 0; col < cols; col++) {
+                // Calculate position with even spacing
+                const x = leftMargin + col * (cardWidth + horizontalSpacing);
+                const y = verticalSpacing + row * (cardHeight + verticalSpacing);
+                
+                // Create visual grid cell
+                const cell = document.createElement('div');
+                cell.className = 'grid-cell';
+                cell.style.left = x + 'px';
+                cell.style.top = y + 'px';
+                cardArea.appendChild(cell);
+                
+                // Store grid cell position for snapping
+                gridCells.push({ x, y });
+            }
+        }
+    }
+    
+    // Find the nearest grid cell to a position
+    function findNearestGridCell(x, y) {
+        let minDistance = Infinity;
+        let nearestCell = null;
+        
+        gridCells.forEach(cell => {
+            const dx = cell.x - x;
+            const dy = cell.y - y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            
+            if (distance < minDistance) {
+                minDistance = distance;
+                nearestCell = cell;
+            }
+        });
+        
+        return nearestCell;
+    }
+    
+    // Create a card at the specified position
+    function createCard(x, y) {
+        // Safety check
+        if (!cardArea) return null;
+        
+        const syllable = getRandomSyllable();
+        if (!syllable) return null; // No active syllables
+        
+        const card = document.createElement('div');
+        card.className = 'card appearing';
+        card.style.left = x + 'px';
+        card.style.top = y + 'px';
+        
+        // Create front face (with syllable)
+        const frontFace = document.createElement('div');
+        frontFace.className = 'card-front';
+        frontFace.textContent = syllable;
+        
+        // Create back face (blue card)
+        const backFace = document.createElement('div');
+        backFace.className = 'card-back';
+        
+        // Add both faces to the card
+        card.appendChild(frontFace);
+        card.appendChild(backFace);
+        
+        // Store the syllable data in the card element
+        card.dataset.syllable = syllable;
+        card.dataset.flipped = 'false';
+        
+        // Add event listeners for mouse and touch
+        card.addEventListener('mousedown', handleCardMouseDown);
+        card.addEventListener('touchstart', handleCardTouchStart, { passive: false });
+        
+        // Double click handling (disabled fullscreen)
+        card.addEventListener('dblclick', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            // Fullscreen feature removed as requested
+        });
+        
+        // Add to DOM and cards array
+        cardArea.appendChild(card);
+        cards.push(card);
+        
+        // Remove the appearing class after animation completes
+        setTimeout(() => {
+            if (card && card.classList) {
+                card.classList.remove('appearing');
+            }
+        }, 300);
+        
+        return card;
+    }
+    
+    // Get a random syllable from the enabled buttons
+    function getRandomSyllable() {
+        // Filter out disabled syllables
+        const activeButtons = [];
+        syllableButtons.forEach(btn => {
+            const parentCell = btn.closest('.syllable-cell');
+            if (!parentCell || !parentCell.classList.contains('disabled')) {
+                activeButtons.push(btn.getAttribute('data-syllable'));
+            }
+        });
+        
+        if (activeButtons.length === 0) {
+            return null; // No active syllables
+        }
+        
+        const randomIndex = Math.floor(Math.random() * activeButtons.length);
+        return activeButtons[randomIndex];
+    }
+    
+    // Mouse down handler for cards
+    function handleCardMouseDown(e) {
+        e.preventDefault();
+        selectedCard = this;
+        
+        // Safety check
+        if (!selectedCard) return;
+        
+        // Bring card to front
+        selectedCard.style.zIndex = '10';
+        
+        // Calculate offset for precise dragging
+        const rect = selectedCard.getBoundingClientRect();
+        startX = e.clientX;
+        startY = e.clientY;
+        offsetX = startX - rect.left;
+        offsetY = startY - rect.top;
+        
+        // Reset drag state
+        isDragging = false;
+        
+        // Add document-level event listeners
+        document.addEventListener('mousemove', handleMouseMove);
+        document.addEventListener('mouseup', handleMouseUp);
+    }
+    
+    // Touch start handler for cards
+    function handleCardTouchStart(e) {
+        e.preventDefault();
+        selectedCard = this;
+        
+        // Safety check
+        if (!selectedCard) return;
+        
+        // Bring card to front
+        selectedCard.style.zIndex = '10';
+        
+        // Calculate offset for precise dragging
+        const rect = selectedCard.getBoundingClientRect();
+        const touch = e.touches[0];
+        startX = touch.clientX;
+        startY = touch.clientY;
+        offsetX = startX - rect.left;
+        offsetY = startY - rect.top;
+        
+        // Reset drag state
+        isDragging = false;
+        
+        // Add document-level event listeners
+        document.addEventListener('touchmove', handleTouchMove, { passive: false });
+        document.addEventListener('touchend', handleTouchEnd);
+    }
+    
+    // Mouse move handler
+    function handleMouseMove(e) {
+        // Safety check
+        if (!selectedCard || !cardArea) return;
+        
+        // Check if we've moved enough to consider it a drag
+        const dx = Math.abs(e.clientX - startX);
+        const dy = Math.abs(e.clientY - startY);
+        
+        if (dx > dragThreshold || dy > dragThreshold) {
+            isDragging = true;
+            if (selectedCard.classList && !selectedCard.classList.contains('dragging')) {
+                selectedCard.classList.add('dragging');
+            }
+        }
+        
+        // Only move the card if we're dragging
+        if (isDragging) {
+            const cardAreaRect = cardArea.getBoundingClientRect();
+            let left = e.clientX - cardAreaRect.left - offsetX;
+            let top = e.clientY - cardAreaRect.top - offsetY;
+            
+            // Keep card within bounds
+            left = Math.max(0, Math.min(left, cardAreaRect.width - cardWidth));
+            top = Math.max(0, Math.min(top, cardAreaRect.height - cardHeight));
+            
+            // Apply the new position
+            selectedCard.style.left = left + 'px';
+            selectedCard.style.top = top + 'px';
+        }
+    }
+    
+    // Touch move handler
+    function handleTouchMove(e) {
+        e.preventDefault();
+        
+        // Safety check
+        if (!selectedCard || !cardArea || !e.touches || e.touches.length === 0) return;
+        
+        const touch = e.touches[0];
+        
+        // Check if we've moved enough to consider it a drag
+        const dx = Math.abs(touch.clientX - startX);
+        const dy = Math.abs(touch.clientY - startY);
+        
+        if (dx > dragThreshold || dy > dragThreshold) {
+            isDragging = true;
+            if (selectedCard.classList && !selectedCard.classList.contains('dragging')) {
+                selectedCard.classList.add('dragging');
+            }
+        }
+        
+        // Only move the card if we're dragging
+        if (isDragging && selectedCard && cardArea) {
+            const cardAreaRect = cardArea.getBoundingClientRect();
+            let left = touch.clientX - cardAreaRect.left - offsetX;
+            let top = touch.clientY - cardAreaRect.top - offsetY;
+            
+            // Keep card within bounds
+            left = Math.max(0, Math.min(left, cardAreaRect.width - cardWidth));
+            top = Math.max(0, Math.min(top, cardAreaRect.height - cardHeight));
+            
+            // Apply the new position
+            if (selectedCard.style) {
+                selectedCard.style.left = left + 'px';
+                selectedCard.style.top = top + 'px';
+            }
+        }
+    }
+    
+    // Mouse up handler
+    function handleMouseUp(e) {
+        // Safety check
+        if (!selectedCard) {
+            document.removeEventListener('mousemove', handleMouseMove);
+            document.removeEventListener('mouseup', handleMouseUp);
+            return;
+        }
+        
+        // Remove dragging class
+        if (selectedCard.classList) {
+            selectedCard.classList.remove('dragging');
+        }
+        
+        if (isDragging) {
+            // Was dragging - snap to grid
+            snapCardToGrid(selectedCard);
+        } else {
+            // Was a click, not a drag - flip the card
+            flipCard(selectedCard);
+        }
+        
+        // Reset card z-index after a short delay (allows animation to complete)
+        setTimeout(() => {
+            if (selectedCard && selectedCard.style) {
+                selectedCard.style.zIndex = '1';
+            }
+        }, 100);
+        
+        // Clear state
+        isDragging = false;
+        selectedCard = null;
+        
+        // Remove document-level event listeners
+        document.removeEventListener('mousemove', handleMouseMove);
+        document.removeEventListener('mouseup', handleMouseUp);
+    }
+    
+    // Touch end handler
+    function handleTouchEnd(e) {
+        // Safety check
+        if (!selectedCard) {
+            document.removeEventListener('touchmove', handleTouchMove);
+            document.removeEventListener('touchend', handleTouchEnd);
+            return;
+        }
+        
+        // Remove dragging class
+        if (selectedCard.classList) {
+            selectedCard.classList.remove('dragging');
+        }
+        
+        if (isDragging) {
+            // Was dragging - snap to grid
+            snapCardToGrid(selectedCard);
+        } else {
+            // Was a tap, not a drag - flip the card
+            flipCard(selectedCard);
+        }
+        
+        // Reset card z-index after a short delay
+        setTimeout(() => {
+            if (selectedCard && selectedCard.style) {
+                selectedCard.style.zIndex = '1';
+            }
+        }, 100);
+        
+        // Clear state
+        isDragging = false;
+        selectedCard = null;
+        
+        // Remove document-level event listeners
+        document.removeEventListener('touchmove', handleTouchMove);
+        document.removeEventListener('touchend', handleTouchEnd);
+    }
+    
+    // Snap a card to the nearest grid cell
+    function snapCardToGrid(card) {
+        // Safety check
+        if (!card || !card.style) return;
+        
+        // Get current position
+        const currentLeft = parseInt(card.style.left) || 0;
+        const currentTop = parseInt(card.style.top) || 0;
+        
+        // Find nearest grid cell
+        const nearestCell = findNearestGridCell(currentLeft, currentTop);
+        
+        // If no cells or card area not defined, return
+        if (!nearestCell || !cardArea) return;
+        
+        // Apply snapped position with smooth transition
+        card.style.transition = 'left 0.2s, top 0.2s';
+        card.style.left = nearestCell.x + 'px';
+        card.style.top = nearestCell.y + 'px';
+        
+        // Remove transition after animation completes
+        setTimeout(() => {
+            if (card && card.style) {
+                card.style.transition = '';
+            }
+        }, 200);
+    }
+    
+    // Improved function to check if a grid cell is already occupied
+    // This accounts for both flipped and unflipped cards
+    function isGridCellOccupied(cellX, cellY) {
+        // Check if any card is already at this position
+        return cards.some(card => {
+            const cardLeft = parseInt(card.style.left) || 0;
+            const cardTop = parseInt(card.style.top) || 0;
+            
+            // Consider it occupied if a card is within 5 pixels of this cell
+            return Math.abs(cardLeft - cellX) < 5 && Math.abs(cardTop - cellY) < 5;
+        });
+    }
+    
+    // Add this function to find an empty grid cell
+    function findEmptyGridCell() {
+        // Safety check
+        if (!gridCells || gridCells.length === 0) return null;
+        
+        // First try: look for any empty cell in sequential order
+        for (const cell of gridCells) {
+            if (!isGridCellOccupied(cell.x, cell.y)) {
+                return cell;
+            }
+        }
+        
+        // If all cells are occupied, return null
+        return null;
+    }
+    
+    // Improved flipCard function that updates z-index appropriately
+    function flipCard(card) {
+        // Safety check
+        if (!card || !card.classList) return;
+        
+        // Determine current state
+        const isCurrentlyFlipped = card.classList.contains('flipped');
+        
+        if (!isCurrentlyFlipped) {
+            // Bring card to front before flipping to front
+            // Find highest z-index and go one higher
+            let maxZIndex = 1;
+            cards.forEach(c => {
+                const zIndex = parseInt(c.style.zIndex || '1');
+                maxZIndex = Math.max(maxZIndex, zIndex);
+            });
+            
+            // Set this card's z-index higher than all others
+            card.style.zIndex = (maxZIndex + 10).toString();
+            
+            // Flip to front
+            card.classList.add('flipped');
+            card.dataset.flipped = 'true';
+        } else {
+            // Flip to back
+            card.classList.remove('flipped');
+            card.dataset.flipped = 'false';
+            
+            // When flipping back, reset z-index after a short delay
+            setTimeout(() => {
+                if (card && card.style) {
+                    card.style.zIndex = '1';
+                }
+            }, 500);
+        }
+        
+        // Check for overlaps after flip animation completes
+        setTimeout(checkAndFixOverlaps, 600);
+    }
+    
+    // Replace the existing addNewCard function with this improved version
+    function addNewCard() {
+        // Safety check
+        if (!cardArea) return null;
+        
+        // Get a random syllable
+        const syllable = getRandomSyllable();
+        if (!syllable) return null; // No active syllables
+        
+        // First try to find an empty grid cell
+        let emptyCell = findEmptyGridCell();
+        
+        // If all cells are occupied, we might need to add more grid rows
+        if (!emptyCell && gridCells.length > 0) {
+            // Get the current grid dimensions
+            const areaWidth = cardArea.clientWidth;
+            const lastCell = gridCells[gridCells.length - 1];
+            
+            // Estimate how many cells per row based on the last cell's position
+            const cellsPerRow = Math.floor(areaWidth / (cardWidth + 15));
+            
+            if (cellsPerRow > 0) {
+                // Add a new row of cells below the last row
+                const newRowY = lastCell.y + cardHeight + 15;
+                
+                // Recalculate leftMargin to center the grid
+                const totalGridWidth = cellsPerRow * (cardWidth + 15) - 15;
+                const leftMargin = Math.max(15, (areaWidth - totalGridWidth) / 2);
+                
+                // Create new cells
+                for (let col = 0; col < cellsPerRow; col++) {
+                    const x = leftMargin + col * (cardWidth + 15);
+                    const y = newRowY;
+                    
+                    // Create visual grid cell
+                    const cell = document.createElement('div');
+                    cell.className = 'grid-cell';
+                    cell.style.left = x + 'px';
+                    cell.style.top = y + 'px';
+                    cardArea.appendChild(cell);
+                    
+                    // Add to grid cells array
+                    gridCells.push({ x, y });
+                }
+                
+                // Increase the container height to accommodate the new row
+                const newHeight = newRowY + cardHeight + 15;
+                cardArea.style.height = newHeight + 'px';
+                
+                // Use the first cell in the new row
+                emptyCell = { x: leftMargin, y: newRowY };
+            }
+        }
+        
+        // Create the card - either at a grid cell or at a random position if no grid
+        const card = document.createElement('div');
+        card.className = 'card appearing';
+        
+        if (emptyCell) {
+            // Place at empty grid cell
+            card.style.left = emptyCell.x + 'px';
+            card.style.top = emptyCell.y + 'px';
+        } else {
+            // If no grid or all cells occupied, use random position
+            const areaWidth = cardArea.offsetWidth || 300;
+            const areaHeight = cardArea.offsetHeight || 200;
+            card.style.left = Math.floor(Math.random() * (areaWidth - cardWidth)) + 'px';
+            card.style.top = Math.floor(Math.random() * (areaHeight - cardHeight)) + 'px';
+        }
+        
+        // Create front face (with syllable)
+        const frontFace = document.createElement('div');
+        frontFace.className = 'card-front';
+        frontFace.textContent = syllable;
+        
+        // Create back face (blue card)
+        const backFace = document.createElement('div');
+        backFace.className = 'card-back';
+        
+        // Add both faces to the card
+        card.appendChild(frontFace);
+        card.appendChild(backFace);
+        
+        // Store the syllable data in the card element
+        card.dataset.syllable = syllable;
+        card.dataset.flipped = 'false';
+        
+        // Add event listeners for mouse and touch
+        card.addEventListener('mousedown', handleCardMouseDown);
+        card.addEventListener('touchstart', handleCardTouchStart, { passive: false });
+        
+        // Add to DOM and cards array
+        cardArea.appendChild(card);
+        cards.push(card);
+        
+        // Remove the appearing class after animation completes
+        setTimeout(() => {
+            if (card && card.classList) {
+                card.classList.remove('appearing');
+            }
+        }, 300);
+        
+        return card;
+    }
+    
+    // Reset by removing all cards
+    function resetBoard() {
+        // Safety check
+        if (!cardArea) return;
+        
+        while (cards.length > 0) {
+            const card = cards.pop();
+            if (card && cardArea.contains(card)) {
+                cardArea.removeChild(card);
+            }
+        }
+        
+        // Reset container height to initial value
+        cardArea.style.height = '270px';
+        
+        // Recreate the grid
+        createGrid();
+    }
+    
+    // Improved shuffleCards function with better overlap prevention
+    function shuffleCards() {
+        // Safety check
+        if (!cardArea || !cards.length) return;
+        
+        // 1. Get top z-index used by any card to ensure we maintain proper stacking
+        let maxZIndex = 1;
+        cards.forEach(card => {
+            const zIndex = parseInt(card.style.zIndex || '1');
+            maxZIndex = Math.max(maxZIndex, zIndex);
+        });
+        
+        // 2. Collect all available grid cells
+        const availableCells = [...gridCells];
+        
+        // 3. Ensure we have enough grid cells for all cards
+        while (availableCells.length < cards.length) {
+            // Need to add more grid rows
+            const areaWidth = cardArea.clientWidth;
+            const lastRowY = Math.max(...availableCells.map(cell => cell.y));
+            const newRowY = lastRowY + cardHeight + 15;
+            
+            // Estimate how many cells per row based on existing cells
+            const cellsPerRow = Math.max(3, Math.floor(areaWidth / (cardWidth + 15)));
+            
+            // Calculate leftMargin to center the grid
+            const totalGridWidth = cellsPerRow * (cardWidth + 15) - 15;
+            const leftMargin = Math.max(15, (areaWidth - totalGridWidth) / 2);
+            
+            // Create new cells
+            for (let col = 0; col < cellsPerRow; col++) {
+                const x = leftMargin + col * (cardWidth + 15);
+                const y = newRowY;
+                
+                // Create visual grid cell
+                const cell = document.createElement('div');
+                cell.className = 'grid-cell';
+                cell.style.left = x + 'px';
+                cell.style.top = y + 'px';
+                cardArea.appendChild(cell);
+                
+                // Add to both collections
+                gridCells.push({ x, y });
+                availableCells.push({ x, y });
+            }
+            
+            // Update container height to accommodate the new row
+            const newHeight = newRowY + cardHeight + 15;
+            cardArea.style.height = newHeight + 'px';
+        }
+        
+        // 4. Shuffle the grid cells for random placement
+        // Use Fisher-Yates algorithm
+        for (let i = availableCells.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [availableCells[i], availableCells[j]] = [availableCells[j], availableCells[i]];
+        }
+        
+        // 5. Assign each card a unique position from the shuffled cells
+        // Keep track of assigned positions
+        const assignedPositions = new Set();
+        
+        // First, sort cards by z-index (flipped cards last)
+        // This ensures flipped cards are placed after unflipped ones
+        const sortedCards = [...cards].sort((a, b) => {
+            const aFlipped = a.classList.contains('flipped');
+            const bFlipped = b.classList.contains('flipped');
+            
+            // Flipped cards should come later so they're on top
+            if (aFlipped && !bFlipped) return 1;
+            if (!aFlipped && bFlipped) return -1;
+            
+            // Otherwise sort by existing z-index as a tiebreaker
+            return (parseInt(a.style.zIndex || '1') - parseInt(b.style.zIndex || '1'));
+        });
+        
+        // Now assign positions
+        sortedCards.forEach((card, index) => {
+            if (!card || !card.style) return;
+            
+            // Find an unoccupied position
+            let newPosition = null;
+            
+            for (const position of availableCells) {
+                // Create a unique identifier for this position
+                const posKey = `${position.x},${position.y}`;
+                
+                // Skip if already assigned to another card
+                if (assignedPositions.has(posKey)) continue;
+                
+                // Found an available position
+                newPosition = position;
+                assignedPositions.add(posKey);
+                break;
+            }
+            
+            // If no position found (shouldn't happen), keep current position
+            if (!newPosition) return;
+            
+            // Apply the new position with a smooth transition
+            card.style.transition = 'left 0.3s, top 0.3s';
+            card.style.left = newPosition.x + 'px';
+            card.style.top = newPosition.y + 'px';
+            
+            // Set proper z-index based on sort order
+            // Ensure flipped cards are on top
+            const newZIndex = card.classList.contains('flipped') ? 
+                              maxZIndex + index + 100 : // Flipped cards get higher z-index
+                              1 + index;                // Normal cards get sequential z-index
+            card.style.zIndex = newZIndex;
+            
+            // Remove transition after animation completes
+            setTimeout(() => {
+                if (card && card.style) {
+                    card.style.transition = '';
+                }
+            }, 300);
+        });
+        
+        // After shuffle, perform a final check for any overlaps and fix them
+        setTimeout(checkAndFixOverlaps, 350);
+    }
+    
+    // New function to check for and fix any remaining overlaps
+    function checkAndFixOverlaps() {
+        // Simple collision detection between all cards
+        for (let i = 0; i < cards.length; i++) {
+            const cardA = cards[i];
+            const leftA = parseInt(cardA.style.left) || 0;
+            const topA = parseInt(cardA.style.top) || 0;
+            
+            for (let j = i + 1; j < cards.length; j++) {
+                const cardB = cards[j];
+                const leftB = parseInt(cardB.style.left) || 0;
+                const topB = parseInt(cardB.style.top) || 0;
+                
+                // Check if the cards are in the same position
+                if (Math.abs(leftA - leftB) < 5 && Math.abs(topA - topB) < 5) {
+                    // Cards are overlapping - find a new position for cardB
+                    let newPosition = findEmptyGridCell();
+                    
+                    if (newPosition) {
+                        // Move cardB to the new position
+                        cardB.style.transition = 'left 0.3s, top 0.3s';
+                        cardB.style.left = newPosition.x + 'px';
+                        cardB.style.top = newPosition.y + 'px';
+                        
+                        // Ensure proper z-index - the flipped card should be on top
+                        if (cardA.classList.contains('flipped')) {
+                            cardA.style.zIndex = parseInt(cardB.style.zIndex || '1') + 1;
+                        } else if (cardB.classList.contains('flipped')) {
+                            cardB.style.zIndex = parseInt(cardA.style.zIndex || '1') + 1;
+                        }
+                        
+                        // Remove transition after animation
+                        setTimeout(() => {
+                            if (cardB && cardB.style) {
+                                cardB.style.transition = '';
+                            }
+                        }, 300);
+                    }
+                }
+            }
+        }
+    }
+    
+    // Call this function after the page loads to fix any initial overlaps
+    function fixInitialOverlaps() {
+        setTimeout(checkAndFixOverlaps, 500);
+    }
+    
+    // Flip the most recently interacted card or all cards if none selected
+    function flipSelectedCard() {
+        // Try to find the card with highest z-index first
+        let topCard = null;
+        let maxZIndex = 0;
+        
+        cards.forEach(card => {
+            if (!card || !card.style) return;
+            
+            const zIndex = parseInt(card.style.zIndex || '1');
+            if (zIndex >= maxZIndex) {
+                maxZIndex = zIndex;
+                topCard = card;
+            }
+        });
+        
+        if (topCard) {
+            // Flip the top card
+            flipCard(topCard);
+        } else if (cards.length > 0) {
+            // Flip all cards if none is selected
+            cards.forEach(card => flipCard(card));
+        }
+    }
+    
+    // Toggle syllable button enabled/disabled state
+    syllableButtons.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const parentCell = this.closest('.syllable-cell');
+            if (parentCell) {
+                // Toggle disabled state
+                parentCell.classList.toggle('disabled');
+            }
+        });
+    });
+    
+    // Button event listeners
+    if (resetBtn) {
+        resetBtn.addEventListener('click', resetBoard);
+    }
+    
+    if (flipBtn) {
+        flipBtn.addEventListener('click', flipSelectedCard);
+    }
+    
+    if (shuffleBtn) {
+        shuffleBtn.addEventListener('click', shuffleCards);
+    }
+    
+    if (addBtn) {
+        addBtn.addEventListener('click', addNewCard);
+    }
+    
+    // Force mobile responsiveness
+    function updateMobileLayout() {
+        if (window.innerWidth <= 768) {
+            // Hide button text on mobile
+            document.querySelectorAll('.button-text').forEach(el => {
+                if (el) el.style.display = 'none';
+            });
+            
+            // Adjust button emoji size
+            document.querySelectorAll('.button-emoji').forEach(el => {
+                if (el) {
+                    el.style.fontSize = '20px';
+                    el.style.marginRight = '0';
+                }
+            });
+        } else {
+            // Show button text on desktop
+            document.querySelectorAll('.button-text').forEach(el => {
+                if (el) el.style.display = 'inline';
+            });
+            
+            // Reset button emoji size
+            document.querySelectorAll('.button-emoji').forEach(el => {
+                if (el) {
+                    el.style.fontSize = '';
+                    el.style.marginRight = '';
+                }
+            });
+        }
+    }
+    
+    // Initialize the app
+    function init() {
+        // Safety check
+        if (!cardArea) {
+            console.error("Card area element not found");
+            return;
+        }
+        
+        // Create grid
+        createGrid();
+        
+        // Update mobile layout
+        updateMobileLayout();
+        
+        // Add initial cards with slight delay to let layout settle
+        setTimeout(() => {
+            for (let i = 0; i < 3; i++) {
+                addNewCard();
+            }
+            
+            // Fix any initial overlaps
+            fixInitialOverlaps();
+        }, 300);
+    }
+    
+    // Run initialization
+    init();
+    
+    // Add window resize listeners
+    window.addEventListener('resize', () => {
+        createGrid();
+        updateMobileLayout();
+        
+        // Re-snap all cards to the new grid
+        cards.forEach(card => {
+            if (card) {
+                snapCardToGrid(card);
+            }
+        });
+        
+        // Check for any overlaps after resizing
+        setTimeout(checkAndFixOverlaps, 400);
+    });
+});
+// Add this function to your existing JavaScript file
+function enhanceMobileExperience() {
+    // Check if we're on a mobile device
+    const isMobile = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    
+    if (isMobile) {
+        // iOS-style momentum scrolling
+        document.querySelectorAll('.syllabary-table-container').forEach(container => {
+            container.style.webkitOverflowScrolling = 'touch';
+        });
+        
+        // Better touch response for buttons
+        document.querySelectorAll('.syllable-btn, .control-btn').forEach(btn => {
+            btn.addEventListener('touchstart', function() {
+                this.style.transform = 'scale(0.97)';
+                this.style.opacity = '0.9';
+            }, { passive: true });
+            
+            btn.addEventListener('touchend', function() {
+                this.style.transform = '';
+                this.style.opacity = '';
+                
+                // Add slight delay to reset for better visual feedback
+                setTimeout(() => {
+                    this.style.transform = '';
+                    this.style.opacity = '';
+                }, 100);
+            }, { passive: true });
+        });
+        
+        // Adjust card container height for smaller screens
+        const adjustCardContainerHeight = () => {
+            const cardContainer = document.getElementById('card-area');
+            if (cardContainer) {
+                // Set a more appropriate height for mobile
+                if (window.innerWidth <= 480) {
+                    cardContainer.style.minHeight = '200px';
+                } else if (window.innerWidth <= 768) {
+                    cardContainer.style.minHeight = '240px';
+                }
+            }
+        };
+        
+        // Make control buttons more responsive on mobile
+        const enhanceControlButtons = () => {
+            document.querySelectorAll('.control-btn').forEach(btn => {
+                // Remove any inline styling that might interfere
+                btn.style.display = 'flex';
+                btn.style.alignItems = 'center';
+                btn.style.justifyContent = 'center';
+                
+                // Hide text on very small screens
+                if (window.innerWidth < 360) {
+                    const textSpan = btn.querySelector('.button-text');
+                    if (textSpan) textSpan.style.display = 'none';
+                }
+            });
+        };
+        
+        // Adjust font size for syllable buttons based on available space
+        const adjustSyllableButtonSize = () => {
+            const tableContainer = document.querySelector('.syllabary-table-container');
+            if (tableContainer) {
+                const availableWidth = tableContainer.offsetWidth;
+                const buttonCount = 9; // Number of buttons per row
+                const buttonSize = Math.floor((availableWidth - 20) / buttonCount);
+                
+                if (buttonSize < 30) {
+                    document.querySelectorAll('.syllable-btn').forEach(btn => {
+                        btn.style.fontSize = '14px';
+                    });
+                } else if (buttonSize < 40) {
+                    document.querySelectorAll('.syllable-btn').forEach(btn => {
+                        btn.style.fontSize = '16px';
+                    });
+                }
+            }
+        };
+        
+        // Execute all enhancements
+        adjustCardContainerHeight();
+        enhanceControlButtons();
+        adjustSyllableButtonSize();
+        
+        // Also handle window resize events
+        window.addEventListener('resize', () => {
+            adjustCardContainerHeight();
+            enhanceControlButtons();
+            adjustSyllableButtonSize();
+        });
+        
+        // Ensure correct layout after orientation changes
+        window.addEventListener('orientationchange', () => {
+            setTimeout(() => {
+                adjustCardContainerHeight();
+                enhanceControlButtons();
+                adjustSyllableButtonSize();
+            }, 300);
+        });
+    }
+}
+
+// Call this function after your document is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    // Your existing initialization code
+    
+    // Add mobile enhancements
+    enhanceMobileExperience();
+});  
+
+function optimizeHeaderAndLayout() {
+    const header = document.querySelector('.header');
+    const cardContainer = document.getElementById('card-area');
+    
+    if (window.innerWidth <= 768) {
+        // Set header to iOS standard height
+        if (header) {
+            header.style.height = '44px';
+        }
+        
+        // Dynamically adjust card container height
+        if (cardContainer) {
+            // Calculate available space
+            const viewportHeight = window.innerHeight;
+            const headerHeight = 44; // Standard iOS header height
+            const syllabaryHeight = document.querySelector('.syllabary-table-container')?.offsetHeight || 300;
+            const controlsHeight = document.querySelector('.controls')?.offsetHeight || 50;
+            const padding = 32; // Some padding
+            
+            // Calculate ideal container height
+            const idealHeight = Math.max(
+                180, // Minimum height
+                viewportHeight - headerHeight - syllabaryHeight - controlsHeight - padding
+            );
+            
+            cardContainer.style.minHeight = `${idealHeight}px`;
+        }
+    }
+}
+
+// Call on load and resize
+window.addEventListener('DOMContentLoaded', optimizeHeaderAndLayout);
+window.addEventListener('resize', optimizeHeaderAndLayout);
+</script>
+</body>
+</html>

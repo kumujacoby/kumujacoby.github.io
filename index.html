@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kumu Jacoby - Projects</title>
+    <style>
+        :root {
+            --navy: #1E3057;
+            --royal-blue: #5480E8;
+            --white: #FFFFFF;
+            --light-gray: #F0F0F0;
+            --gold: #C79756;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--white);
+            color: var(--navy);
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: var(--navy);
+            color: var(--white);
+            padding: 3rem 1.5rem;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        main {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem;
+        }
+        
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .project-card {
+            background-color: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            text-decoration: none;
+            color: var(--navy);
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .project-header {
+            background-color: var(--royal-blue);
+            color: var(--white);
+            padding: 1.5rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .project-body {
+            padding: 1.5rem;
+            flex: 1;
+        }
+        
+        .project-body p {
+            margin-bottom: 1rem;
+            color: #555;
+        }
+        
+        .project-meta {
+            font-size: 0.9rem;
+            color: #888;
+            font-style: italic;
+        }
+        
+        footer {
+            background-color: var(--navy);
+            color: var(--white);
+            text-align: center;
+            padding: 2rem 1.5rem;
+            margin-top: 4rem;
+        }
+        
+        footer p {
+            opacity: 0.9;
+        }
+        
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Kumu Jacoby</h1>
+        <p>Engineering & Design | Educational Technology | Hawaiian Language Learning</p>
+    </header>
+    
+    <main>
+        <h2 style="margin-bottom: 1rem; font-size: 1.8rem;">Projects</h2>
+        
+        <div class="projects-grid">
+            <!-- ʻApomanaʻo Project -->
+            <a href="apomanao/" class="project-card">
+                <div class="project-header">ʻApomanaʻo</div>
+                <div class="project-body">
+                    <p>A suite of digital tools designed to support Hawaiian language learning through culturally-grounded approaches.</p>
+                    <p class="project-meta">Hawaiian Language Learning Tools</p>
+                </div>
+            </a>
+            
+            <!-- Placeholder for future projects -->
+            <div class="project-card" style="opacity: 0.5; cursor: default;">
+                <div class="project-header" style="background-color: var(--gold);">Coming Soon</div>
+                <div class="project-body">
+                    <p>More projects coming soon...</p>
+                    <p class="project-meta">Future Work</p>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <p>© 2025 Jacoby Young | Kamehameha Schools</p>
+        <p style="margin-top: 0.5rem; font-style: italic;">E ola mau ka ʻŌlelo Hawaiʻi</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="HandheldFriendly" content="true">
+    <title>ʻApomanaʻo</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <style>
+        /* Kamehameha Color Palette */
+        :root {
+            --navy: #1E3057;
+            --royal-blue: #5480E8;
+            --white: #FFFFFF;
+            --light-gray: #F0F0F0;
+            --dark-teal: #3A5350;
+            --teal: #40816E;
+            --brown: #906841;
+            --gold: #C79756;
+            --rust: #A64331;
+            --terra-cotta: #C64F3A;
+            --burgundy: #5C1A2D;
+            --rose: #833043;
+            
+            /* Grid Units */
+            --spacing-1: 4px;
+            --spacing-2: 8px;
+            --spacing-3: 16px;
+            --spacing-4: 24px;
+            --spacing-5: 32px;
+            --spacing-6: 48px;
+            --spacing-7: 64px;
+            
+            /* Typography */
+            --text-xs: 14px;
+            --text-sm: 16px;
+            --text-base: 18px;
+            --text-lg: 22px;
+            --text-xl: 26px;
+            --text-2xl: 32px;
+        }
+        
+        /* Base Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            touch-action: manipulation;
+        }
+        
+        html, body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            font-size: 16px;
+            color: var(--navy);
+            background-color: var(--white);
+            min-height: 100vh;
+            width: 100%;
+            line-height: 1.5;
+        }
+        
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Header */
+        header {
+            background-color: var(--navy);
+            color: var(--white);
+            padding: var(--spacing-5) var(--spacing-3);
+            text-align: center;
+        }
+        
+        .logo-text h1 {
+            font-size: var(--text-2xl);
+            font-weight: 900;
+            margin-bottom: var(--spacing-2);
+        }
+        
+        .logo-text p {
+            font-size: var(--text-base);
+            opacity: 0.9;
+        }
+        
+        /* Main Content */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--spacing-5);
+            flex: 1;
+            width: 100%;
+        }
+        
+        /* Tool Grid */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: var(--spacing-4);
+            margin-top: var(--spacing-5);
+        }
+        
+        /* Tool Buttons */
+        .tool-button {
+            position: relative;
+            min-height: 120px;
+            border-radius: 12px;
+            background-color: var(--white);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            text-decoration: none;
+            color: var(--white);
+            font-weight: 500;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .tool-button:hover, 
+        .tool-button:focus {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tool-button:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tool-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-4);
+            text-align: center;
+        }
+        
+        .tool-name {
+            font-size: var(--text-xl);
+            margin-bottom: var(--spacing-3);
+            font-weight: 500;
+        }
+        
+        .tool-description {
+            font-size: var(--text-sm);
+            opacity: 0.9;
+        }
+        
+        /* Tool Categories Colors */
+        .olelo { background-color: var(--royal-blue); }
+        .helu { background-color: var(--rust); }
+        .paani { background-color: var(--gold); }
+        .heluhelu { background-color: var(--teal); }
+        .kumu { background-color: var(--burgundy); }
+        
+        /* Tool Icons */
+        .tool-icon {
+            margin-bottom: var(--spacing-3);
+        }
+        
+        .tool-icon i {
+            font-size: 36px;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--navy);
+            color: var(--white);
+            text-align: center;
+            padding: var(--spacing-4);
+            font-size: var(--text-sm);
+        }
+        
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            main {
+                padding: var(--spacing-3);
+            }
+            
+            .tools-grid {
+                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+                gap: var(--spacing-3);
+            }
+            
+            .tool-button {
+                min-height: 100px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            header {
+                padding: var(--spacing-4) var(--spacing-2);
+            }
+            
+            .logo-text h1 {
+                font-size: var(--text-xl);
+            }
+            
+            .tools-grid {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-3);
+            }
+            
+            .tool-button {
+                min-height: 90px;
+            }
+            
+            .tool-name {
+                font-size: var(--text-lg);
+                margin-bottom: var(--spacing-2);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-text">
+            <h1>ʻApomanaʻo</h1>
+            <p>E ola mau ka ʻōlelo Hawaiʻi</p>
+        </div>
+    </header>
+    
+    <main>
+        <div class="tools-grid">
+            <!-- Ka Hakalama -->
+            <a href="kahakalama.html" class="tool-button olelo">
+                <div class="tool-content">
+                    <div class="tool-icon">
+                        <i class="ri-layout-grid-line"></i>
+                    </div>
+                    <div class="tool-name">Ka Hakalama</div>
+                </div>
+            </a>
+            
+            <!-- Nā Kāleka Hakalama -->
+            <a href="nakalekahakalama.html" class="tool-button olelo">
+                <div class="tool-content">
+                    <div class="tool-icon">
+                        <i class="ri-swap-box-line"></i>
+                    </div>
+                    <div class="tool-name">Nā Kāleka Hakalama</div>
+                </div>
+            </a>
+            
+            <!-- Ka Haku ʻŌlelo -->
+            <a href="kahakuolelo.html" class="tool-button olelo">
+                <div class="tool-content">
+                    <div class="tool-icon">
+                        <i class="ri-edit-2-line"></i>
+                    </div>
+                    <div class="tool-name">Ka Haku ʻŌlelo</div>
+                </div>
+            </a>
+            
+            <!-- Nā Helu Hawaiʻi -->
+            <a href="naheluhawaii.html" class="tool-button helu">
+                <div class="tool-content">
+                    <div class="tool-icon">
+                        <i class="ri-number-1 ri-2x"></i>
+                    </div>
+                    <div class="tool-name">Nā Helu Hawaiʻi</div>
+                </div>
+            </a>
+
+             <!-- Helu Pū -->
+            <a href="helupu.html" class="tool-button helu">
+                <div class="tool-content">
+                    <div class="tool-icon">
+                        <i class="ri-image-add-line"></i>
+                    </div>
+                    <div class="tool-name">Helu Pū</div>
+                </div>
+            </a>
+            
+            <!-- ʻŌlelo Emoji -->
+            <a href="nakiiolelo.html" class="tool-button olelo">
+                <div class="tool-content">
+                    <div class="tool-icon">
+                        <i class="ri-user-smile-line"></i>
+                    </div>
+                    <div class="tool-name">Nā Kiʻi ʻŌlelo</div>
+                </div>
+            </a>
+            
+            <!-- Heluhelu Puke -->
+            <a href="heluhelupuke.html" class="tool-button heluhelu">
+                <div class="tool-content">
+                    <div class="tool-icon">
+                        <i class="ri-book-open-line ri-2x"></i>
+                    </div>
+                    <div class="tool-name">Heluhelu Puke</div>
+                </div>
+            </a>
+            
+            <!-- Pāʻani Manaʻo -->
+            <a href="paanimanao.html" class="tool-button paani">
+                <div class="tool-content">
+                    <div class="tool-icon">
+                        <i class="ri-brain-line"></i>
+                    </div>
+                    <div class="tool-name">Pāʻani Manaʻo</div>
+                </div>
+            </a>
+            
+            <!-- Kūʻauhau -->
+            <a href="#" class="tool-button kumu">
+                <div class="tool-content">
+                    <div class="tool-icon">
+                        <i class="ri-team-line ri-2x"></i>
+                    </div>
+                    <div class="tool-name">Kūʻauhau</div>
+                </div>
+            </a>
+            
+            <!-- Nā Wahi -->
+            <a href="#" class="tool-button kumu">
+                <div class="tool-content">
+                    <div class="tool-icon">
+                        <i class="ri-map-pin-line ri-2x"></i>
+                    </div>
+                    <div class="tool-name">Nā Wahi</div>
+                </div>
+            </a>
+        </div>
+    </main>
+    
+    <footer>
+        <p>© 2025 ʻApomanaʻo | <i>Ua lehulehu a manomano ka 'ikena a ka Hawaiʻi.</i></p>
+    </footer>
+</body>
+</html>

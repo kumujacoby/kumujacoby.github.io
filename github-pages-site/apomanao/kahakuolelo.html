@@ -1,0 +1,1669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="HandheldFriendly" content="true">
+    <title>Ka Haku ʻŌlelo - Hawaiian Sentence Builder</title>
+    <style>
+        /* Base Variables - Using Kamehameha Colors */
+        :root {
+            --navy: #1E3057;
+            --royal-blue: #5480E8;
+            --white: #FFFFFF;
+            --light-gray: #F0F0F0;
+            --dark-teal: #3A5350;
+            --teal: #40816E;
+            --brown: #906841;
+            --gold: #C79756;
+            --rust: #A64331;
+            --terra-cotta: #C64F3A;
+            --burgundy: #5C1A2D;
+            --rose: #833043;
+            
+            /* Swiss Design Grid Units */
+            --grid-base: 8px;
+            --grid-2x: 16px;
+            --grid-3x: 24px;
+            --grid-4x: 32px;
+            --grid-5x: 40px;
+            --grid-6x: 48px;
+            --grid-8x: 64px;
+            --grid-10x: 80px;
+            --grid-12x: 96px;
+            
+            /* Typography Scale */
+            --text-xs: 14px;
+            --text-sm: 16px;
+            --text-md: 20px;
+            --text-lg: 24px;
+            --text-xl: 32px;
+            --text-2xl: 42px;
+            --text-3xl: 56px;
+            --text-4xl: 72px;
+            
+            /* Line Heights */
+            --leading-tight: 1.1;
+            --leading-normal: 1.3;
+            --leading-relaxed: 1.5;
+        }
+        
+        /* Reset & Base Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            touch-action: manipulation;
+        }
+        
+        html, body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            font-size: var(--text-sm);
+            line-height: var(--leading-normal);
+            color: var(--navy);
+            background-color: var(--navy);
+            overflow-x: hidden;
+            height: 100%;
+            width: 100%;
+        }
+        
+        /* Layout Container with 8px Grid */
+        .container {
+            max-width: 1024px;
+            margin: var(--grid-3x) auto;
+            padding: 0 var(--grid-2x);
+            display: flex;
+            flex-direction: column;
+            min-height: calc(100vh - var(--grid-6x));
+        }
+        
+        .main-container {
+            width: 100%;
+            background-color: var(--white);
+            border-radius: var(--grid-3x);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+        }
+        
+        /* Header */
+        .header {
+            background-color: var(--royal-blue);
+            color: var(--white);
+            padding: 0;
+            text-align: center;
+            font-weight: bold;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            height: 54px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .header h1 {
+            font-family: 'Helvetica Neue', sans-serif;
+            font-size: 36px;
+            letter-spacing: -0.02em;
+            margin: 0;
+            line-height: 1.1;
+        }
+        
+        .nav-arrow {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            color: var(--white);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            transition: background-color 0.2s;
+            border-right: 1px solid white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .nav-arrow:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Content */
+        .content {
+            padding: var(--grid-4x);
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Output Section */
+        .output-section {
+            margin-bottom: var(--grid-4x);
+        }
+        
+        #sentence-display {
+            font-family: 'Futura', sans-serif;
+            background-color: var(--light-gray);
+            border: 2px solid #ddd;
+            border-radius: var(--grid-base);
+            padding: var(--grid-4x) var(--grid-2x);
+            min-height: 160px;
+            margin-bottom: var(--grid-3x);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s;
+            position: relative;
+        }
+        
+        #sentence-display:hover {
+            transform: scale(1.03);
+            box-shadow: 0 4px 15px rgba(84, 128, 232, 0.5);
+            background-color: #f0f0f0;
+            border-color: var(--royal-blue);
+        }
+        
+        #hawaiian-sentence {
+            font-size: var(--text-3xl);
+            text-align: center;
+            word-wrap: break-word;
+            text-transform: lowercase;
+            line-height: 1.0;
+        }
+        
+        #sentence-display {
+            height: 180px;           /* Fixed height instead of just min-height */
+            max-height: 180px;       /* Ensure it doesn't grow */
+            overflow: hidden;        /* Prevent content from spilling out */
+        }
+
+        #hawaiian-sentence {
+            width: 100%;             /* Ensure it takes full width for measurement */
+            transition: font-size 0.3s ease; /* Smooth transition when font size changes */
+        }
+
+        #translation-display {
+            width: 100%;             /* Ensure it takes full width for measurement */
+            transition: font-size 0.3s ease; /* Smooth transition when font size changes */
+        }
+        
+        #translation-display {
+            font-family: 'Helvetica Neue', sans-serif;
+            font-size: var(--text-md);
+            color: #666;
+            font-style: italic;
+            margin-top: var(--grid-2x);
+            text-align: center;
+            text-transform: lowercase;
+        }
+        
+        /* Control Buttons */
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--grid-2x);
+            margin-bottom: var(--grid-3x);
+        }
+        
+        .control-btn {
+            padding: var(--grid-2x);
+            border: none;
+            border-radius: var(--grid-base);
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s ease, transform 0.2s;
+        }
+        
+        .control-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .control-btn:active {
+            transform: scale(0.95);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Systematic color application */
+        #clear-btn { background-color: var(--rose); color: var(--white); }
+        #clear-btn:hover { background-color: var(--burgundy); }
+        
+        #backspace-btn { background-color: var(--terra-cotta); color: var(--white); }
+        #backspace-btn:hover { background-color: var(--rust); }
+        
+        #translate-btn { background-color: var(--gold); color: var(--white); }
+        #translate-btn:hover { background-color: var(--hover-color, var(--brown)); }
+        
+        #random-btn { background-color: var(--teal); color: var(--white); }
+        #random-btn:hover { background-color: var(--dark-teal); }
+        
+        .button-emoji {
+            font-size: var(--text-md);
+            margin-right: var(--grid-base);
+        }
+        
+        /* Tab Navigation */
+        .tab-container {
+            display: flex;
+            overflow-x: auto;
+            margin-bottom: var(--grid-3x);
+            border-bottom: 1px solid var(--light-gray);
+            scrollbar-width: none; /* Firefox */
+        }
+        
+        .tab-container::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Edge */
+        }
+        
+        .tab-btn {
+            background-color: var(--light-gray);
+            border: none;
+            padding: var(--grid-2x) var(--grid-3x);
+            cursor: pointer;
+            font-size: var(--text-sm);
+            transition: background-color 0.3s, color 0.3s;
+            white-space: nowrap;
+            text-transform: lowercase;
+            color: var(--navy);
+            border-top-left-radius: var(--grid-base);
+            border-top-right-radius: var(--grid-base);
+            margin-right: 2px;
+        }
+        
+        .tab-btn.active {
+            background-color: var(--royal-blue);
+            color: var(--white);
+            font-weight: bold;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Word Categories - Two-Column Layout */
+        .word-categories {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--grid-3x);
+            margin-top: var(--grid-3x);
+        }
+        
+        .category {
+            background-color: var(--light-gray);
+            border-radius: var(--grid-base);
+            border: 1px solid #ddd;
+            padding: var(--grid-2x);
+            margin-bottom: var(--grid-2x);
+        }
+        
+        .category-header {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-bottom: var(--grid-2x);
+        }
+        
+        .category-title {
+            color: var(--navy);
+            font-weight: bold;
+            font-size: var(--text-md);
+            margin-bottom: 4px;
+        }
+        
+        .category-subtitle {
+            color: #666;
+            font-size: var(--text-xs);
+            font-style: italic;
+        }
+        
+        .words-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--grid-base);
+        }
+        
+        .word-btn {
+            background-color: var(--royal-blue);
+            color: var(--white);
+            border: none;
+            border-radius: var(--grid-base);
+            padding: var(--grid-base) var(--grid-2x);
+            font-size: var(--text-sm);
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-transform: lowercase;
+            margin-bottom: var(--grid-base);
+        }
+        
+        .word-btn:hover {
+            transform: scale(1.05);
+            background-color: var(--navy);
+            color: var(--white);
+            z-index: 2;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .word-btn:active {
+            transform: scale(0.95);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            transition: all 0.1s;
+        }
+        
+        .word-btn.active {
+            background-color: var(--teal);
+        }
+        
+        /* Span category to full width for important categories */
+        .category.full-width {
+            grid-column: 1 / -1;
+        }
+        
+        /* Custom Input */
+        .custom-input-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr 0.8fr auto;
+            gap: var(--grid-base);
+            margin-bottom: var(--grid-3x);
+        }
+        
+        .custom-input-container input,
+        .custom-input-container select {
+            padding: var(--grid-base);
+            border: 1px solid #ddd;
+            border-radius: var(--grid-base);
+            font-size: var(--text-sm);
+        }
+        
+        #add-custom-btn {
+            background-color: var(--royal-blue);
+            color: var(--white);
+            border: none;
+            border-radius: var(--grid-base);
+            padding: var(--grid-base);
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        
+        #add-custom-btn:hover {
+            background-color: var(--navy);
+            transform: scale(1.05);
+        }
+        
+        /* Info Section */
+        .info-section {
+            background-color: var(--light-gray);
+            padding: var(--grid-3x);
+            border-radius: var(--grid-base);
+            border: 1px solid #ddd;
+            margin-top: var(--grid-4x);
+            font-size: var(--text-xs);
+            grid-column: 1 / -1;
+        }
+        
+        .example {
+            font-style: italic;
+            margin: var(--grid-base) 0;
+            color: #555;
+        }
+        
+        /* Tab Navigation adjustments */
+        .tab-btn {
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding: var(--grid-2x) var(--grid-base);
+        }
+        
+        /* Control Button adjustments */
+        .control-btn {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        
+        .button-emoji {
+            font-size: 18px;
+        }
+        
+        .button-text {
+            display: inline;
+        }
+        
+        /* Responsive Adaptations */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 var(--grid-base);
+                margin: var(--grid-base) auto;
+            }
+            
+            .content {
+                padding: var(--grid-2x);
+            }
+            
+            .header h1 {
+                font-size: var(--text-xl);
+            }
+            
+            #hawaiian-sentence {
+                font-size: var(--text-xl);
+            }
+            
+            #sentence-display {
+                min-height: 120px;
+                padding: var(--grid-3x) var(--grid-base);
+            }
+            
+            .controls {
+                gap: var(--grid-base);
+            }
+            
+            .button-text {
+                display: none; /* Hide text on mobile */
+            }
+            
+            .button-emoji {
+                margin-right: 0; /* Adjust when text is hidden */
+                font-size: var(--text-lg);
+            }
+            
+            .category-title {
+                font-size: var(--text-sm);
+            }
+            
+            .category-subtitle {
+                font-size: 12px;
+            }
+            
+            .word-btn {
+                font-size: 14px;
+                padding: 6px 10px;
+            }
+            
+            .custom-input-container {
+                grid-template-columns: 1fr;
+                gap: var(--grid-base);
+            }
+            
+            /* Switch back to single column on mobile */
+            .word-categories {
+                grid-template-columns: 1fr;
+                gap: var(--grid-2x);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                margin: var(--grid-base) var(--grid-base);
+            }
+            
+            .main-container {
+                border-radius: var(--grid-2x);
+            }
+            
+            .tab-btn {
+                padding: var(--grid-base) var(--grid-2x);
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="main-container">
+            <div class="header">
+                <a href="index.html" class="nav-arrow" aria-label="Return to main menu">
+                    ←
+                </a>
+                <h1>Ka Haku ʻŌlelo</h1>
+            </div>
+            
+            <div class="content">
+                <div class="output-section">
+                    <div id="sentence-display">
+                        <div id="hawaiian-sentence">E koho i nā huaʻōlelo...</div>
+                        <div id="translation-display">Choose some words...</div>
+                    </div>
+                    <div class="controls">
+                        <button id="clear-btn" class="control-btn">
+                            <span class="button-emoji">🗑️</span>
+                            <span class="button-text">KĪLOI</span>
+                        </button>
+                        <button id="backspace-btn" class="control-btn">
+                            <span class="button-emoji">⬅️</span>
+                            <span class="button-text">HOLOI I HOPE</span>
+                        </button>
+                        <button id="translate-btn" class="control-btn">
+                            <span class="button-emoji">🔄</span>
+                            <span class="button-text">UNUHI</span>
+                        </button>
+                        <button id="random-btn" class="control-btn">
+                            <span class="button-emoji">🎲</span>
+                            <span class="button-text">ʻŌLELO KAULELE</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="tab-container">
+                    <button class="tab-btn active" data-tab="basic">ʻŌlelo Maʻamau</button>
+                    <button class="tab-btn" data-tab="particles">ʻO, Ma, Me</button>
+                    <button class="tab-btn" data-tab="questions">Nīnau</button>
+                    <button class="tab-btn" data-tab="descriptions">Wehewehe</button>
+                    <button class="tab-btn" data-tab="custom">ʻŌlelo Hou</button>
+                </div>
+                
+                <div id="basic" class="tab-content active">
+                    <div class="word-categories">
+                        <!-- REORGANIZED ORDER TO FOLLOW VSO -->
+                        <!-- 1. VERB SECTION FIRST -->
+                        <div class="category">
+                            <div class="category-header">
+                                <div class="category-title">Hamani (Verbs)</div>
+                                <div class="category-subtitle">Action words</div>
+                            </div>
+                            <div class="words-container">
+                                <!-- Movement Verbs -->
+                                <button class="word-btn" data-word="hele" data-type="verb" data-meaning="go">hele</button>
+                                <button class="word-btn" data-word="hoʻi" data-type="verb" data-meaning="return/go back">hoʻi</button>
+                                <button class="word-btn" data-word="holo" data-type="verb" data-meaning="run/sail">holo</button>
+                                <button class="word-btn" data-word="haʻalele" data-type="verb" data-meaning="leave/depart">haʻalele</button>
+                                <button class="word-btn" data-word="pēpē" data-type="verb" data-meaning="crawl">pēpē</button>
+                                <button class="word-btn" data-word="lele" data-type="verb" data-meaning="jump/fly">lele</button>
+                                <button class="word-btn" data-word="komo" data-type="verb" data-meaning="enter">komo</button>
+                                <button class="word-btn" data-word="piʻi" data-type="verb" data-meaning="climb/ascend">piʻi</button>
+                                <button class="word-btn" data-word="iho" data-type="verb" data-meaning="descend">iho</button>
+                                <button class="word-btn" data-word="auʻau" data-type="verb" data-meaning="swim/bathe">auʻau</button>
+                                <button class="word-btn" data-word="neʻe" data-type="verb" data-meaning="move/shift">neʻe</button>
+
+                                <!-- Daily Activity Verbs -->
+                                <button class="word-btn" data-word="hana" data-type="verb" data-meaning="work/do">hana</button>
+                                <button class="word-btn" data-word="ʻai" data-type="verb" data-meaning="eat">ʻai</button>
+                                <button class="word-btn" data-word="inu" data-type="verb" data-meaning="drink">inu</button>
+                                <button class="word-btn" data-word="noho" data-type="verb" data-meaning="sit/live">noho</button>
+                                <button class="word-btn" data-word="moe" data-type="verb" data-meaning="sleep/lie down">moe</button>
+                                <button class="word-btn" data-word="ala" data-type="verb" data-meaning="wake up">ala</button>
+                                <button class="word-btn" data-word="hiamoe" data-type="verb" data-meaning="sleep">hiamoe</button>
+                                <button class="word-btn" data-word="kūkā" data-type="verb" data-meaning="discuss/consult">kūkā</button>
+                                <button class="word-btn" data-word="kali" data-type="verb" data-meaning="wait">kali</button>
+                                <button class="word-btn" data-word="hoʻomākaukau" data-type="verb" data-meaning="prepare">hoʻomākaukau</button>
+                                <button class="word-btn" data-word="hoʻomaʻemaʻe" data-type="verb" data-meaning="clean">hoʻomaʻemaʻe</button>
+                                <button class="word-btn" data-word="nānā" data-type="verb" data-meaning="look/watch">nānā</button>
+                                <button class="word-btn" data-word="ʻike" data-type="verb" data-meaning="see/know">ʻike</button>
+
+                                <!-- Cognitive/Communicative Verbs -->
+                                <button class="word-btn" data-word="ʻōlelo" data-type="verb" data-meaning="speak/talk">ʻōlelo</button>
+                                <button class="word-btn" data-word="hoʻolohe" data-type="verb" data-meaning="listen">hoʻolohe</button>
+                                <button class="word-btn" data-word="heluhelu" data-type="verb" data-meaning="read">heluhelu</button>
+                                <button class="word-btn" data-word="kākau" data-type="verb" data-meaning="write">kākau</button>
+                                <button class="word-btn" data-word="noʻonoʻo" data-type="verb" data-meaning="think">noʻonoʻo</button>
+                                <button class="word-btn" data-word="hoʻomaopopo" data-type="verb" data-meaning="understand">hoʻomaopopo</button>
+                                <button class="word-btn" data-word="aʻo" data-type="verb" data-meaning="teach/learn">aʻo</button>
+                                <button class="word-btn" data-word="pane" data-type="verb" data-meaning="answer/reply">pane</button>
+                                <button class="word-btn" data-word="nīnau" data-type="verb" data-meaning="ask">nīnau</button>
+                                <button class="word-btn" data-word="wehewehe" data-type="verb" data-meaning="explain">wehewehe</button>
+                                <button class="word-btn" data-word="hoʻomanaʻo" data-type="verb" data-meaning="remember">hoʻomanaʻo</button>
+                                <button class="word-btn" data-word="poina" data-type="verb" data-meaning="forget">poina</button>
+                                <button class="word-btn" data-word="hoʻohiki" data-type="verb" data-meaning="promise">hoʻohiki</button>
+
+                                <!-- Relationship Verbs -->
+                                <button class="word-btn" data-word="aloha" data-type="verb" data-meaning="love/greet">aloha</button>
+                                <button class="word-btn" data-word="mālama" data-type="verb" data-meaning="care for">mālama</button>
+                                <button class="word-btn" data-word="kōkua" data-type="verb" data-meaning="help">kōkua</button>
+                                <button class="word-btn" data-word="mahalo" data-type="verb" data-meaning="thank">mahalo</button>
+                                <button class="word-btn" data-word="hoʻohanohano" data-type="verb" data-meaning="honor/respect">hoʻohanohano</button>
+                                <button class="word-btn" data-word="kākoʻo" data-type="verb" data-meaning="support">kākoʻo</button>
+                                <button class="word-btn" data-word="hoʻololi" data-type="verb" data-meaning="change">hoʻololi</button>
+                                <button class="word-btn" data-word="makemake" data-type="verb" data-meaning="want/like">makemake</button>
+                                <button class="word-btn" data-word="ʻole" data-type="verb" data-meaning="not have/be without">ʻole</button>
+                                <button class="word-btn" data-word="hāʻawi" data-type="verb" data-meaning="give">hāʻawi</button>
+                                <button class="word-btn" data-word="lawe" data-type="verb" data-meaning="take/carry">lawe</button>
+                                <button class="word-btn" data-word="hoʻopau" data-type="verb" data-meaning="finish/complete">hoʻopau</button>
+                                <button class="word-btn" data-word="loaʻa" data-type="verb" data-meaning="get/find">loaʻa</button>
+                                <button class="word-btn" data-word="imi" data-type="verb" data-meaning="seek/search">imi</button>
+                                <button class="word-btn" data-word="hoʻohana" data-type="verb" data-meaning="use">hoʻohana</button>
+                            </div>
+                        </div>
+                        
+                        <!-- 2. NOUNS/OBJECTS (EXPANDED) -->
+                        <div class="category">
+                            <div class="category-header">
+                                <div class="category-title">Kikino (Nouns)</div>
+                                <div class="category-subtitle">People, places, things</div>
+                            </div>
+                            <div class="words-container">
+                                <!-- People -->
+                                <button class="word-btn" data-word="kanaka" data-type="noun" data-meaning="person">kanaka</button>
+                                <button class="word-btn" data-word="wahine" data-type="noun" data-meaning="woman">wahine</button>
+                                <button class="word-btn" data-word="kāne" data-type="noun" data-meaning="man">kāne</button>
+                                <button class="word-btn" data-word="keiki" data-type="noun" data-meaning="child">keiki</button>
+                                <button class="word-btn" data-word="makua" data-type="noun" data-meaning="parent">makua</button>
+                                <button class="word-btn" data-word="makuahine" data-type="noun" data-meaning="mother">makuahine</button>
+                                <button class="word-btn" data-word="makuakāne" data-type="noun" data-meaning="father">makuakāne</button>
+                                <button class="word-btn" data-word="kaikuaʻana" data-type="noun" data-meaning="older sibling (same gender)">kaikuaʻana</button>
+                                <button class="word-btn" data-word="kaikaina" data-type="noun" data-meaning="younger sibling (same gender)">kaikaina</button>
+                                <button class="word-btn" data-word="kupuna" data-type="noun" data-meaning="elder/ancestor">kupuna</button>
+                                <button class="word-btn" data-word="hoaloha" data-type="noun" data-meaning="friend">hoaloha</button>
+                                <button class="word-btn" data-word="kumu" data-type="noun" data-meaning="teacher">kumu</button>
+                                <button class="word-btn" data-word="haumāna" data-type="noun" data-meaning="student">haumāna</button>
+                                <button class="word-btn" data-word="kauka" data-type="noun" data-meaning="doctor">kauka</button>
+                                <button class="word-btn" data-word="aliʻi" data-type="noun" data-meaning="chief/royal">aliʻi</button>
+                                
+                                <!-- Places -->
+                                <button class="word-btn" data-word="hale" data-type="noun" data-meaning="house">hale</button>
+                                <button class="word-btn" data-word="kula" data-type="noun" data-meaning="school">kula</button>
+                                <button class="word-btn" data-word="kauhale" data-type="noun" data-meaning="village/community">kauhale</button>
+                                <button class="word-btn" data-word="kaona" data-type="noun" data-meaning="town">kaona</button>
+                                <button class="word-btn" data-word="kulanui" data-type="noun" data-meaning="university">kulanui</button>
+                                <button class="word-btn" data-word="hale waihona puke" data-type="noun" data-meaning="library">hale waihona puke</button>
+                                <button class="word-btn" data-word="hale kūʻai" data-type="noun" data-meaning="store">hale kūʻai</button>
+                                <button class="word-btn" data-word="haleʻaina" data-type="noun" data-meaning="restaurant">haleʻaina</button>
+                                <button class="word-btn" data-word="hale lapaʻau" data-type="noun" data-meaning="hospital">hale lapaʻau</button>
+                                <button class="word-btn" data-word="hale pule" data-type="noun" data-meaning="church">hale pule</button>
+                                <button class="word-btn" data-word="heiau" data-type="noun" data-meaning="temple">heiau</button>
+                                
+                                <!-- Natural Features -->
+                                <button class="word-btn" data-word="kai" data-type="noun" data-meaning="ocean/sea">kai</button>
+                                <button class="word-btn" data-word="wai" data-type="noun" data-meaning="water">wai</button>
+                                <button class="word-btn" data-word="kahawai" data-type="noun" data-meaning="river/stream">kahawai</button>
+                                <button class="word-btn" data-word="loko" data-type="noun" data-meaning="pond/lake">loko</button>
+                                <button class="word-btn" data-word="mauna" data-type="noun" data-meaning="mountain">mauna</button>
+                                <button class="word-btn" data-word="kuahiwi" data-type="noun" data-meaning="mountain range">kuahiwi</button>
+                                <button class="word-btn" data-word="kahakai" data-type="noun" data-meaning="beach">kahakai</button>
+                                <button class="word-btn" data-word="one" data-type="noun" data-meaning="sand">one</button>
+                                <button class="word-btn" data-word="ala" data-type="noun" data-meaning="path/road">ala</button>
+                                <button class="word-btn" data-word="alanui" data-type="noun" data-meaning="street/highway">alanui</button>
+                                <button class="word-btn" data-word="uka" data-type="noun" data-meaning="inland/upland">uka</button>
+                                <button class="word-btn" data-word="kuamoʻo" data-type="noun" data-meaning="road/trail">kuamoʻo</button>
+                                
+                                <!-- Animals -->
+                                <button class="word-btn" data-word="holoholona" data-type="noun" data-meaning="animal">holoholona</button>
+                                <button class="word-btn" data-word="manu" data-type="noun" data-meaning="bird">manu</button>
+                                <button class="word-btn" data-word="iʻa" data-type="noun" data-meaning="fish">iʻa</button>
+                                <button class="word-btn" data-word="ʻīlio" data-type="noun" data-meaning="dog">ʻīlio</button>
+                                <button class="word-btn" data-word="pōpoki" data-type="noun" data-meaning="cat">pōpoki</button>
+                                <button class="word-btn" data-word="puaʻa" data-type="noun" data-meaning="pig">puaʻa</button>
+                                <button class="word-btn" data-word="pipi" data-type="noun" data-meaning="cow">pipi</button>
+                                <button class="word-btn" data-word="lio" data-type="noun" data-meaning="horse">lio</button>
+                                <button class="word-btn" data-word="honu" data-type="noun" data-meaning="turtle">honu</button>
+                                <button class="word-btn" data-word="moʻo" data-type="noun" data-meaning="lizard">moʻo</button>
+                                
+                                <!-- Food & Plants -->
+                                <button class="word-btn" data-word="meaʻai" data-type="noun" data-meaning="food">meaʻai</button>
+                                <button class="word-btn" data-word="kalo" data-type="noun" data-meaning="taro">kalo</button>
+                                <button class="word-btn" data-word="ʻuala" data-type="noun" data-meaning="sweet potato">ʻuala</button>
+                                <button class="word-btn" data-word="poi" data-type="noun" data-meaning="poi">poi</button>
+                                <button class="word-btn" data-word="lāʻau" data-type="noun" data-meaning="tree/plant/medicine">lāʻau</button>
+                                <button class="word-btn" data-word="pua" data-type="noun" data-meaning="flower">pua</button>
+                                <button class="word-btn" data-word="niu" data-type="noun" data-meaning="coconut">niu</button>
+                                <button class="word-btn" data-word="kope" data-type="noun" data-meaning="coffee">kope</button>
+                                <button class="word-btn" data-word="ʻōpū" data-type="noun" data-meaning="stomach">ʻōpū</button>
+                                
+                                <!-- Objects/Items -->
+                                <button class="word-btn" data-word="puke" data-type="noun" data-meaning="book">puke</button>
+                                <button class="word-btn" data-word="pepa" data-type="noun" data-meaning="paper">pepa</button>
+                                <button class="word-btn" data-word="peni" data-type="noun" data-meaning="pen">peni</button>
+                                <button class="word-btn" data-word="papa" data-type="noun" data-meaning="board/table">papa</button>
+                                <button class="word-btn" data-word="noho" data-type="noun" data-meaning="chair">noho</button>
+                                <button class="word-btn" data-word="kaʻa" data-type="noun" data-meaning="car/vehicle">kaʻa</button>
+                                <button class="word-btn" data-word="waʻa" data-type="noun" data-meaning="canoe">waʻa</button>
+                                <button class="word-btn" data-word="moku" data-type="noun" data-meaning="ship/island">moku</button>
+                                <button class="word-btn" data-word="lole" data-type="noun" data-meaning="clothing">lole</button>
+                                <button class="word-btn" data-word="pāʻina" data-type="noun" data-meaning="party">pāʻina</button>
+                                <button class="word-btn" data-word="kelepona" data-type="noun" data-meaning="telephone">kelepona</button>
+                                <button class="word-btn" data-word="kamepiula" data-type="noun" data-meaning="computer">kamepiula</button>
+                                
+                                <!-- Concepts -->
+                                <button class="word-btn" data-word="aloha" data-type="noun" data-meaning="love/compassion">aloha</button>
+                                <button class="word-btn" data-word="ʻike" data-type="noun" data-meaning="knowledge">ʻike</button>
+                                <button class="word-btn" data-word="manaʻo" data-type="noun" data-meaning="thought/idea">manaʻo</button>
+                                <button class="word-btn" data-word="pono" data-type="noun" data-meaning="righteousness/balance">pono</button>
+                                <button class="word-btn" data-word="ʻohana" data-type="noun" data-meaning="family">ʻohana</button>
+                                <button class="word-btn" data-word="inoa" data-type="noun" data-meaning="name">inoa</button>
+                                <button class="word-btn" data-word="hana" data-type="noun" data-meaning="work">hana</button>
+                                <button class="word-btn" data-word="manawa" data-type="noun" data-meaning="time">manawa</button>
+                                <button class="word-btn" data-word="kumu" data-type="noun" data-meaning="reason/source/teacher">kumu</button>
+                                <button class="word-btn" data-word="hoʻomana" data-type="noun" data-meaning="religion/worship">hoʻomana</button>
+                            </div>
+                        </div>
+                        
+                        <!-- 3. SUBJECT/PRONOUNS -->
+                        <div class="category">
+                            <div class="category-header">
+                                <div class="category-title">Papani (Pronouns)</div>
+                                <div class="category-subtitle">Who is doing the action?</div>
+                            </div>
+                            <div class="words-container">
+                                <button class="word-btn" data-word="Au" data-type="subject" data-meaning="I">Au</button>
+                                <button class="word-btn" data-word="ʻOe" data-type="subject" data-meaning="You">ʻOe</button>
+                                <button class="word-btn" data-word="ʻO ia" data-type="subject" data-meaning="He/She/It">ʻO ia</button>
+                                <button class="word-btn" data-word="Māua" data-type="subject" data-meaning="We two (exclusive)">Māua</button>
+                                <button class="word-btn" data-word="Kāua" data-type="subject" data-meaning="We two (inclusive)">Kāua</button>
+                                <button class="word-btn" data-word="ʻOukou" data-type="subject" data-meaning="You all">ʻOukou</button>
+                                <button class="word-btn" data-word="Mākou" data-type="subject" data-meaning="We (exclusive)">Mākou</button>
+                                <button class="word-btn" data-word="Kākou" data-type="subject" data-meaning="We all (inclusive)">Kākou</button>
+                                <button class="word-btn" data-word="Lākou" data-type="subject" data-meaning="They">Lākou</button>
+                            </div>
+                        </div>
+                        
+                        <!-- 4. TENSE/ASPECT MARKERS -->
+                        <div class="category">
+                            <div class="category-header">
+                                <div class="category-title">Kaʻi (Markers)</div>
+                                <div class="category-subtitle">Sentence markers</div>
+                            </div>
+                            <div class="words-container">
+                                <button class="word-btn" data-word="E" data-type="marker" data-meaning="Command marker">E</button>
+                                <button class="word-btn" data-word="Ua" data-type="marker" data-meaning="Past tense marker">Ua</button>
+                                <button class="word-btn" data-word="Ke" data-type="marker" data-meaning="Present continuous marker">Ke</button>
+                                <button class="word-btn" data-word="E" data-type="marker" data-meaning="Future tense marker">E</button>
+                                <button class="word-btn" data-word="ʻO" data-type="marker" data-meaning="Subject/proper name marker">ʻO</button>
+                                <button class="word-btn" data-word="Ma" data-type="marker" data-meaning="At/on/in (location)">Ma</button>
+                                <button class="word-btn" data-word="I" data-type="marker" data-meaning="To/for/at (direction)">I</button>
+                                <button class="word-btn" data-word="Ke" data-type="marker" data-meaning="The (before words that begin with k, e, a, o)">Ke</button>
+                                <button class="word-btn" data-word="Ka" data-type="marker" data-meaning="The (general)">Ka</button>
+                                <button class="word-btn" data-word="Nā" data-type="marker" data-meaning="The (plural)">Nā</button>
+                                <button class="word-btn" data-word="He" data-type="marker" data-meaning="A/An">He</button>
+                            </div>
+                        </div>
+                        
+                        <!-- 5. LOCATIONS -->
+                        <div class="category">
+                            <div class="category-header">
+                                <div class="category-title">Kauwahi (Locations)</div>
+                                <div class="category-subtitle">Where?</div>
+                            </div>
+                            <div class="words-container">
+                                <button class="word-btn" data-word="i ka hale" data-type="location" data-meaning="at/to the house">i ka hale</button>
+                                <button class="word-btn" data-word="ma ke kula" data-type="location" data-meaning="at school">ma ke kula</button>
+                                <button class="word-btn" data-word="i ke kai" data-type="location" data-meaning="at/to the ocean">i ke kai</button>
+                                <button class="word-btn" data-word="ma ka haleʻaina" data-type="location" data-meaning="at the restaurant">ma ka haleʻaina</button>
+                                <button class="word-btn" data-word="i ka hale kūʻai" data-type="location" data-meaning="at/to the store">i ka hale kūʻai</button>
+                                <button class="word-btn" data-word="i luna" data-type="location" data-meaning="above/upstairs">i luna</button>
+                                <button class="word-btn" data-word="i lalo" data-type="location" data-meaning="below/downstairs">i lalo</button>
+                                <button class="word-btn" data-word="ma ʻaneʻi" data-type="location" data-meaning="here">ma ʻaneʻi</button>
+                                <button class="word-btn" data-word="ma laila" data-type="location" data-meaning="there">ma laila</button>
+                            </div>
+                        </div>
+                        
+                        <!-- 6. TIME EXPRESSIONS -->
+                        <div class="category">
+                            <div class="category-header">
+                                <div class="category-title">Kaumanawa (Time)</div>
+                                <div class="category-subtitle">When?</div>
+                            </div>
+                            <div class="words-container">
+                                <button class="word-btn" data-word="i kēia lā" data-type="time" data-meaning="today">i kēia lā</button>
+                                <button class="word-btn" data-word="i nehinei" data-type="time" data-meaning="yesterday">i nehinei</button>
+                                <button class="word-btn" data-word="i kēia pō" data-type="time" data-meaning="tonight">i kēia pō</button>
+                                <button class="word-btn" data-word="i kēia kakahiaka" data-type="time" data-meaning="this morning">i kēia kakahiaka</button>
+                                <button class="word-btn" data-word="i kēia ahiahi" data-type="time" data-meaning="this evening">i kēia ahiahi</button>
+                                <button class="word-btn" data-word="ʻapōpō" data-type="time" data-meaning="tomorrow">ʻapōpō</button>
+                                <button class="word-btn" data-word="i kēlā manawa" data-type="time" data-meaning="at that time">i kēlā manawa</button>
+                                <button class="word-btn" data-word="i kēia manawa" data-type="time" data-meaning="right now">i kēia manawa</button>
+                            </div>
+                        </div>
+                        
+                        <div class="category full-width">
+                            <div class="info-section">
+                                <p><strong>Sentence Pattern Tips:</strong></p>
+                                <p>Basic Hawaiian sentences often follow the pattern: Verb + Subject + Object</p>
+                                <p class="example">E hele ana au i ke kula. (I am going to school.)</p>
+                                <p class="example">Ua ʻai ʻo Keola i ka meaʻai. (Keola ate the food.)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="particles" class="tab-content">
+                    <div class="word-categories">
+                        <div class="category">
+                            <div class="category-header">
+                                <div class="category-title">ʻO (Subject/Proper Name Marker)</div>
+                                <div class="category-subtitle">Used before proper names and for equational sentences</div>
+                            </div>
+                            <div class="words-container">
+                                <button class="word-btn" data-word="ʻO" data-type="particle" data-meaning="Marks subject/proper name">ʻO</button>
+                                <button class="word-btn" data-word="ʻO wai" data-type="particle" data-meaning="Who is">ʻO wai</button>
+                                <button class="word-btn" data-word="ʻO au" data-type="particle" data-meaning="It is I">ʻO au</button>
+                                <button class="word-btn" data-word="ʻO ia" data-type="particle" data-meaning="It is he/she">ʻO ia</button>
+                                <button class="word-btn" data-word="ʻO Keola" data-type="particle" data-meaning="Keola (proper name)">ʻO Keola</button>
+                                <button class="word-btn" data-word="ʻO kēia" data-type="particle" data-meaning="This is">ʻO kēia</button>
+                                <button class="word-btn" data-word="ʻO kēlā" data-type="particle" data-meaning="That is">ʻO kēlā</button>
+                            </div>
+                        </div>
+                        
+                        <div class="category">
+                            <div class="category-header">
+                                <div class="category-title">Kahuhu ma ka Huaʻōlelo (Possessive Particles)</div>
+                                <div class="category-subtitle">Showing possession and relationships</div>
+                            </div>
+                            <div class="words-container">
+                                <button class="word-btn" data-word="koʻu" data-type="possessive" data-meaning="my (o-class)">koʻu</button>
+                                <button class="word-btn" data-word="kou" data-type="possessive" data-meaning="your (o-class)">kou</button>
+                                <button class="word-btn" data-word="kona" data-type="possessive" data-meaning="his/her (o-class)">kona</button>
+                                <button class="word-btn" data-word="ko māua" data-type="possessive" data-meaning="our (exclusive, o-class)">ko māua</button>
+                                <button class="word-btn" data-word="ko kāua" data-type="possessive" data-meaning="our (inclusive, o-class)">ko kāua</button>
+                                <button class="word-btn" data-word="kaʻu" data-type="possessive" data-meaning="my (a-class)">kaʻu</button>
+                                <button class="word-btn" data-word="kāu" data-type="possessive" data-meaning="your (a-class)">kāu</button>
+                                <button class="word-btn" data-word="kāna" data-type="possessive" data-meaning="his/her (a-class)">kāna</button>
+                                <button class="word-btn" data-word="ka māua" data-type="possessive" data-meaning="our (exclusive, a-class)">ka māua</button>
+                                <button class="word-btn" data-word="ka kāua" data-type="possessive" data-meaning="our (inclusive, a-class)">ka kāua</button>
+                            </div>
+                        </div>
+                        
+                        <div class="category">
+                            <div class="category-header">
+                                <div class="category-title">Kahuhu ma ka ʻĀina (Locational Particles)</div>
+                                <div class="category-subtitle">Indicating location or direction</div>
+                            </div>
+                            <div class="words-container">
+                                <button class="word-btn" data-word="ma" data-type="location" data-meaning="at/on/in (stationary)">ma</button>
+                                <button class="word-btn" data-word="i" data-type="location" data-meaning="to/at (directional)">i</button>
+                                <button class="word-btn" data-word="mai" data-type="location" data-meaning="from">mai</button>
+                                <button class="word-btn" data-word="a" data-type="location" data-meaning="up to/until">a</button>
+                                <button class="word-btn" data-word="ma mua o" data-type="location" data-meaning="in front of">ma mua o</button>
+                                <button class="word-btn" data-word="ma hope o" data-type="location" data-meaning="behind">ma hope o</button>
+                                <button class="word-btn" data-word="ma luna o" data-type="location" data-meaning="on top of">ma luna o</button>
+                                <button class="word-btn" data-word="ma lalo o" data-type="location" data-meaning="under">ma lalo o</button>
+                                <button class="word-btn" data-word="ma waena o" data-type="location" data-meaning="between">ma waena o</button>
+                            </div>
+                        </div>
+                        
+                        <div class="category">
+                            <div class="category-header">
+                                <div class="category-title">Kahuhu me ka Manaʻo (Directional Particles)</div>
+                                <div class="category-subtitle">Direction and relationship particles</div>
+                            </div>
+                            <div class="words-container">
+                                <button class="word-btn" data-word="me" data-type="direction" data-meaning="with/and">me</button>
+                                <button class="word-btn" data-word="no" data-type="direction" data-meaning="for/because of (stationary)">no</button>
+                                <button class="word-btn" data-word="na" data-type="direction" data-meaning="for/belonging to (possessive)">na</button>
+                                <button class="word-btn" data-word="e" data-type="direction" data-meaning="by (passive agent)">e</button>
+                                <button class="word-btn" data-word="i" data-type="direction" data-meaning="in order to">i</button>
+                                <button class="word-btn" data-word="mai" data-type="direction" data-meaning="from (directional)">mai</button>
+                                <button class="word-btn" data-word="a" data-type="direction" data-meaning="and/until">a</button>
+                                <button class="word-btn" data-word="ā" data-type="direction" data-meaning="until">ā</button>
+                                <button class="word-btn" data-word="e like me" data-type="direction" data-meaning="like/similar to">e like me</button>
+                            </div>
+                        </div>
+                        
+                        <div class="category">
+                            <div class="category-header">
+                                <div class="category-title">Kahuhu me ka Manawa (Tense/Aspect Particles)</div>
+                                <div class="category-subtitle">Time-related markers</div>
+                            </div>
+                            <div class="words-container">
+                                <button class="word-btn" data-word="ua" data-type="tense" data-meaning="past/completed action">ua</button>
+                                <button class="word-btn" data-word="e" data-type="tense" data-meaning="future">e</button>
+                                <button class="word-btn" data-word="ke" data-type="tense" data-meaning="present progressive">ke</button>
+                                <button class="word-btn" data-word="ana" data-type="tense" data-meaning="progressive marker (with e/ke)">ana</button>
+                                <button class="word-btn" data-word="nei" data-type="tense" data-meaning="present/immediate action">nei</button>
+                                <button class="word-btn" data-word="paha" data-type="tense" data-meaning="perhaps/maybe">paha</button>
+                                <button class="word-btn" data-word="nō" data-type="tense" data-meaning="indeed/very">nō</button>
+                                <button class="word-btn" data-word="hoʻi" data-type="tense" data-meaning="also/indeed/emphasis">hoʻi</button>
+                                <button class="word-btn" data-word="wale" data-type="tense" data-meaning="only/just">wale</button>
+                            </div>
+                        </div>
+                        
+                        <div class="category full-width">
+                            <div class="info-section">
+                                <p><strong>Hawaiian Particle Usage:</strong></p>
+                                <p>Particles are crucial in Hawaiian grammar and determine the relationships between words.</p>
+                                <p class="example"><strong>ʻO marker:</strong> ʻO Pua koʻu inoa. (My name is Pua.)</p>
+                                <p class="example"><strong>Possessives:</strong> Koʻu hale (My house) vs. Kaʻu puke (My book)</p>
+                                <p class="example"><strong>Directionals:</strong> E hele ana au i ka hale me koʻu makuahine. (I am going to the house with my mother.)</p>
+                                <p class="example"><strong>Locational:</strong> Aia ka puke ma luna o ka pākaukau. (The book is on top of the desk.)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="questions" class="tab-content">
+                    <div class="word-categories">
+                        <div class="category">
+                            <div class="category-header">
+                                <div class="category-title">Huneʻano Nīnau (Question words)</div>
+                                <div class="category-subtitle">Start your question with these</div>
+                            </div>
+                            <div class="words-container">
+                                <button class="word-btn" data-word="ʻO wai" data-type="question" data-meaning="Who">ʻO wai</button>
+                                <button class="word-btn" data-word="He aha" data-type="question" data-meaning="What">He aha</button>
+                                <button class="word-btn" data-word="Ma hea" data-type="question" data-meaning="Where">Ma hea</button>
+                                <button class="word-btn" data-word="I ka hea" data-type="question" data-meaning="When">I ka hea</button>
+                                <button class="word-btn" data-word="No ke aha" data-type="question" data-meaning="Why">No ke aha</button>
+                                <button class="word-btn" data-word="Pehea" data-type="question" data-meaning="How">Pehea</button>
+                                <button class="word-btn" data-word="ʻEhia" data-type="question" data-meaning="How many">ʻEhia</button>
+                                <button class="word-btn" data-word="Hea" data-type="question" data-meaning="Where/which">Hea</button>
+                                <button class="word-btn" data-word="Anei" data-type="question" data-meaning="Question marker (yes/no)">Anei</button>
+                            </div>
+                        </div>
+                        
+                        <div class="category">
+                            <div class="category-header">
+                                <div class="category-title">Nīnau Hoʻoholo (Yes/No Questions)</div>
+                            </div>
+                            <div class="words-container">
+                                <button class="word-btn" data-word="ʻAe" data-type="answer" data-meaning="Yes">ʻAe</button>
+                                <button class="word-btn" data-word="ʻAʻole" data-type="answer" data-meaning="No">ʻAʻole</button>
+                                <button class="word-btn" data-word="ʻAe paha" data-type="answer" data-meaning="Maybe yes">ʻAe paha</button>
+                                <button class="word-btn" data-word="ʻAʻole paha" data-type="answer" data-meaning="Maybe no">ʻAʻole paha</button>
+                                <button class="word-btn" data-word="ʻAʻole au i ʻike" data-type="answer" data-meaning="I don't know">ʻAʻole au i ʻike</button>
+                                <button class="word-btn" data-word="Makemake anei ʻoe" data-type="question" data-meaning="Do you want">Makemake anei ʻoe</button>
+                                <button class="word-btn" data-word="Hiki anei iā ʻoe" data-type="question" data-meaning="Can you">Hiki anei iā ʻoe</button>
+                                <button class="word-btn" data-word="Aia anei" data-type="question" data-meaning="Is there">Aia anei</button>
+                            </div>
+                        </div>
+                        
+                        <div class="category full-width">
+                            <div class="info-section">
+                                <p><strong>Hawaiian Question Patterns:</strong></p>
+                                <p>Questions in Hawaiian often start with a question word:</p>
+                                <p class="example">ʻO wai kou inoa? (What is your name?)</p>
+                                <p class="example">Ma hea ʻoe e hele ai? (Where are you going?)</p>
+                                <p>Yes/No questions often use "anei" after the questioned element:</p>
+                                <p class="example">Makemake anei ʻoe e ʻai? (Do you want to eat?)</p>
+                                <p class="example">He haumāna anei ʻoe? (Are you a student?)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="descriptions" class="tab-content">
+                    <div class="word-categories">
+                        <div class="category">
+                            <div class="category-header">
+                                <div class="category-title">ʻĀnōʻai (Adjectives)</div>
+                                <div class="category-subtitle">Descriptive words</div>
+                            </div>
+                            <div class="words-container">
+                                <button class="word-btn" data-word="nui" data-type="adjective" data-meaning="big/large">nui</button>
+                                <button class="word-btn" data-word="liʻiliʻi" data-type="adjective" data-meaning="small">liʻiliʻi</button>
+                                <button class="word-btn" data-word="maikaʻi" data-type="adjective" data-meaning="good">maikaʻi</button>
+                                <button class="word-btn" data-word="ʻino" data-type="adjective" data-meaning="bad">ʻino</button>
+                                <button class="word-btn" data-word="ʻōmaʻomaʻo" data-type="adjective" data-meaning="green">ʻōmaʻomaʻo</button>
+                                <button class="word-btn" data-word="ʻulaʻula" data-type="adjective" data-meaning="red">ʻulaʻula</button>
+                                <button class="word-btn" data-word="melemele" data-type="adjective" data-meaning="yellow">melemele</button>
+                                <button class="word-btn" data-word="polū" data-type="adjective" data-meaning="blue">polū</button>
+                                <button class="word-btn" data-word="keʻokeʻo" data-type="adjective" data-meaning="white">keʻokeʻo</button>
+                                <button class="word-btn" data-word="ʻeleʻele" data-type="adjective" data-meaning="black">ʻeleʻele</button>
+                                <button class="word-btn" data-word="kaumaha" data-type="adjective" data-meaning="heavy/sad">kaumaha</button>
+                                <button class="word-btn" data-word="māmā" data-type="adjective" data-meaning="light">māmā</button>
+                                <button class="word-btn" data-word="nani" data-type="adjective" data-meaning="beautiful">nani</button>
+                            </div>
+                        </div>
+                        
+                        <div class="category">
+                            <div class="category-header">
+                                <div class="category-title">Painu (Stative Verbs)</div>
+                                <div class="category-subtitle">Describing states or conditions</div>
+                            </div>
+                            <div class="words-container">
+                                <button class="word-btn" data-word="pōmaikaʻi" data-type="stative" data-meaning="lucky/fortunate">pōmaikaʻi</button>
+                                <button class="word-btn" data-word="hemahema" data-type="stative" data-meaning="clumsy/awkward">hemahema</button>
+                                <button class="word-btn" data-word="akamai" data-type="stative" data-meaning="smart">akamai</button>
+                                <button class="word-btn" data-word="hauʻoli" data-type="stative" data-meaning="happy">hauʻoli</button>
+                                <button class="word-btn" data-word="ʻoluʻolu" data-type="stative" data-meaning="pleasant/nice">ʻoluʻolu</button>
+                                <button class="word-btn" data-word="māluhiluhi" data-type="stative" data-meaning="tired">māluhiluhi</button>
+                                <button class="word-btn" data-word="pōloli" data-type="stative" data-meaning="hungry">pōloli</button>
+                                <button class="word-btn" data-word="makaukau" data-type="stative" data-meaning="ready">makaukau</button>
+                                <button class="word-btn" data-word="maopopo" data-type="stative" data-meaning="understand/clear">maopopo</button>
+                            </div>
+                        </div>
+                        
+                        <div class="category full-width">
+                            <div class="info-section">
+                                <p><strong>Descriptive Patterns:</strong></p>
+                                <p>In Hawaiian, adjectives typically follow the noun:</p>
+                                <p class="example">Ka hale nui (The big house)</p>
+                                <p>Stative verbs are like adjectives but function as verbs:</p>
+                                <p class="example">Ua hauʻoli au i ka pāʻina. (I was happy at the party.)</p>
+                                <p class="example">He maikaʻi kēia kumu. (This teacher is good.)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="custom" class="tab-content">
+                    <div class="word-categories">
+                        <div class="category full-width">
+                            <div class="category-header">
+                                <div class="category-title">Huaʻōlelo Hou (Add your own words)</div>
+                                <div class="category-subtitle">Custom word entry</div>
+                            </div>
+                            <div class="custom-input-container">
+                                <input type="text" id="custom-word" placeholder="Hawaiian word">
+                                <input type="text" id="custom-meaning" placeholder="English meaning">
+                                <select id="custom-type">
+                                    <option value="noun">Noun</option>
+                                    <option value="verb">Verb</option>
+                                    <option value="adjective">Adjective</option>
+                                    <option value="marker">Marker</option>
+                                    <option value="subject">Pronoun</option>
+                                    <option value="location">Location</option>
+                                    <option value="time">Time</option>
+                                    <option value="particle">Particle</option>
+                                </select>
+                                <button id="add-custom-btn">Add Word</button>
+                            </div>
+                            <div id="custom-words-container" class="words-container">
+                                <!-- Custom words will be added here -->
+                            </div>
+                        </div>
+                        
+                        <div class="category">
+                            <div class="category-header">
+                                <div class="category-title">Nā Laʻana (Common phrases)</div>
+                                <div class="category-subtitle">Useful expressions</div>
+                            </div>
+                            <div class="words-container">
+                                <button class="word-btn" data-word="Aloha kakahiaka" data-type="phrase" data-meaning="Good morning">Aloha kakahiaka</button>
+                                <button class="word-btn" data-word="Aloha ʻauinalā" data-type="phrase" data-meaning="Good afternoon">Aloha ʻauinalā</button>
+                                <button class="word-btn" data-word="Aloha ahiahi" data-type="phrase" data-meaning="Good evening">Aloha ahiahi</button>
+                                <button class="word-btn" data-word="A hui hou" data-type="phrase" data-meaning="Until we meet again">A hui hou</button>
+                                <button class="word-btn" data-word="Mahalo nui loa" data-type="phrase" data-meaning="Thank you very much">Mahalo nui loa</button>
+                                <button class="word-btn" data-word="E kala mai" data-type="phrase" data-meaning="Excuse me/I'm sorry">E kala mai</button>
+                                <button class="word-btn" data-word="Hoʻomaʻamaʻa kākou" data-type="phrase" data-meaning="Let's practice">Hoʻomaʻamaʻa kākou</button>
+                                <button class="word-btn" data-word="Pehea ʻoe?" data-type="phrase" data-meaning="How are you?">Pehea ʻoe?</button>
+                                <button class="word-btn" data-word="Maikaʻi au, mahalo" data-type="phrase" data-meaning="I'm fine, thank you">Maikaʻi au, mahalo</button>
+                            </div>
+                        </div>
+                        
+                        <div class="category">
+                            <div class="info-section">
+                                <p><strong>Creating Your Own Sentences:</strong></p>
+                                <p>Add your own words to build custom sentences. Remember these patterns:</p>
+                                <p class="example">VSO: Verb + Subject + Object (Ua ʻai au i ka meaʻai)</p>
+                                <p class="example">Equational: ʻO + Noun + Noun or Noun + Adjective (ʻO ia ke kumu. He kumu maikaʻi ʻo ia)</p>
+                                <p>Try to build both simple and complex sentences as you practice!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+            <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const hawaiianSentence = document.getElementById('hawaiian-sentence');
+            const translationDisplay = document.getElementById('translation-display');
+            const clearBtn = document.getElementById('clear-btn');
+            const backspaceBtn = document.getElementById('backspace-btn');
+            const translateBtn = document.getElementById('translate-btn');
+            const randomBtn = document.getElementById('random-btn');
+            const wordButtons = document.querySelectorAll('.word-btn');
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            const addCustomBtn = document.getElementById('add-custom-btn');
+            const customWordInput = document.getElementById('custom-word');
+            const customMeaningInput = document.getElementById('custom-meaning');
+            const customTypeSelect = document.getElementById('custom-type');
+            const customWordsContainer = document.getElementById('custom-words-container');
+            
+            let currentSentence = [];
+            let isTranslationShown = true;
+            
+            // Set initial CSS variable for translate button hover color
+            translateBtn.style.setProperty('--hover-color', '#906841'); // Brown (darker gold)
+            
+// Updated updateSentenceDisplay function with greyed-out placeholder
+function updateSentenceDisplay() {
+    if (currentSentence.length === 0) {
+        // Set placeholder text
+        hawaiianSentence.textContent = 'E koho i nā huaʻōlelo...';
+        translationDisplay.textContent = 'Choose some words...';
+        
+        // Apply grayed-out styling to placeholder text
+        hawaiianSentence.style.color = '#888888'; // Gray color
+        hawaiianSentence.style.fontStyle = 'italic'; // Optional: make it italic
+        translationDisplay.style.color = '#999999'; // Slightly lighter gray for translation
+        
+        // Reset font size for empty state
+        hawaiianSentence.style.fontSize = '';
+        translationDisplay.style.fontSize = '';
+        return;
+    }
+    
+    // Reset to normal text color for actual content
+    hawaiianSentence.style.color = ''; // Reset to default (typically black or dark blue)
+    hawaiianSentence.style.fontStyle = ''; // Remove italic if applied
+    translationDisplay.style.color = '#666'; // Reset to original translation color
+    
+    // Set the actual sentence content
+    hawaiianSentence.textContent = currentSentence.map(word => word.text).join(' ');
+    
+    if (isTranslationShown) {
+        const translation = currentSentence.map(word => word.meaning).join(' ');
+        translationDisplay.textContent = translation;
+    } else {
+        translationDisplay.textContent = '[Translation hidden]';
+    }
+    
+    // Call our new function to adjust font size based on content length
+    adjustFontSizeForSentence();
+}
+            
+            // Function to add a word to the sentence
+            function addWordToSentence(text, meaning, type) {
+                // Convert the text to lowercase before adding it to the sentence
+                // But preserve special Hawaiian characters (ʻ, ā, ē, ī, ō, ū)
+                const lowerText = text.replace(/[A-Z]/g, match => match.toLowerCase());
+                
+                currentSentence.push({
+                    text: lowerText,
+                    meaning: meaning,
+                    type: type
+                });
+                updateSentenceDisplay();
+            }
+            
+            function adjustFontSizeForSentence() {
+    const container = document.getElementById('sentence-display');
+    const textElement = document.getElementById('hawaiian-sentence');
+    const translationElement = document.getElementById('translation-display');
+    
+    if (!textElement || !container) return;
+    
+    const text = textElement.textContent;
+    
+    // Reset font size to measure the default size
+    textElement.style.fontSize = ''; // Reset to CSS default
+    
+    // Start with base font sizes from CSS variables
+    let baseFontSize = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--text-3xl'));
+    let translationBaseFontSize = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--text-md'));
+    
+    // Set minimum font sizes (in pixels)
+    const minFontSize = 20;
+    const minTranslationFontSize = 14;
+    
+    // Calculate a scaling factor based on text length
+    let scaleFactor = 1;
+    
+    if (text.length > 120) {
+        scaleFactor = 0.4; // Very long text (scale to 40% of original size)
+    } else if (text.length > 80) {
+        scaleFactor = 0.5; // Long text (scale to 50% of original size)
+    } else if (text.length > 50) {
+        scaleFactor = 0.65; // Medium-long text (scale to 65% of original size)
+    } else if (text.length > 30) {
+        scaleFactor = 0.8; // Medium text (scale to 80% of original size)
+    }
+    
+    // Apply the new font size to Hawaiian text, but not smaller than minimum
+    let newSize = Math.max(baseFontSize * scaleFactor, minFontSize);
+    textElement.style.fontSize = `${newSize}px`;
+    
+    // Also adjust the translation font size if visible
+    if (translationElement) {
+        // Translation uses a different scaling factor since it's already smaller
+        let translationScaleFactor = Math.min(scaleFactor * 1.1, 1);
+        let newTranslationSize = Math.max(translationBaseFontSize * translationScaleFactor, minTranslationFontSize);
+        translationElement.style.fontSize = `${newTranslationSize}px`;
+    }
+}
+            
+            // Add event listeners to word buttons
+            wordButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const word = this.getAttribute('data-word');
+                    const meaning = this.getAttribute('data-meaning');
+                    const type = this.getAttribute('data-type');
+                    addWordToSentence(word, meaning, type);
+                    
+                    // Flash the button for visual feedback
+                    this.classList.add('active');
+                    setTimeout(() => {
+                        this.classList.remove('active');
+                    }, 300);
+                });
+            });
+            
+            // Clear button
+            clearBtn.addEventListener('click', function() {
+                currentSentence = [];
+                updateSentenceDisplay();
+            });
+            
+            // Backspace button
+            backspaceBtn.addEventListener('click', function() {
+                currentSentence.pop();
+                updateSentenceDisplay();
+            });
+            
+            // Toggle translation
+            translateBtn.addEventListener('click', function() {
+                isTranslationShown = !isTranslationShown;
+                updateSentenceDisplay();
+                updateTranslateButtonAppearance();
+            });
+            
+            // Function to update the translate button appearance based on state
+            function updateTranslateButtonAppearance() {
+                const buttonText = translateBtn.querySelector('.button-text');
+                const buttonEmoji = translateBtn.querySelector('.button-emoji');
+                
+                if (isTranslationShown) {
+                    // Translation is visible - use gold color
+                    buttonText.textContent = 'UNUHI';
+                    buttonEmoji.textContent = '🔄';
+                    translateBtn.style.backgroundColor = '#C79756'; // Gold
+                    translateBtn.style.color = 'white';
+                    
+                    // Update hover style via CSS variable
+                    translateBtn.style.setProperty('--hover-color', '#906841'); // Brown (darker gold)
+                } else {
+                    // Translation is hidden - use grey color
+                    buttonText.textContent = 'HOʻIKE UNUHI';
+                    buttonEmoji.textContent = '👁️';
+                    translateBtn.style.backgroundColor = '#aaaaaa'; // Grey
+                    translateBtn.style.color = '#ffffff';
+                    
+                    // Update hover style via CSS variable
+                    translateBtn.style.setProperty('--hover-color', '#888888'); // Darker grey
+                }
+            }
+            
+            // Tab functionality
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    // Remove active class from all tabs
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    
+                    // Add active class to clicked tab
+                    this.classList.add('active');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+            
+            // Random sentence generator with a focus on particles
+const randomSentences = [
+    // Original examples
+    {
+        hawaiian: 'E hele ana au i ke kula.',
+        english: 'I am going to school.'
+    },
+    {
+        hawaiian: 'Ua ʻai ʻo Keola i ka meaʻai.',
+        english: 'Keola ate the food.'
+    },
+    // Sentences with ʻO
+    {
+        hawaiian: 'ʻO wai kou inoa?',
+        english: 'What is your name?'
+    },
+    {
+        hawaiian: 'ʻO au ʻo Keola.',
+        english: 'I am Keola.'
+    },
+    {
+        hawaiian: 'ʻO kēia ka hale o koʻu makuahine.',
+        english: 'This is my mother\'s house.'
+    },
+    {
+        hawaiian: 'ʻO kēlā ke keiki a Kawika.',
+        english: 'That is Kawika\'s child.'
+    },
+    // Sentences with ma/i
+    {
+        hawaiian: 'Aia ka puke ma luna o ka papa.',
+        english: 'The book is on top of the table.'
+    },
+    {
+        hawaiian: 'Ke hele nei ʻo ia i ke kula.',
+        english: 'She is going to school.'
+    },
+    {
+        hawaiian: 'Noho au ma Honolulu.',
+        english: 'I live in Honolulu.'
+    },
+    // Sentences with mai
+    {
+        hawaiian: 'Mai hea mai ʻoe?',
+        english: 'Where are you from?'
+    },
+    {
+        hawaiian: 'Mai Maui mai au.',
+        english: 'I am from Maui.'
+    },
+    // Sentences with no/na
+    {
+        hawaiian: 'No ke aha ʻoe e hele ai i laila?',
+        english: 'Why are you going there?'
+    },
+    {
+        hawaiian: 'Na wai kēia mea?',
+        english: 'Whose thing is this?'
+    },
+    {
+        hawaiian: 'Na ke kumu kēia puke.',
+        english: 'This book belongs to the teacher.'
+    },
+    // Sentences with me
+    {
+        hawaiian: 'Hele au i ke kula me koʻu hoaloha.',
+        english: 'I go to school with my friend.'
+    },
+    {
+        hawaiian: 'E ʻai ana ʻo ia me kona ʻohana.',
+        english: 'She will eat with her family.'
+    },
+    // More complex examples with multiple particles
+    {
+        hawaiian: 'Ua hele ʻo Keola i ka hale kūʻai me kona kaikaina.',
+        english: 'Keola went to the store with his younger sibling.'
+    },
+    {
+        hawaiian: 'ʻO ka wahine me ke kāne nā mākua o ke keiki.',
+        english: 'The woman and the man are the parents of the child.'
+    },
+    {
+        hawaiian: 'Mai ka hale a i ke kula, aia he ʻelima minuke.',
+        english: 'From the house to the school, it is five minutes.'
+    },
+    // Equational sentences
+    {
+        hawaiian: 'He maikaʻi kēia lā.',
+        english: 'This day is good.'
+    },
+    {
+        hawaiian: 'ʻO ia ke kumu maikaʻi.',
+        english: 'He is the good teacher.'
+    },
+    {
+        hawaiian: 'ʻO kēlā ka hale nui.',
+        english: 'That is the big house.'
+    }
+];
+
+randomBtn.addEventListener('click', function() {
+    const randomIndex = Math.floor(Math.random() * randomSentences.length);
+    const sentence = randomSentences[randomIndex];
+    
+    // Reset the current sentence array but populate with the random sentence
+    currentSentence = [{
+        text: sentence.hawaiian,
+        meaning: sentence.english,
+        type: 'phrase'
+    }];
+    
+    // Update the display
+    updateSentenceDisplay();
+});
+            
+            // Add custom word functionality
+            addCustomBtn.addEventListener('click', function() {
+                const word = customWordInput.value.trim();
+                const meaning = customMeaningInput.value.trim();
+                const type = customTypeSelect.value;
+                
+                if (word && meaning) {
+                    // Create new button for the custom word
+                    const newButton = document.createElement('button');
+                    newButton.className = 'word-btn';
+                    newButton.setAttribute('data-word', word);
+                    newButton.setAttribute('data-meaning', meaning);
+                    newButton.setAttribute('data-type', type);
+                    newButton.textContent = word;
+                    
+                    // Add event listener to the new button
+                    newButton.addEventListener('click', function() {
+                        const btnWord = this.getAttribute('data-word');
+                        const btnMeaning = this.getAttribute('data-meaning');
+                        const btnType = this.getAttribute('data-type');
+                        addWordToSentence(btnWord, btnMeaning, btnType);
+                        
+                        // Flash the button for visual feedback
+                        this.classList.add('active');
+                        setTimeout(() => {
+                            this.classList.remove('active');
+                        }, 300);
+                    });
+                    
+                    // Add the new button to the container
+                    customWordsContainer.appendChild(newButton);
+                    
+                    // Clear input fields
+                    customWordInput.value = '';
+                    customMeaningInput.value = '';
+                }
+            });
+            
+            // Fullscreen display functionality
+            document.getElementById('sentence-display').addEventListener('click', function(e) {
+                if (currentSentence.length > 0) {
+                    e.preventDefault();
+                    createFullscreenDisplay();
+                }
+            });
+            
+          function createFullscreenDisplay() {
+    // Track fullscreen-specific visibility state
+    let isTranslationHiddenInFullscreen = !isTranslationShown;
+    
+    // Store the actual Hawaiian text and translation
+    const hawaiianText = currentSentence.map(word => word.text).join(' ');
+    const translationText = currentSentence.map(word => word.meaning).join(' ');
+    
+    // Create overlay element
+    const overlay = document.createElement('div');
+    
+    // Set styles for fullscreen overlay
+    Object.assign(overlay.style, {
+        position: 'fixed',
+        top: '0',
+        left: '0',
+        width: '100%',
+        height: '100%',
+        backgroundColor: '#1E3057',
+        color: 'white',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: '9999',
+        textAlign: 'center',
+        padding: '20px',
+        transition: 'opacity 0.3s'
+    });
+    
+    // Hawaiian text element
+    const hawaiianElement = document.createElement('div');
+    hawaiianElement.textContent = hawaiianText;
+    hawaiianElement.style.fontSize = 'min(20vw, 120px)';
+    hawaiianElement.style.fontFamily = 'Futura, sans-serif';
+    hawaiianElement.style.marginBottom = '40px';
+    hawaiianElement.style.maxWidth = '90%';
+    hawaiianElement.style.wordWrap = 'break-word';
+    hawaiianElement.style.lineHeight = '1.2';
+    hawaiianElement.style.textTransform = 'lowercase';
+    
+    // Translation element
+    const translationElement = document.createElement('div');
+    translationElement.textContent = isTranslationHiddenInFullscreen ? '—' : translationText;
+    translationElement.style.fontSize = 'min(6vw, 42px)';
+    translationElement.style.fontFamily = 'Helvetica Neue, sans-serif';
+    translationElement.style.color = '#C79756';
+    translationElement.style.maxWidth = '80%';
+    translationElement.style.wordWrap = 'break-word';
+    translationElement.style.fontStyle = 'italic';
+    translationElement.style.minHeight = '100px';
+    translationElement.style.display = 'flex';
+    translationElement.style.alignItems = 'center';
+    translationElement.style.justifyContent = 'center';
+    translationElement.style.textTransform = 'lowercase';
+    
+    // Toggle button container
+    const buttonContainer = document.createElement('div');
+    buttonContainer.style.marginTop = '40px';
+    buttonContainer.style.zIndex = '10000';
+    
+    // Toggle button for translation visibility
+    const toggleButton = document.createElement('button');
+    updateFullscreenButtonAppearance(); // Set initial button appearance
+    
+    // Initial button styling (common properties)
+    Object.assign(toggleButton.style, {
+        padding: '18px 36px',
+        fontSize: '24px',
+        color: 'white',
+        border: 'none',
+        borderRadius: '12px',
+        cursor: 'pointer',
+        fontWeight: 'bold',
+        boxShadow: '0 6px 12px rgba(0,0,0,0.3)',
+        transition: 'background-color 0.3s, transform 0.2s'
+    });
+    
+    // Function to update button appearance based on visibility state
+    function updateFullscreenButtonAppearance() {
+        if (isTranslationHiddenInFullscreen) {
+            // Translation is hidden - use grey color
+            toggleButton.textContent = 'HOʻIKE';  // Show
+            toggleButton.style.backgroundColor = '#aaaaaa';  // Grey
+            // Update hover color in event handlers below
+        } else {
+            // Translation is visible - use blue color
+            toggleButton.textContent = 'HUNA';  // Hide
+            toggleButton.style.backgroundColor = '#5480E8';  // Blue
+            // Update hover color in event handlers below
+        }
+    }
+    
+    // Click instruction
+    const instruction = document.createElement('div');
+    instruction.textContent = '';
+    instruction.style.fontSize = '20px';
+    instruction.style.position = 'absolute';
+    instruction.style.bottom = '30px';
+    instruction.style.opacity = '0.7';
+    instruction.style.width = '100%';
+    instruction.style.textAlign = 'center';
+    
+    // Add elements to the overlay
+    buttonContainer.appendChild(toggleButton);
+    overlay.appendChild(hawaiianElement);
+    overlay.appendChild(translationElement);
+    overlay.appendChild(buttonContainer);
+    overlay.appendChild(instruction);
+    
+    // Toggle button hover effects - colors depend on current state
+    toggleButton.addEventListener('mouseover', () => {
+        if (isTranslationHiddenInFullscreen) {
+            toggleButton.style.backgroundColor = '#888888';  // Darker grey
+        } else {
+            toggleButton.style.backgroundColor = '#3A67D1';  // Darker blue
+        }
+        toggleButton.style.transform = 'scale(1.05)';
+    });
+    
+    toggleButton.addEventListener('mouseout', () => {
+        // Reset to normal state
+        updateFullscreenButtonAppearance();
+        toggleButton.style.transform = 'scale(1)';
+    });
+    
+    // Toggle button click handler
+    const toggleHandler = (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        
+        // Toggle the local fullscreen visibility state
+        isTranslationHiddenInFullscreen = !isTranslationHiddenInFullscreen;
+        
+        // Update the translation text display based on the new state
+        translationElement.textContent = isTranslationHiddenInFullscreen ? '—' : translationText;
+        
+        // Update the button appearance based on the new state
+        updateFullscreenButtonAppearance();
+        
+        return false; // Ensure no propagation
+    };
+    
+    toggleButton.addEventListener('click', toggleHandler);
+    toggleButton.addEventListener('touchend', toggleHandler);
+    
+    // Add click event to close when clicking anywhere else on the overlay
+    const closeHandler = (e) => {
+        // Only close if clicking outside the button
+        if (e.target !== toggleButton && !toggleButton.contains(e.target)) {
+            document.body.removeChild(overlay);
+            document.removeEventListener('keydown', escHandler);
+        }
+    };
+    
+    overlay.addEventListener('click', closeHandler);
+    overlay.addEventListener('touchend', closeHandler);
+    
+    // Add escape key to close
+    const escHandler = function(e) {
+        if (e.key === 'Escape') {
+            if (document.body.contains(overlay)) {
+                document.body.removeChild(overlay);
+            }
+            document.removeEventListener('keydown', escHandler);
+        }
+    };
+    document.addEventListener('keydown', escHandler);
+    
+    // Add to body
+    document.body.appendChild(overlay);
+}            
+            
+            // Mobile optimizations
+            function updateLayoutForMobile() {
+                if (window.innerWidth <= 768) {
+                    // Hide text in buttons, show only emoji
+                    document.querySelectorAll('.button-text').forEach(el => {
+                        el.style.display = 'none';
+                    });
+                    document.querySelectorAll('.button-emoji').forEach(el => {
+                        el.style.marginRight = '0';
+                    });
+                } else {
+                    // Show text in buttons
+                    document.querySelectorAll('.button-text').forEach(el => {
+                        el.style.display = 'inline';
+                    });
+                    document.querySelectorAll('.button-emoji').forEach(el => {
+                        el.style.marginRight = '8px';
+                    });
+                }
+            }
+            
+            // Run initially and on resize
+            updateLayoutForMobile();
+            window.addEventListener('resize', updateLayoutForMobile);
+            
+            // Initialize button appearances
+            updateTranslateButtonAppearance();
+            // Add this line to ensure the placeholder is properly styled on load
+            updateSentenceDisplay();
+        });
+    </script>
+</body>
+</html>

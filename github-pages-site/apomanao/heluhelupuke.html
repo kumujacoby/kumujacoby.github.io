@@ -1,0 +1,2103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="HandheldFriendly" content="true">
+    <title>Heluhelu Puke</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <style>
+        /* Base Variables - Using Kamehameha Colors */
+        :root {
+            --navy: #1E3057;
+            --royal-blue: #5480E8;
+            --white: #FFFFFF;
+            --light-gray: #F0F0F0;
+            --dark-teal: #3A5350;
+            --teal: #40816E;
+            --brown: #906841;
+            --gold: #C79756;
+            --rust: #A64331;
+            --terra-cotta: #C64F3A;
+            --burgundy: #5C1A2D;
+            --rose: #833043;
+            
+            /* Swiss Design Grid Units */
+            --grid-base: 8px;
+            --grid-2x: 16px;
+            --grid-3x: 24px;
+            --grid-4x: 32px;
+            --grid-5x: 40px;
+            --grid-6x: 48px;
+            --grid-8x: 64px;
+            --grid-10x: 80px;
+            --grid-12x: 96px;
+            
+            /* Typography Scale */
+            --text-xs: 14px;
+            --text-sm: 16px;
+            --text-md: 20px;
+            --text-lg: 24px;
+            --text-xl: 32px;
+            --text-2xl: 42px;
+            --text-3xl: 56px;
+            --text-4xl: 72px;
+            
+            /* Line Heights */
+            --leading-tight: 1.1;
+            --leading-normal: 1.3;
+            --leading-relaxed: 1.5;
+        }
+        
+        /* Reset & Base Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            touch-action: manipulation;
+        }
+        
+        html, body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            font-size: var(--text-sm);
+            line-height: var(--leading-normal);
+            color: var(--navy);
+            background-color: var(--navy);
+            overflow-x: hidden;
+            height: 100%;
+            width: 100%;
+        }
+        
+        /* Layout Container with 8px Grid */
+        .container {
+            max-width: 1024px;
+            margin: var(--grid-3x) auto;
+            padding: 0 var(--grid-2x);
+            display: flex;
+            flex-direction: column;
+            min-height: calc(100vh - var(--grid-6x));
+        }
+        
+        .main-container {
+            width: 100%;
+            background-color: var(--white);
+            border-radius: var(--grid-3x);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+        }
+        
+        /* Header */
+        .header {
+            background-color: var(--teal);
+            color: var(--white);
+            padding: 0;
+            text-align: center;
+            font-weight: bold;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            height: 54px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .header h1 {
+            font-family: 'Helvetica Neue', sans-serif;
+            font-size: 36px;
+            letter-spacing: -0.02em;
+            margin: 0;
+            line-height: 1.1;
+        }
+        
+        .nav-arrow {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            color: var(--white);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            transition: background-color 0.2s;
+            border-right: 1px solid white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .nav-arrow:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Content */
+        .content {
+            padding: var(--grid-4x);
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Story Selection Section */
+        .story-selection {
+            margin-bottom: var(--grid-4x);
+        }
+        
+        .section-title {
+            font-size: var(--text-lg);
+            font-weight: bold;
+            margin-bottom: var(--grid-3x);
+            color: var(--navy);
+        }
+        
+        .story-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: var(--grid-3x);
+        }
+        
+        .story-card {
+            background-color: var(--light-gray);
+            border-radius: var(--grid-base);
+            padding: var(--grid-3x);
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 2px solid #ddd;
+        }
+        
+        .story-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            border-color: var(--teal);
+        }
+        
+        .story-card-title {
+            font-size: var(--text-md);
+            font-weight: bold;
+            margin-bottom: var(--grid-base);
+            color: var (--navy);
+        }
+        
+        .story-card-desc {
+            font-size: var(--text-sm);
+            color: #666;
+        }
+        
+        .story-card-level {
+            margin-top: var(--grid-base);
+            display: flex;
+            align-items: center;
+        }
+        
+        .level-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            margin-right: 4px;
+            border-radius: 50%;
+            background-color: var(--teal);
+        }
+        
+        .level-text {
+            font-size: var(--text-xs);
+            color: #666;
+        }
+        
+        /* Word Selection Section */
+        .word-selection {
+            display: none;
+            margin-bottom: var(--grid-4x);
+        }
+        
+        .prompt-container {
+            background-color: var(--light-gray);
+            border-radius: var(--grid-base);
+            padding: var(--grid-3x);
+            margin-bottom: var(--grid-3x);
+        }
+        
+        .prompt-text {
+            font-size: var(--text-md);
+            line-height: var(--leading-relaxed);
+            margin-bottom: var(--grid-2x);
+        }
+        
+        .blank {
+            display: inline-block;
+            min-width: 100px;
+            padding: 0 var(--grid-base);
+            margin: 0 var(--grid-base);
+            border-bottom: 2px solid var(--royal-blue);
+            color: var(--royal-blue);
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        .word-options {
+            margin-top: var(--grid-3x);
+        }
+        
+        .word-option-title {
+            font-size: var(--text-sm);
+            font-weight: bold;
+            margin-bottom: var(--grid-base);
+        }
+        
+        .word-option-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--grid-base);
+            margin-bottom: var(--grid-2x);
+        }
+        
+        .word-btn {
+            background-color: var(--royal-blue);
+            color: var(--white);
+            border: none;
+            border-radius: var(--grid-base);
+            padding: var(--grid-base) var(--grid-2x);
+            font-size: var(--text-sm);
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .word-btn:hover {
+            transform: scale(1.05);
+            background-color: var(--navy);
+            z-index: 2;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .word-btn:active {
+            transform: scale(0.95);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            transition: all 0.1s;
+        }
+        
+        .custom-word {
+            display: flex;
+            align-items: center;
+            gap: var (--grid-base);
+            margin-top: var(--grid-2x);
+        }
+        
+        .custom-word input {
+            flex: 1;
+            padding: var(--grid-base);
+            border: 1px solid #ddd;
+            border-radius: var(--grid-base);
+            font-size: var(--text-sm);
+        }
+        
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: var(--grid-3x);
+        }
+        
+        .next-blank-btn, .prev-blank-btn, .finish-btn {
+            padding: var(--grid-2x) var(--grid-3x);
+            border: none;
+            border-radius: var(--grid-base);
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.2s;
+            font-size: var(--text-md);
+        }
+        
+        .next-blank-btn {
+            background-color: var(--gold);  /* Fixed: using correct variable name */
+            color: var(--white);
+        }
+        
+        .finish-btn {
+            background-color: var(--teal);  /* Fixed: using correct variable name */
+            color: var(--white);
+        }
+
+        .prev-blank-btn {
+            background-color: var(--gold);
+            color: var(--white);
+        }
+        
+        .next-blank-btn:hover, .finish-btn:hover {
+            background-color: var(--dark-teal);
+            transform: translateY(-2px);
+        }
+        
+        .prev-blank-btn:hover {
+            background-color: var(--brown);
+            transform: translateY(-2px);
+        }
+        
+        .next-blank-btn:active, .prev-blank-btn:active, .finish-btn:active {
+            transform: translateY(1px);
+        }
+        
+        .finish-btn {
+            display: none;
+            font-size: var(--text-md);
+        }
+        
+        .finish-btn-active {
+            background-color: var(--dark-teal) !important;
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Final Story Section */
+        .final-story {
+            display: none;
+            margin-bottom: var (--grid-4x);
+        }
+        
+        .story-container {
+            background-color: var(--light-gray);
+            border-radius: var(--grid-base);
+            padding: var(--grid-4x);
+            margin-bottom: var(--grid-3x);
+        }
+        
+        .story-title {
+            font-size: var(--text-xl);
+            font-weight: bold;
+            margin-bottom: var(--grid-3x);
+            color: var(--navy);
+            text-align: center;
+        }
+        
+        .story-content {
+            font-size: var(--text-md);
+            line-height: var(--leading-relaxed);
+            margin-bottom: var(--grid-4x);
+        }
+        
+        .filled-blank {
+            color: var(--royal-blue);
+            font-weight: bold;
+        }
+        
+        .translation-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: var(--grid-3x);
+            gap: var(--grid-2x);
+        }
+        
+        .toggle-btn {
+            background-color: var(--royal-blue);
+            color: var(--white);
+            border: none;
+            border-radius: var(--grid-base);
+            padding: var(--grid-base) var(--grid-2x);
+            font-size: var(--text-sm);
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.2s;
+            font-size: var(--text-md);
+        }
+        
+        .toggle-btn:hover {
+            background-color: var(--navy);
+            transform: translateY(-2px);
+        }
+        
+        .toggle-btn:active {
+            transform: translateY(1px);
+        }
+        
+        .translation {
+            display: none;
+            padding: var(--grid-3x);
+            background-color: var(--white);
+            border-radius: var(--grid-base);
+            border: 1px solid #ddd;
+            margin-top: var(--grid-3x);
+        }
+        
+        .translation-title {
+            font-size: var(--text-md);
+            font-weight: bold;
+            margin-bottom: var(--grid-2x);
+            color: var(--navy);
+        }
+        
+        .translation-content {
+            font-size: var(--text-sm);
+            line-height: var(--leading-relaxed);
+            color: #444;
+        }
+        
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: var(--grid-3x);
+            margin-top: var(--grid-4x);
+        }
+        
+        .new-story-btn, .print-btn {
+            padding: var(--grid-2x) var(--grid-3x);
+            border: none;
+            border-radius: var(--grid-base);
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.2s;
+            font-size: var(--text-md);
+        }
+        
+        .new-story-btn {
+            background-color: var(--teal);
+            color: var(--white);
+        }
+        
+        .print-btn {
+            background-color: var(--gold);
+            color: var(--white);
+        }
+        
+        .new-story-btn:hover {
+            background-color: var(--dark-teal);
+            transform: translateY(-2px);
+        }
+        
+        .print-btn:hover {
+            background-color: var(--brown);
+            transform: translateY(-2px);
+        }
+        
+        .menu-btn {
+            background-color: var(--royal-blue);
+            color: var(--white);
+            padding: var(--grid-2x) var(--grid-3x);
+            border: none;
+            border-radius: var(--grid-base);
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.2s;
+            font-size: var(--text-md);
+        }
+        
+        .menu-btn:hover {
+            background-color: var(--navy);
+            transform: translateY(-2px);
+        }
+        
+        .menu-btn:active {
+            transform: translateY(1px);
+        }
+        
+        /* Responsive adaptations */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 var(--grid-base);
+                margin: var(--grid-base) auto;
+            }
+            
+            .content {
+                padding: var(--grid-2x);
+            }
+            
+            .header h1 {
+                font-size: var(--text-xl);
+            }
+            
+            .story-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .story-card-title {
+                font-size: var(--text-sm);
+            }
+            
+            .prompt-text, .story-content {
+                font-size: var(--text-sm);
+            }
+            
+            .word-btn {
+                padding: var(--grid-base) var(--grid-base);
+                font-size: 14px;
+            }
+            
+            .next-blank-btn, .prev-blank-btn, .finish-btn, 
+            .new-story-btn, .print-btn {
+                padding: var(--grid-base) var(--grid-2x);
+                font-size: var(--text-sm);
+            }
+            
+            .nav-buttons, .action-buttons {
+                flex-direction: column;
+                gap: var(--grid-base);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                margin: var(--grid-base) var(--grid-base);
+            }
+            
+            .main-container {
+                border-radius: var(--grid-2x);
+            }
+            
+            .prompt-text, .story-content {
+                font-size: 14px;
+            }
+            
+            .translation-toggle {
+                flex-direction: column;
+            }
+        }
+        
+        /* Print styles */
+        /* Animation for finish button */
+        .empty-blank {
+            color: var(--dark-teal);
+            border-bottom: 2px dashed var(--royal-blue) !important;
+        }
+        
+        /* Print styles */
+        @media print {
+            .container {
+                margin: 0;
+                padding: 0;
+            }
+            
+            .header, .action-buttons, .translation-toggle {
+                display: none;
+            }
+            
+            .main-container {
+                box-shadow: none;
+            }
+            
+            .story-container {
+                padding: 0;
+                background: none;
+            }
+            
+            .story-content, .translation-content {
+                font-size: 12pt;
+                line-height: 1.5;
+            }
+            
+            .translation {
+                display: block !important;
+                border: none;
+                padding: 0;
+                margin-top: 20pt;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="main-container">
+            <div class="header">
+                <a href="index.html" class="nav-arrow" aria-label="Return to main menu">
+                    ←
+                </a>
+                <h1>Heluhelu Puke</h1>
+            </div>
+            
+            <div class="content">
+                <!-- Story Selection Section -->
+                <div class="story-selection" id="story-selection">
+                    <h2 class="section-title">E Koho i Kahi Moʻolelo</h2>
+                    
+                    <div class="story-cards" id="story-cards">
+                        <!-- Story cards will be added here dynamically -->
+                    </div>
+                </div>
+                
+                <!-- Word Selection Section -->
+                <div class="word-selection" id="word-selection">
+                    <h2 class="section-title">E Koho i Nā Huaʻōlelo</h2>
+                    
+                    <div class="prompt-container">
+                        <p class="prompt-text" id="current-prompt">
+                            <!-- Current prompt text will go here -->
+                        </p>
+                        
+                        <div class="word-options">
+                            <h3 class="word-option-title" id="word-prompt">E koho i ka <span id="blank-type">huaʻōlelo</span>:</h3>
+                            
+                            <div class="word-option-buttons" id="word-options">
+                                <!-- Word options will be added here dynamically -->
+                            </div>
+                            
+                            <div class="custom-word">
+                                <input type="text" id="custom-word-input" placeholder="E kikokiko i kāu huaʻōlelo ponoʻī...">
+                                <button class="word-btn" id="add-custom-word">E HUI</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="nav-buttons">
+                        <button class="prev-blank-btn" id="prev-blank"><i class="ri-arrow-left-line"></i></button>
+                        <button class="next-blank-btn" id="next-blank"><i class="ri-arrow-right-line"></i></button>
+                        <button class="finish-btn" id="finish-story"><i class="ri-check-line"></i></button>
+                        <button class="menu-btn" id="return-to-menu"><i class="ri-menu-line"></i></button>
+                    </div>
+                </div>
+                
+                <!-- Final Story Section -->
+                <div class="final-story" id="final-story">
+                    <h2 class="section-title">Kou Moʻolelo</h2>
+                    
+                    <div class="story-container">
+                        <h3 class="story-title" id="final-story-title">Story Title</h3>
+                        
+                        <div class="story-content" id="final-story-content">
+                            <!-- Final story content will go here -->
+                        </div>
+                        
+                        <div class="translation-toggle">
+                            <button class="toggle-btn" id="toggle-translation">Hōʻike i ka Unuhi Pelekānia</button>
+                        </div>
+                        
+                        <div class="translation" id="translation">
+                            <h4 class="translation-title">Unuhi Pelekānia:</h4>
+                            <div class="translation-content" id="translation-content">
+                                <!-- Translation content will go here -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Final story action buttons -->
+                    <div class="action-buttons">
+                        <button class="new-story-btn" id="new-story">
+                            <i class="ri-add-line"></i> 
+                        </button>
+                        <button class="print-btn" id="print-story">
+                            <i class="ri-printer-line"></i> 
+                        </button>
+                        <button class="menu-btn" id="final-return">
+                            <i class="ri-menu-line"></i> 
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Cache DOM elements
+            const storySelection = document.getElementById('story-selection');
+            const storyCards = document.getElementById('story-cards');
+            const wordSelection = document.getElementById('word-selection');
+            const currentPrompt = document.getElementById('current-prompt');
+            const blankType = document.getElementById('blank-type');
+            const wordOptions = document.getElementById('word-options');
+            const customWordInput = document.getElementById('custom-word-input');
+            const addCustomWord = document.getElementById('add-custom-word');
+            const prevBlankBtn = document.getElementById('prev-blank');
+            const nextBlankBtn = document.getElementById('next-blank');
+            const finishBtn = document.getElementById('finish-story');
+            const finalStory = document.getElementById('final-story');
+            const finalStoryTitle = document.getElementById('final-story-title');
+            const finalStoryContent = document.getElementById('final-story-content');
+            const toggleTranslationBtn = document.getElementById('toggle-translation');
+            const translation = document.getElementById('translation');
+            const translationContent = document.getElementById('translation-content');
+            const newStoryBtn = document.getElementById('new-story');
+            const printStoryBtn = document.getElementById('print-story');
+            
+            // State
+            let stories = [
+                {
+                    id: 'malama-aina',
+                    title: 'Mālama ʻĀina',
+                    description: 'Caring for the land',
+                    level: 2,
+                    template: [
+                        {
+                            text: 'I kēia ',
+                            translation: 'On this '
+                        },
+                        {
+                            blank: true,
+                            type: 'day',
+                            options: ['Pōʻalima', 'Pōʻaono', 'Lāpule', 'kakahiaka'],
+                            translations: ['Friday', 'Saturday', 'Sunday', 'morning'],
+                            translation: 'day'
+                        },
+                        {
+                            text: ', ua hele mākou i ka ',
+                            translation: ', we went to the '
+                        },
+                        {
+                            blank: true,
+                            type: 'place',
+                            options: ['loʻi kalo', 'loko iʻa', 'māla', 'kuahiwi'],
+                            translations: ['taro patch', 'fishpond', 'garden', 'mountain'],
+                            translation: 'place'
+                        },
+                        {
+                            text: ' no ka mālama ʻāina. He ',
+                            translation: ' for land stewardship. It was a '
+                        },
+                        {
+                            blank: true,
+                            type: 'weather',
+                            options: ['lā wela', 'anuanu', 'ua', 'makani'],
+                            translations: ['hot day', 'cool', 'rainy', 'windy'],
+                            translation: 'weather'
+                        },
+                        {
+                            text: ' ka wā, akā nui ko mākou ikaika. Ua ',
+                            translation: ' weather, but we had much strength. We '
+                        },
+                        {
+                            blank: true,
+                            type: 'action',
+                            options: ['kanu', 'hoʻomaʻemaʻe', 'ʻoki', 'huki'],
+                            translations: ['planted', 'cleaned', 'cut', 'pulled'],
+                            translation: 'action'
+                        },
+                        {
+                            text: ' mākou i nā ',
+                            translation: ' the '
+                        },
+                        {
+                            blank: true,
+                            type: 'plant/item',
+                            options: ['kalo', 'ʻulu', 'lāʻau', 'lāʻī'],
+                            translations: ['taro', 'breadfruit', 'plants', 'ti leaves'],
+                            translation: 'plant/item'
+                        },
+                        {
+                            text: '. Ua loaʻa iā mākou ke ',
+                            translation: '. We received '
+                        },
+                        {
+                            blank: true,
+                            type: 'intangible',
+                            options: ['aloha', 'ʻike', 'pono', 'oli'],
+                            translations: ['love', 'knowledge', 'rightness', 'chant'],
+                            translation: 'intangible'
+                        },
+                        {
+                            text: ' mai ke kumu. Ma hope, ua ',
+                            translation: ' from the teacher. Afterwards, we '
+                        },
+                        {
+                            blank: true,
+                            type: 'ending action',
+                            options: ['pāʻina', 'hoʻomaha', 'ʻai', 'hoʻi'],
+                            translations: ['feasted', 'rested', 'ate', 'returned'],
+                            translation: 'ending action'
+                        },
+                        {
+                            text: ' mākou me ka ',
+                            translation: ' with '
+                        },
+                        {
+                            blank: true,
+                            type: 'feeling',
+                            options: ['hauʻoli', 'mahalo', 'ʻoluʻolu', 'māluhiluhi'],
+                            translations: ['happiness', 'gratitude', 'comfort', 'tiredness'],
+                            translation: 'feeling'
+                        },
+                        {
+                            text: '. He koho ',
+                            translation: '. It was a '
+                        },
+                        {
+                            blank: true,
+                            type: 'adjective',
+                            options: ['maikaʻi', 'nui', 'pōmaikaʻi', 'naʻauao'],
+                            translations: ['good', 'great', 'fortunate', 'wise'],
+                            translation: 'adjective'
+                        },
+                        {
+                            text: ' ka mālama ʻāina.',
+                            translation: ' choice to care for the land.'
+                        }
+                    ]
+                },
+                {
+                    id: 'moana-adventure',
+                    title: 'Ka Huakaʻi Moana',
+                    description: 'Ocean adventure',
+                    level: 3,
+                    template: [
+                        {
+                            text: 'I ka wā o ka ',
+                            translation: 'During the '
+                        },
+                        {
+                            blank: true,
+                            type: 'time of day',
+                            options: ['wanaʻao', 'awakea', 'ahiahi', 'pō'],
+                            translations: ['dawn', 'midday', 'evening', 'night'],
+                            translation: 'time of day'
+                        },
+                        {
+                            text: ', ua hoʻomākaukau mākou i ka ',
+                            translation: ', we prepared the '
+                        },
+                        {
+                            blank: true,
+                            type: 'canoe type',
+                            options: ['waʻa kaukahi', 'waʻa kaulua', 'moku', 'peleleu'],
+                            translations: ['single-hull canoe', 'double-hull canoe', 'sailing vessel', 'large canoe'],
+                            translation: 'canoe type'
+                        },
+                        {
+                            text: '. Ua nānā ʻo ',
+                            translation: '. '
+                        },
+                        {
+                            blank: true,
+                            type: 'role',
+                            options: ['ke kilo hōkū', 'ka hoe mua', 'ke alakaʻi', 'ka lawaiʻa'],
+                            translations: ['the navigator', 'the lead paddler', 'the leader', 'the fisherman'],
+                            translation: 'role'
+                        },
+                        {
+                            text: ' i ka ',
+                            translation: ' looked at the '
+                        },
+                        {
+                            blank: true,
+                            type: 'navigation aid',
+                            options: ['hōkū', 'lā', 'makani', 'nalu'],
+                            translations: ['stars', 'sun', 'wind', 'waves'],
+                            translation: 'navigation aid'
+                        },
+                        {
+                            text: '. I ka holo ʻana o ka waʻa i ka moana, ua ',
+                            translation: '. As the canoe sailed on the ocean, we '
+                        },
+                        {
+                            blank: true,
+                            type: 'at-sea action',
+                            options: ['mele', 'pule', 'hoe', 'kilo'],
+                            translations: ['sang', 'prayed', 'paddled', 'observed'],
+                            translation: 'at-sea action'
+                        },
+                        {
+                            text: ' mākou. Ua loaʻa iā mākou kekahi ',
+                            translation: '. We encountered a '
+                        },
+                        {
+                            blank: true,
+                            type: 'challenge',
+                            options: ['makani ikaika', 'kai koʻo', 'ua nui', 'kaʻekai'],
+                            translations: ['strong wind', 'rough sea', 'heavy rain', 'current'],
+                            translation: 'challenge'
+                        },
+                        {
+                            text: ', akā ua ',
+                            translation: ', but we '
+                        },
+                        {
+                            blank: true,
+                            type: 'overcoming',
+                            options: ['lanakila', 'kūpaʻa', 'aʻo', 'pono'],
+                            translations: ['prevailed', 'persevered', 'learned', 'managed'],
+                            translation: 'overcoming'
+                        },
+                        {
+                            text: ' mākou. Ma waena o ke kai, ua ʻike mākou i kekahi ',
+                            translation: '. In the middle of the ocean, we saw a '
+                        },
+                        {
+                            blank: true,
+                            type: 'sighting',
+                            options: ['koholā', 'naiʻa', 'moku ʻē', 'mokupuni'],
+                            translations: ['whale', 'dolphin', 'foreign ship', 'island'],
+                            translation: 'sighting'
+                        },
+                        {
+                            text: '. Ua hoʻi mākou i ka ',
+                            translation: '. We returned to the '
+                        },
+                        {
+                            blank: true,
+                            type: 'landing place',
+                            options: ['kahakai', 'awa', 'honua', 'home'],
+                            translations: ['beach', 'harbor', 'land', 'home'],
+                            translation: 'landing place'
+                        },
+                        {
+                            text: ' me ka ',
+                            translation: ' with '
+                        },
+                        {
+                            blank: true,
+                            type: 'emotion',
+                            options: ['hauʻoli', 'mahalo', 'hilinaʻi', 'hoʻomanaʻo'],
+                            translations: ['happiness', 'gratitude', 'confidence', 'memories'],
+                            translation: 'emotion'
+                        },
+                        {
+                            text: '. He huakaʻi ',
+                            translation: '. It was a '
+                        },
+                        {
+                            blank: true,
+                            type: 'adjective',
+                            options: ['hoʻomanaʻo', 'naʻauao', 'kupanaha', 'nui'],
+                            translations: ['memorable', 'enlightening', 'amazing', 'great'],
+                            translation: 'adjective'
+                        },
+                        {
+                            text: ' ma ka moana.',
+                            translation: ' journey on the ocean.'
+                        }
+                    ]
+                },
+                {
+                    id: 'hula-practice',
+                    title: 'Ke Ao ʻAna Hula',
+                    description: 'Learning to dance hula',
+                    level: 2,
+                    template: [
+                        {
+                            text: 'I kēia pō, ua hele au i ke ao ʻana hula ma ka ',
+                            translation: 'Tonight, I went to hula practice at the '
+                        },
+                        {
+                            blank: true,
+                            type: 'place',
+                            options: ['hālau', 'hale', 'kahua', 'kula'],
+                            translations: ['hula school', 'house', 'field', 'school'],
+                            translation: 'place'
+                        },
+                        {
+                            text: '. Ua komo au i koʻu ',
+                            translation: '. I wore my '
+                        },
+                        {
+                            blank: true,
+                            type: 'clothing',
+                            options: ['pāʻū', 'kīkepa', 'lole hula', 'kūpeʻe'],
+                            translations: ['skirt', 'sarong', 'hula clothes', 'ankle bracelet'],
+                            translation: 'clothing'
+                        },
+                        {
+                            text: '. Ua aʻo mai ka ',
+                            translation: '. The '
+                        },
+                        {
+                            blank: true,
+                            type: 'teacher',
+                            options: ['kumu hula', 'kumu wahine', 'kumu kāne', 'ʻōlapa'],
+                            translations: ['hula teacher', 'female teacher', 'male teacher', 'dancer'],
+                            translation: 'teacher'
+                        },
+                        {
+                            text: ' iā mākou i ke mele ',
+                            translation: ' taught us the song '
+                        },
+                        {
+                            blank: true,
+                            type: 'song name',
+                            options: ['Kaulana Nā Pua', 'Hawaiʻi Aloha', 'Aloha ʻOe', 'Hiʻilawe'],
+                            translations: ['Famous Flowers', 'Beloved Hawaiʻi', 'Farewell to Thee', 'Hiʻilawe Waterfall'],
+                            translation: 'song name'
+                        },
+                        {
+                            text: '. Ua ',
+                            translation: '. We '
+                        },
+                        {
+                            blank: true,
+                            type: 'action',
+                            options: ['hoʻopaʻa', 'haʻa', 'oli', 'paʻi'],
+                            translations: ['memorized', 'danced', 'chanted', 'clapped'],
+                            translation: 'action'
+                        },
+                        {
+                            text: ' mākou no nā hola he nui. Ua hoʻohana mākou i ka ',
+                            translation: ' for many hours. We used the '
+                        },
+                        {
+                            blank: true,
+                            type: 'instrument',
+                            options: ['ipu', 'pahu', 'ʻuliʻuli', 'pūʻili'],
+                            translations: ['gourd drum', 'drum', 'feathered rattle', 'bamboo sticks'],
+                            translation: 'instrument'
+                        },
+                        {
+                            text: '. Ua hoʻomaopopo mākou i nā ',
+                            translation: '. We remembered the '
+                        },
+                        {
+                            blank: true,
+                            type: 'component',
+                            options: ['kuhi lima', 'ʻōlelo', 'hiʻohiʻona', 'māka'],
+                            translations: ['hand gestures', 'words', 'expressions', 'eyes'],
+                            translation: 'component'
+                        },
+                        {
+                            text: ' o ka hula. Ua ',
+                            translation: ' of the hula. I felt '
+                        },
+                        {
+                            blank: true,
+                            type: 'feeling',
+                            options: ['hauʻoli', 'luhi', 'kamaʻāina', 'pōmaikaʻi'],
+                            translations: ['happy', 'tired', 'familiar', 'fortunate'],
+                            translation: 'feeling'
+                        },
+                        {
+                            text: ' au i ka hula. He ',
+                            translation: ' with the hula. It was a '
+                        },
+                        {
+                            blank: true,
+                            type: 'adjective',
+                            options: ['nani', 'maʻalahi', 'paʻakikī', 'kohu'],
+                            translations: ['beautiful', 'easy', 'difficult', 'appropriate'],
+                            translation: 'adjective'
+                        },
+                        {
+                            text: ' ka hula.',
+                            translation: ' dance.'
+                        }
+                    ]
+                },
+                {
+                    id: 'ohana-meal',
+                    title: 'Ka ʻAina Ahiahi o Ka ʻOhana',
+                    description: 'A family dinner story',
+                    level: 1,
+                    template: [
+                        {
+                            text: 'I kēia ',
+                            translation: 'This '
+                        },
+                        {
+                            blank: true,
+                            type: 'time',
+                            options: ['ahiahi', 'awakea', 'kakahiaka', 'pō'],
+                            translations: ['evening', 'noon', 'morning', 'night'],
+                            translation: 'time of day'
+                        },
+                        {
+                            text: ', ua hōʻuluʻulu mai koʻu ʻohana no ka ʻaina. Ua kāhea mai koʻu ',
+                            translation: ', my family gathered for a meal. My '
+                        },
+                        {
+                            blank: true,
+                            type: 'family member',
+                            options: ['makuahine', 'makuakāne', 'kaikuaʻana', 'tūtū'],
+                            translations: ['mother', 'father', 'older sibling', 'grandparent'],
+                            translation: 'family member'
+                        },
+                        {
+                            text: ' iaʻu e kōkua ma ka ',
+                            translation: ' called me to help in the '
+                        },
+                        {
+                            blank: true,
+                            type: 'place',
+                            options: ['lumi kuke', 'pāʻina', 'lānai', 'hale'],
+                            translations: ['kitchen', 'dining room', 'porch', 'house'],
+                            translation: 'place'
+                        },
+                        {
+                            text: '. Ma luna o ka pākaukau, aia kekahi ',
+                            translation: '. On the table, there was a '
+                        },
+                        {
+                            blank: true,
+                            type: 'adjective',
+                            options: ['nui', 'liʻiliʻi', 'maikaʻi', 'ʻono'],
+                            translations: ['big', 'small', 'beautiful', 'delicious'],
+                            translation: 'adjective'
+                        },
+                        {
+                            text: ' ',
+                            translation: ' '
+                        },
+                        {
+                            blank: true,
+                            type: 'food',
+                            options: ['iʻa', 'poi', 'ʻulu', 'kalo'],
+                            translations: ['fish', 'poi', 'breadfruit', 'taro'],
+                            translation: 'food'
+                        },
+                        {
+                            text: '. Ua ',
+                            translation: '. I '
+                        },
+                        {
+                            blank: true,
+                            type: 'verb',
+                            options: ['hoʻomākaukau', 'hana', 'ʻai', 'lawe'],
+                            translations: ['prepared', 'made', 'ate', 'brought'],
+                            translation: 'verb (past)'
+                        },
+                        {
+                            text: ' au i ka ',
+                            translation: ' the '
+                        },
+                        {
+                            blank: true,
+                            type: 'tableware',
+                            options: ['pā', 'kīʻaha', 'pahi', 'puna'],
+                            translations: ['plates', 'cups', 'knives', 'spoons'],
+                            translation: 'tableware'
+                        },
+                        {
+                            text: '. I ka wā e ʻai ana mākou, ua kamaʻilio mākou no ka ',
+                            translation: '. While we were eating, we talked about the '
+                        },
+                        {
+                            blank: true,
+                            type: 'topic',
+                            options: ['kula', 'hana', 'moʻolelo kahiko', 'hana leʻa'],
+                            translations: ['school', 'work', 'ancient stories', 'hobbies'],
+                            translation: 'topic'
+                        },
+                        {
+                            text: '. He manawa ',
+                            translation: '. It was a '
+                        },
+                        {
+                            blank: true,
+                            type: 'feeling',
+                            options: ['hauʻoli', 'maikaʻi', 'kohu', 'nani'],
+                            translations: ['happy', 'good', 'perfect', 'beautiful'],
+                            translation: 'feeling'
+                        },
+                        {
+                            text: ' me koʻu ʻohana.',
+                            translation: ' time with my family.'
+                        }
+                    ]
+                },
+                {
+                    id: 'beach-day',
+                    title: 'Ka Lā ma ke Kahakai',
+                    description: 'A day at the beach',
+                    level: 1,
+                    template: [
+                        {
+                            text: 'I kēia ',
+                            translation: 'On this '
+                        },
+                        {
+                            blank: true,
+                            type: 'day',
+                            options: ['Pōʻakahi', 'Pōʻalua', 'Pōʻakolu', 'Lāpule'],
+                            translations: ['Monday', 'Tuesday', 'Wednesday', 'Sunday'],
+                            translation: 'day'
+                        },
+                        {
+                            text: ', hele au i ke kahakai me aʻu ',
+                            translation: ', I went to the beach with my '
+                        },
+                        {
+                            blank: true,
+                            type: 'companions',
+                            options: ['hoaaloha', 'ʻohana', 'kaikamahine', 'keikikāne'],
+                            translations: ['friends', 'family', 'daughter', 'son'],
+                            translation: 'companions'
+                        },
+                        {
+                            text: '. Ua lawe mākou i ka ',
+                            translation: '. We brought '
+                        },
+                        {
+                            blank: true,
+                            type: 'beach item',
+                            options: ['moena', 'pāpale', 'mea ʻauʻau kai', 'kinipōpō'],
+                            translations: ['mat', 'hat', 'swimsuit', 'ball'],
+                            translation: 'beach item'
+                        },
+                        {
+                            text: '. He lā ',
+                            translation: '. It was a '
+                        },
+                        {
+                            blank: true,
+                            type: 'weather',
+                            options: ['lā', 'mālie', 'pumehana', 'anuanu'],
+                            translations: ['sunny', 'calm', 'warm', 'cool'],
+                            translation: 'weather'
+                        },
+                        {
+                            text: ' a he kai ',
+                            translation: ' and the ocean was '
+                        },
+                        {
+                            blank: true,
+                            type: 'ocean condition',
+                            options: ['mālie', 'nalu', 'hohonu', 'polū'],
+                            translations: ['calm', 'wavy', 'deep', 'blue'],
+                            translation: 'ocean condition'
+                        },
+                        {
+                            text: '. Ua ',
+                            translation: '. We '
+                        },
+                        {
+                            blank: true,
+                            type: 'beach activity',
+                            options: ['ʻauʻau', 'heʻe nalu', 'hoʻomaha', 'holoholo'],
+                            translations: ['swam', 'surfed', 'relaxed', 'walked'],
+                            translation: 'beach activity'
+                        },
+                        {
+                            text: ' mākou no nā hola he nui. Ua ʻike mākou i kekahi ',
+                            translation: ' for many hours. We saw a '
+                        },
+                        {
+                            blank: true,
+                            type: 'sea creature',
+                            options: ['honu', 'iʻa', 'mano', 'pūpū'],
+                            translations: ['turtle', 'fish', 'shark', 'shell'],
+                            translation: 'sea creature'
+                        },
+                        {
+                            text: ' i ka kai. A i ke ahiahi, ua ',
+                            translation: ' in the ocean. And in the evening, we '
+                        },
+                        {
+                            blank: true,
+                            type: 'evening activity',
+                            options: ['hoʻi', 'pāʻina', 'ʻaina', 'moe'],
+                            translations: ['returned', 'had a party', 'ate', 'slept'],
+                            translation: 'evening activity'
+                        },
+                        {
+                            text: ' mākou. He lā ',
+                            translation: '. It was a '
+                        },
+                        {
+                            blank: true,
+                            type: 'adjective',
+                            options: ['nani', 'maikaʻi', 'pōmaikaʻi', 'kaulana'],
+                            translations: ['beautiful', 'good', 'lucky', 'memorable'],
+                            translation: 'adjective'
+                        },
+                        {
+                            text: ' ma ke kahakai.',
+                            translation: ' day at the beach.'
+                        }
+                    ]
+                },
+                {
+                    id: 'laau-lapaau',
+                    title: 'Nā Lāʻau Lapaʻau',
+                    description: 'Traditional Hawaiian medicine',
+                    level: 3,
+                    template: [
+                        {
+                            text: 'I kēlā ',
+                            translation: 'That '
+                        },
+                        {
+                            blank: true,
+                            type: 'day',
+                            options: ['lā', 'kakahiaka', 'kau', 'makahiki'],
+                            translations: ['day', 'morning', 'season', 'year'],
+                            translation: 'day'
+                        },
+                        {
+                            text: ', ua hele au me koʻu ',
+                            translation: ', I went with my '
+                        },
+                        {
+                            blank: true,
+                            type: 'elder',
+                            options: ['kupuna wahine', 'kupuna kāne', 'ʻanakē', 'makua'],
+                            translations: ['grandmother', 'grandfather', 'aunt', 'parent'],
+                            translation: 'elder'
+                        },
+                        {
+                            text: ' e hōʻiliʻili i nā lāʻau lapaʻau. Ua hele mākou i ka ',
+                            translation: ' to gather medicinal plants. We went to the '
+                        },
+                        {
+                            blank: true,
+                            type: 'place',
+                            options: ['kuahiwi', 'nahelehele', 'kahawai', 'kahakai'],
+                            translations: ['mountain', 'forest', 'stream', 'beach'],
+                            translation: 'place'
+                        },
+                        {
+                            text: '. Ua ',
+                            translation: '. We '
+                        },
+                        {
+                            blank: true,
+                            type: 'action',
+                            options: ['ʻohi', 'kūkulu', 'ʻoki', 'hoʻākāka'],
+                            translations: ['gathered', 'built', 'cut', 'explained'],
+                            translation: 'action'
+                        },
+                        {
+                            text: ' mākou i ka ',
+                            translation: ' the '
+                        },
+                        {
+                            blank: true,
+                            type: 'medicinal plant',
+                            options: ['ʻawa', 'māmaki', 'ʻōlena', 'noni'],
+                            translations: ['kava', 'māmaki', 'turmeric', 'noni'],
+                            translation: 'medicinal plant'
+                        },
+                        {
+                            text: ' a me ka ',
+                            translation: ' and the '
+                        },
+                        {
+                            blank: true,
+                            type: 'another plant',
+                            options: ['koʻokoʻolau', 'ʻuhaloa', 'pōpolo', 'kī'],
+                            translations: ['koʻokoʻolau tea', 'ʻuhaloa', 'black nightshade', 'ti'],
+                            translation: 'plant'
+                        },
+                        {
+                            text: '. Ua aʻo mai koʻu kupuna iaʻu e ',
+                            translation: '. My elder taught me to '
+                        },
+                        {
+                            blank: true,
+                            type: 'preparation method',
+                            options: ['wali', 'hoʻopū', 'kuke', 'hoʻomaʻemaʻe'],
+                            translations: ['pound', 'steep', 'cook', 'clean'],
+                            translation: 'preparation method'
+                        },
+                        {
+                            text: ' i nā lāʻau ma ka ',
+                            translation: ' the plants in the '
+                        },
+                        {
+                            blank: true,
+                            type: 'container',
+                            options: ['pāpale', 'ʻumeke', 'ipu', 'puna'],
+                            translations: ['bowl', 'calabash', 'gourd', 'spring'],
+                            translation: 'container'
+                        },
+                        {
+                            text: '. Ua haʻi ʻo ia iaʻu, "ʻO ka lāʻau lapaʻau, he ',
+                            translation: '. They told me, "Traditional medicine is a '
+                        },
+                        {
+                            blank: true,
+                            type: 'descriptor',
+                            options: ['makana', 'mālama', 'ʻike', 'loina'],
+                            translations: ['gift', 'care', 'knowledge', 'tradition'],
+                            translation: 'descriptor'
+                        },
+                        {
+                            text: ' no nā ',
+                            translation: ' for the '
+                        },
+                        {
+                            blank: true,
+                            type: 'beneficiary',
+                            options: ['kānaka', 'poʻe maʻi', 'ʻohana', 'lāhui'],
+                            translations: ['people', 'sick people', 'family', 'nation'],
+                            translation: 'beneficiary'
+                        },
+                        {
+                            text: '." He ',
+                            translation: '." It was a '
+                        },
+                        {
+                            blank: true,
+                            type: 'adjective',
+                            options: ['naʻauao', 'kamahao', 'nui', 'koʻikoʻi'],
+                            translations: ['enlightening', 'wonderful', 'important', 'significant'],
+                            translation: 'adjective'
+                        },
+                        {
+                            text: ' ka lā no ka aʻo ʻana i nā lāʻau lapaʻau.',
+                            translation: ' day for learning about traditional medicine.'
+                        }
+                    ]
+                },
+                {
+                    id: 'first-surfing',
+                    title: 'Kaʻu Heʻe Nalu Mua',
+                    description: 'My first time surfing',
+                    level: 2,
+                    template: [
+                        {
+                            text: 'I kēia lā, ua hele au i ke kai no kaʻu heʻe nalu mua. Ua lawe au i kaʻu ',
+                            translation: 'Today, I went to the ocean for my first time surfing. I brought my '
+                        },
+                        {
+                            blank: true,
+                            type: 'item',
+                            options: ['papa heʻe nalu', 'moena', 'pāpale', 'ʻaʻahu kai'],
+                            translations: ['surfboard', 'mat', 'hat', 'swimsuit'],
+                            translation: 'item'
+                        },
+                        {
+                            text: '. Ua hui pū au me koʻu ',
+                            translation: '. I met with my '
+                        },
+                        {
+                            blank: true,
+                            type: 'person',
+                            options: ['hoaloha', 'kumu', 'makua', 'kaikuaʻana'],
+                            translations: ['friend', 'teacher', 'parent', 'older sibling'],
+                            translation: 'person'
+                        },
+                        {
+                            text: '. He ',
+                            translation: '. It was a '
+                        },
+                        {
+                            blank: true,
+                            type: 'weather',
+                            options: ['lā nani', 'lā wela', 'lā kupulau', 'lā ʻoluʻolu'],
+                            translations: ['beautiful day', 'hot day', 'spring day', 'pleasant day'],
+                            translation: 'weather'
+                        },
+                        {
+                            text: ' a he ',
+                            translation: ' and a '
+                        },
+                        {
+                            blank: true,
+                            type: 'ocean condition',
+                            options: ['kai mālie', 'nalu liʻiliʻi', 'kai haʻahaʻa', 'kai malino'],
+                            translations: ['calm sea', 'small waves', 'low tide', 'smooth sea'],
+                            translation: 'ocean condition'
+                        },
+                        {
+                            text: '. Ua aʻo iaʻu e ',
+                            translation: '. They taught me to '
+                        },
+                        {
+                            blank: true,
+                            type: 'surfing action',
+                            options: ['hoe', 'kū', 'moe', 'kaʻapuni'],
+                            translations: ['paddle', 'stand', 'lie down', 'turn'],
+                            translation: 'surfing action'
+                        },
+                        {
+                            text: ' ma luna o ka papa. I ka wā i hoʻāʻo mua ai au, ua ',
+                            translation: ' on the board. The first time I tried, I '
+                        },
+                        {
+                            blank: true,
+                            type: 'result',
+                            options: ['hīnā', 'haki', 'nalo', 'lilo'],
+                            translations: ['fell', 'broke', 'disappeared', 'drifted away'],
+                            translation: 'result'
+                        },
+                        {
+                            text: ' au. Akā, ua ',
+                            translation: '. But I '
+                        },
+                        {
+                            blank: true,
+                            type: 'reaction',
+                            options: ['hoʻāʻo hou', 'ʻakaʻaka', 'hopohopo', 'hoʻomanawanui'],
+                            translations: ['tried again', 'laughed', 'worried', 'persevered'],
+                            translation: 'reaction'
+                        },
+                        {
+                            text: ' au. Ma hope, ua ',
+                            translation: '. Afterwards, I '
+                        },
+                        {
+                            blank: true,
+                            type: 'achievement',
+                            options: ['kū', 'heʻe', 'lanakila', 'holo'],
+                            translations: ['stood', 'slid', 'succeeded', 'rode'],
+                            translation: 'achievement'
+                        },
+                        {
+                            text: ' au ma ka nalu! Ua ',
+                            translation: ' on a wave! I '
+                        },
+                        {
+                            blank: true,
+                            type: 'feeling',
+                            options: ['hauʻoli', 'hoihoi', 'kamahaʻo', 'ikaika'],
+                            translations: ['happy', 'excited', 'amazed', 'strong'],
+                            translation: 'feeling'
+                        },
+                        {
+                            text: ' loa au. He ',
+                            translation: ' very much. It was a '
+                        },
+                        {
+                            blank: true,
+                            type: 'adjective',
+                            options: ['kupanaha', 'nani', 'maikaʻi', 'kohu'],
+                            translations: ['amazing', 'beautiful', 'good', 'fitting'],
+                            translation: 'adjective'
+                        },
+                        {
+                            text: ' koʻu lā mua o ka heʻe nalu.',
+                            translation: ' first day of surfing.'
+                        }
+                    ]
+                },
+                {
+                    id: 'school-day',
+                    title: 'Ka Lā ma ke Kula',
+                    description: 'A day at school',
+                    level: 2,
+                    template: [
+                        {
+                            text: 'I kēia kakahiaka, ua hele au i ke kula. Ua lawe au i kaʻu ',
+                            translation: 'This morning, I went to school. I brought my '
+                        },
+                        {
+                            blank: true,
+                            type: 'school item',
+                            options: ['puke', 'penikala', 'kamepiula', 'pākēki'],
+                            translations: ['book', 'pencil', 'computer', 'backpack'],
+                            translation: 'school item'
+                        },
+                        {
+                            text: '. Ka papa mua, he papa ',
+                            translation: '. The first class was '
+                        },
+                        {
+                            blank: true,
+                            type: 'school subject',
+                            options: ['makemakika', 'ʻōlelo Hawaiʻi', 'pilikanaka', 'ʻepekema'],
+                            translations: ['math', 'Hawaiian language', 'social studies', 'science'],
+                            translation: 'school subject'
+                        },
+                        {
+                            text: '. Ua ',
+                            translation: '. The teacher '
+                        },
+                        {
+                            blank: true,
+                            type: 'verb',
+                            options: ['aʻo', 'haʻi', 'kākau', 'heluhelu'],
+                            translations: ['taught', 'told', 'wrote', 'read'],
+                            translation: 'verb'
+                        },
+                        {
+                            text: ' ke kumu iā mākou. Ua noho au ma ka ',
+                            translation: ' to us. I sat in the '
+                        },
+                        {
+                            blank: true,
+                            type: 'location',
+                            options: ['mua', 'hope', 'waena', 'ʻaoʻao'],
+                            translations: ['front', 'back', 'middle', 'side'],
+                            translation: 'location'
+                        },
+                        {
+                            text: ' o ka papa. Ua ',
+                            translation: ' of the classroom. I '
+                        },
+                        {
+                            blank: true,
+                            type: 'verb',
+                            options: ['hoʻolohe', 'kākau', 'hana', 'heluhelu'],
+                            translations: ['listened', 'wrote', 'worked', 'read'],
+                            translation: 'verb'
+                        },
+                        {
+                            text: ' au i nā haʻawina. I ka wā awakea, ua ʻai au i kaʻu ',
+                            translation: ' to the lessons. At lunchtime, I ate my '
+                        },
+                        {
+                            blank: true,
+                            type: 'food',
+                            options: ['pōpō ʻai', 'pipi', 'hua moa', 'iʻa'],
+                            translations: ['sandwich', 'beef', 'egg', 'fish'],
+                            translation: 'food'
+                        },
+                        {
+                            text: '. Ma hope o ke kula, ua ',
+                            translation: '. After school, I '
+                        },
+                        {
+                            blank: true,
+                            type: 'after-school activity',
+                            options: ['pāʻani', 'hana', 'hoʻomākaukau', 'hula'],
+                            translations: ['played', 'worked', 'prepared', 'danced hula'],
+                            translation: 'after-school activity'
+                        },
+                        {
+                            text: ' au me aʻu mau hoaloha. He lā ',
+                            translation: ' with my friends. It was a '
+                        },
+                        {
+                            blank: true,
+                            type: 'adjective',
+                            options: ['maikaʻi', 'ʻoluʻolu', 'lōʻihi', 'pohihihi'],
+                            translations: ['good', 'pleasant', 'long', 'confusing'],
+                            translation: 'adjective'
+                        },
+                        {
+                            text: ' ma ke kula kēia.',
+                            translation: ' day at school.'
+                        }
+                    ]
+                }
+            ];
+            
+            let currentStory = null;
+            let currentBlankIndex = 0;
+            let filledBlanks = [];
+            let isTranslationVisible = false;
+            
+            // Initialize the app
+            function init() {
+                renderStoryCards();
+                setupEventListeners();
+            }
+            
+            // Render story cards
+            function renderStoryCards() {
+                storyCards.innerHTML = '';
+                
+                stories.forEach(story => {
+                    const card = document.createElement('div');
+                    card.className = 'story-card';
+                    card.dataset.storyId = story.id;
+                    
+                    // Level indicators (1-3 dots based on level)
+                    let levelDots = '';
+                    for (let i = 0; i < story.level; i++) {
+                        levelDots += '<span class="level-indicator"></span>';
+                    }
+                    
+                    card.innerHTML = `
+                        <h3 class="story-card-title">${story.title}</h3>
+                        <p class="story-card-desc">${story.description}</p>
+                        <div class="story-card-level">
+                            ${levelDots}
+                            <span class="level-text">Level ${story.level}</span>
+                        </div>
+                    `;
+                    
+                    storyCards.appendChild(card);
+                });
+            }
+            
+            // Set up event listeners
+            function setupEventListeners() {
+                // Existing story card selection listener
+                storyCards.addEventListener('click', function(e) {
+                    const card = e.target.closest('.story-card');
+                    if (card) {
+                        const storyId = card.dataset.storyId;
+                        selectStory(storyId);
+                    }
+                });
+
+                // Word selection listeners
+                wordOptions.addEventListener('click', function(e) {
+                    if (e.target.classList.contains('word-btn')) {
+                        const word = e.target.textContent;
+                        filledBlanks[currentBlankIndex] = word;
+                        
+                        e.target.style.backgroundColor = "#006600";
+                        e.target.style.transform = "scale(1.1)";
+                        
+                        setTimeout(() => {
+                            e.target.style.backgroundColor = "";
+                            e.target.style.transform = "";
+                        }, 500);
+                        
+                        renderCurrentBlank();
+                        
+                        if (currentBlankIndex === filledBlanks.length - 1) {
+                            const allBlanksFilled = filledBlanks.every(blank => blank.trim() !== '');
+                            if (allBlanksFilled) {
+                                setTimeout(() => {
+                                    finishBtn.style.display = 'block';
+                                    finishBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                }, 500);
+                            }
+                        } else {
+                            currentBlankIndex++;
+                            renderCurrentBlank();
+                        }
+                    }
+                });
+
+                // Custom word input handlers
+                addCustomWord.addEventListener('click', function() {
+                    const customWord = customWordInput.value.trim();
+                    if (customWord) {
+                        selectWord(customWord);
+                        customWordInput.value = '';
+                    }
+                });
+
+                customWordInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        addCustomWord.click();
+                    }
+                });
+
+                // Navigation buttons
+                prevBlankBtn.addEventListener('click', goToPreviousBlank);
+                nextBlankBtn.addEventListener('click', goToNextBlank);
+                finishBtn.addEventListener('click', finishStory);
+
+                // Final story section buttons
+                document.getElementById('toggle-translation').addEventListener('click', function() {
+                    const translationDiv = document.getElementById('translation');
+                    const toggleBtn = document.getElementById('toggle-translation');
+                    isTranslationVisible = !isTranslationVisible;
+                    translationDiv.style.display = isTranslationVisible ? 'block' : 'none';
+                    toggleBtn.textContent = isTranslationVisible ? 'Huna i ka Unuhi Pelekānia' : 'Hōʻike i ka Unuhi Pelekānia';
+                });
+
+                document.getElementById('new-story').addEventListener('click', function() {
+                    resetAndShowStorySelection();
+                });
+
+                document.getElementById('print-story').addEventListener('click', function() {
+                    const translationDiv = document.getElementById('translation');
+                    const wasHidden = translationDiv.style.display === 'none';
+                    translationDiv.style.display = 'block';
+                    window.print();
+                    if (wasHidden) {
+                        translationDiv.style.display = 'none';
+                    }
+                });
+
+                document.getElementById('final-return').addEventListener('click', function() {
+                    resetAndShowStorySelection();
+                });
+
+                // Menu return buttons
+                document.getElementById('return-to-menu').addEventListener('click', resetAndShowStorySelection);
+            }
+            
+            // Select a story
+            function selectStory(storyId) {
+                currentStory = stories.find(story => story.id === storyId);
+                if (!currentStory) return;
+                
+                // Reset state
+                currentBlankIndex = 0;
+                
+                // Count actual blanks and add one buffer blank
+                const actualBlankCount = currentStory.template.filter(item => item.blank).length;
+                filledBlanks = Array(actualBlankCount + 1).fill('');
+                
+                console.log(`Story "${currentStory.title}" selected with ${actualBlankCount} blanks to fill plus buffer`);
+                
+                // Show word selection section
+                storySelection.style.display = 'none';
+                wordSelection.style.display = 'block';
+                finalStory.style.display = 'none';
+                
+                // Render first blank
+                renderCurrentBlank();
+            }
+            
+            // Render the current blank with error handling and diagnostics
+            function renderCurrentBlank() {
+                try {
+                    console.log(`RENDERING - currentBlankIndex: ${currentBlankIndex}, filledBlanks:`, [...filledBlanks]);
+                    
+                    // Validate currentBlankIndex
+                    if (currentBlankIndex < 0 || currentBlankIndex >= filledBlanks.length) {
+                        console.error(`Invalid blank index: ${currentBlankIndex}, clamping to valid range`);
+                        currentBlankIndex = Math.min(filledBlanks.length - 1, Math.max(0, currentBlankIndex));
+                    }
+                    
+                    const template = currentStory.template;
+                    let promptText = '';
+                    let blankCount = 0;
+                    
+                    // Build prompt text with already filled blanks and the current blank
+                    for (let i = 0; i < template.length; i++) {
+                        const item = template[i];
+                        
+                        if (!item.blank) {
+                            // Regular text
+                            promptText += item.text;
+                        } else {
+                            // A blank
+                            if (blankCount === currentBlankIndex) {
+                                // Current blank (unfilled or being filled)
+                                promptText += '<span class="blank current-blank">_________</span>';
+                                blankType.textContent = item.type;
+                                
+                                // Render word options
+                                renderWordOptions(item);
+                                console.log(`Rendering options for blank #${blankCount+1}: ${item.type}`);
+                            } else {
+                                // Already filled blank or blank that will be filled later
+                                if (filledBlanks[blankCount] && filledBlanks[blankCount].trim() !== '') {
+                                    promptText += '<span class="blank filled-blank">' + filledBlanks[blankCount] + '</span>';
+                                } else {
+                                    // Empty blank (not yet filled)
+                                    promptText += '<span class="blank empty-blank">_________</span>';
+                                }
+                            }
+                            blankCount++;
+                        }
+                    }
+                    
+                    // Update UI
+                    currentPrompt.innerHTML = promptText;
+                    
+                    // Update navigation buttons
+                    prevBlankBtn.style.display = currentBlankIndex > 0 ? 'block' : 'none';
+                    
+                    const isLastBlank = currentBlankIndex === filledBlanks.length - 1;
+                    nextBlankBtn.style.display = !isLastBlank ? 'block' : 'none';
+                    finishBtn.style.display = isLastBlank ? 'block' : 'none';
+                    
+                    // Special handling for the last blank
+                    if (isLastBlank) {
+                        console.log("🔴 On last blank - ensuring finish button is visible");
+                        
+                        // Check if this blank has been filled
+                        const lastBlankFilled = filledBlanks[currentBlankIndex] && 
+                                              filledBlanks[currentBlankIndex].trim() !== '';
+                        
+                        if (lastBlankFilled) {
+                            console.log("Last blank is filled with:", filledBlanks[currentBlankIndex]);
+                            // Make finish button extra prominent
+                            finishBtn.classList.add('finish-btn-active');
+                        } else {
+                            console.log("Last blank is empty - waiting for selection");
+                            finishBtn.classList.remove('finish-btn-active');
+                        }
+                        
+                        // Ensure finish button is visible by scrolling if needed
+                        setTimeout(() => {
+                            finishBtn.scrollIntoView({behavior: 'smooth', block: 'center'});
+                        }, 200);
+                    } else {
+                        finishBtn.classList.remove('finish-btn-active');
+                    }
+                    
+                    // Ensure the current section is properly scrolled
+                    if (wordSelection.style.display !== 'none') {
+                        window.scrollTo({top: wordSelection.offsetTop, behavior: 'smooth'});
+                    }
+                    
+                    // Add visual emphasis to current blank
+                    const currentBlankElement = document.querySelector('.current-blank');
+                    if (currentBlankElement) {
+                        currentBlankElement.style.borderBottom = '3px solid #C79756';
+                        currentBlankElement.style.padding = '5px';
+                        currentBlankElement.style.backgroundColor = '#FFFCE0';
+                    }
+                    
+                } catch (error) {
+                    console.error("Error rendering current blank:", error);
+                    alert("There was an error displaying the story. Please refresh the page and try again.");
+                }
+            }
+            
+            // Render word options for the current blank
+            function renderWordOptions(blankItem) {
+                wordOptions.innerHTML = '';
+                
+                blankItem.options.forEach((option, index) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'word-btn';
+                    btn.textContent = option;
+                    btn.title = blankItem.translations[index];
+                    wordOptions.appendChild(btn);
+                });
+            }
+            
+            // Select a word for the current blank
+            function selectWord(word) {
+                // Store the selected word
+                filledBlanks[currentBlankIndex] = word;
+                
+                // Check if all blanks are now filled
+                const allFilled = !filledBlanks.some(blank => !blank);
+                
+                if (allFilled) {
+                    // Show finish button with standard teal styling
+                    finishBtn.style.display = 'block';
+                    // No special animations or color changes
+                }
+                
+                // Move to next blank if not at the end
+                if (currentBlankIndex < filledBlanks.length - 1) {
+                    currentBlankIndex++;
+                    renderCurrentBlank();
+                } else {
+                    renderCurrentBlank();
+                }
+            }
+            
+            // Go to previous blank
+            function goToPreviousBlank() {
+                if (currentBlankIndex > 0) {
+                    currentBlankIndex--;
+                    renderCurrentBlank();
+                }
+            }
+            
+            // Go to next blank
+            function goToNextBlank() {
+                if (currentBlankIndex < filledBlanks.length - 1) {
+                    currentBlankIndex++;
+                    renderCurrentBlank();
+                }
+            }
+            
+            // Finish the story
+            function finishStory() {
+                console.log("Finish story function called");
+                
+                // Check only the real blanks (excluding buffer)
+                const realBlanks = filledBlanks.slice(0, -1);
+                const emptyBlanks = realBlanks.filter(word => !word).length;
+                
+                if (emptyBlanks > 0) {
+                    alert(`Please fill all ${emptyBlanks} remaining blanks before finishing the story.`);
+                    
+                    // Find the first empty blank and go to it
+                    const firstEmptyIndex = realBlanks.findIndex(word => !word);
+                    if (firstEmptyIndex !== -1) {
+                        currentBlankIndex = firstEmptyIndex;
+                        renderCurrentBlank();
+                    }
+                    return;
+                }
+                
+                // Add active state to finish button
+                finishBtn.classList.add('finish-btn-active');
+                
+                // Show final story section
+                storySelection.style.display = 'none';
+                wordSelection.style.display = 'none';
+                finalStory.style.display = 'block';
+                
+                // Set story title
+                finalStoryTitle.textContent = currentStory.title;
+                
+                // Generate final story text and translation
+                const { storyText, translationText } = generateFinalStory();
+                
+                // Update the DOM with the generated story
+                finalStoryContent.innerHTML = storyText;
+                translationContent.innerHTML = translationText;
+                
+                // Reset translation visibility
+                isTranslationVisible = false;
+                translation.style.display = 'none';
+                toggleTranslationBtn.textContent = 'Hōʻike i ka Unuhi Pelekānia';
+                
+                // Remove the redundant menu button from final view
+                document.getElementById('final-return').style.display = 'none';
+                
+                // Scroll to the top of the final story
+                window.scrollTo(0, finalStory.offsetTop);
+                
+                // Log the completed story for debugging
+                console.log('Story completed with ' + filledBlanks.length + ' filled blanks');
+            }
+            
+            // Generate the final story text with filled blanks
+            function generateFinalStory() {
+                const template = currentStory.template;
+                let storyText = '';
+                let translationText = '';
+                let blankCount = 0;
+                
+                // Ensure we process the entire template
+                for (let i = 0; i < template.length; i++) {
+                    const item = template[i];
+                    
+                    if (!item.blank) {
+                        // Regular text
+                        storyText += item.text;
+                        translationText += item.translation;
+                    } else {
+                        // A filled blank
+                        const filledWord = filledBlanks[blankCount];
+                        storyText += '<span class="filled-blank">' + filledWord + '</span>';
+                        
+                        // For translation, try to get the matching translation if it's one of the options
+                        const optionIndex = item.options.findIndex(opt => opt.toLowerCase() === filledWord.toLowerCase());
+                        const translation = optionIndex !== -1 ? 
+                                        item.translations[optionIndex] : 
+                                        item.translation; // Fallback to type description
+                        
+                        translationText += '<span class="filled-blank">' + translation + '</span>';
+                        
+                        blankCount++;
+                    }
+                }
+                
+                // Debug check to ensure all template items were processed
+                console.log('Generated story with ' + template.length + ' template items and ' + blankCount + ' blanks');
+                
+                return { storyText, translationText };
+            }
+            
+            // Toggle the translation visibility
+            function toggleTranslation() {
+                isTranslationVisible = !isTranslationVisible;
+                translation.style.display = isTranslationVisible ? 'block' : 'none';
+                toggleTranslationBtn.textContent = isTranslationVisible ? 
+                    'Hide English Translation' : 'Show English Translation';
+            }
+            
+            // Reset and go back to story selection
+            function resetAndShowStorySelection() {
+                console.log('Resetting and showing story selection');
+                
+                // Clear state
+                currentStory = null;
+                currentBlankIndex = 0;
+                filledBlanks = [];
+                
+                // Reset UI
+                document.getElementById('story-selection').style.display = 'block';
+                document.getElementById('word-selection').style.display = 'none';
+                document.getElementById('final-story').style.display = 'none';
+                
+                // Reset translation state
+                isTranslationVisible = false;
+                document.getElementById('translation').style.display = 'none';
+                
+                // Scroll to top
+                window.scrollTo(0, 0);
+                
+                console.log('Reset complete');
+            }
+            
+            // Print the story
+            function printStory() {
+                console.log('Printing story');
+                
+                // Add print-specific styling
+                const style = document.createElement('style');
+                style.textContent = `
+                    @media print {
+                        .action-buttons, .translation-toggle { display: none; }
+                        .translation { display: block !important; }
+                        .story-container { padding: 20px; }
+                    }
+                `;
+                document.head.appendChild(style);
+                
+                window.print();
+            }
+            
+            // Initialize the app
+            init();
+        });
+    </script>
+</body>
+</html>
