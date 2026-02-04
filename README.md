@@ -20,8 +20,7 @@ A suite of digital tools designed to support Hawaiian language learning through 
 ## About
 
 Jacoby Young  
-Engineering and Design Kumu  
-Kamehameha Schools-Kapālama
+Engineering and Design Kumu
 
 Creating educational technology that honors Hawaiian culture and serves learners authentically.
 
