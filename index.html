@@ -11,6 +11,8 @@
             --white: #FFFFFF;
             --light-gray: #F0F0F0;
             --gold: #C79756;
+            --d1: #2D7A4F;
+            --d3: #2558A0;
         }
         
         * {
@@ -48,12 +50,25 @@
             margin: 0 auto;
             padding: 3rem 1.5rem;
         }
+
+        .section-label {
+            font-size: 0.7rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: #906841;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+        }
         
         .projects-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 2rem;
-            margin-top: 2rem;
         }
         
         .project-card {
@@ -127,10 +142,10 @@
     </header>
     
     <main>
-        <h2 style="margin-bottom: 1rem; font-size: 1.8rem;">Projects</h2>
+        <p class="section-label">Projects</p>
+        <h2>Tools & Resources</h2>
         
         <div class="projects-grid">
-            <!-- ʻApomanaʻo Project -->
             <a href="apomanao/" class="project-card">
                 <div class="project-header">ʻApomanaʻo</div>
                 <div class="project-body">
@@ -139,7 +154,6 @@
                 </div>
             </a>
             
-            <!-- ʻŌiwi Makers Project -->
             <a href="oiwi-makers/" class="project-card">
                 <div class="project-header">ʻŌiwi Makers</div>
                 <div class="project-body">
@@ -147,15 +161,22 @@
                     <p class="project-meta">Cultural STEAM Education</p>
                 </div>
             </a>
-            
-            <!-- Placeholder for future projects -->
-            <div class="project-card" style="opacity: 0.5; cursor: default;">
-                <div class="project-header" style="background-color: var(--gold);">Coming Soon</div>
+
+            <a href="livegamedesigner/" class="project-card">
+                <div class="project-header" >Live Game Designer</div>
                 <div class="project-body">
-                    <p>More projects coming soon...</p>
-                    <p class="project-meta">Future Work</p>
+                    <p>A live, interactive tool for designing and playtesting games in real time with students.</p>
+                    <p class="project-meta">Game Design Tool</p>
                 </div>
-            </div>
+            </a>
+
+            <a href="unitplans/" class="project-card">
+                <div class="project-header" >Unit Plans</div>
+                <div class="project-body">
+                    <p>Engineering & Design unit plans for Grades K–3, with daily lesson guides and substitute instructions.</p>
+                    <p class="project-meta">Grades K–3 · Current Units</p>
+                </div>
+            </a>
         </div>
     </main>
     
